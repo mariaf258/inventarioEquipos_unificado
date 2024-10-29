@@ -1,6 +1,17 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+import inventarioEquipos_departamentos from '@/views/inventarioEquipos_departamentos.vue'
+import inventarioEquipos_login from '@/views/inventarioEquipos_login.vue'
+
 import { ref } from 'vue'
+import app from '@/utils/firebase.ts'
+import { getFirestore, getDocs, addDoc, collection } from 'firebase/firestore'
+
+app.use(inventarioEquipos_departamentos)
+app.use(inventarioEquipos_login)
+
+app.mount('#app')
+
+const db = getFirestore(app)
 
 const isDropdownVisible = ref(false)
 
@@ -8,16 +19,31 @@ const toggleDropdown = () => {
   isDropdownVisible.value = !isDropdownVisible.value
 }
 
+const obtenerDatos = async () => {
+  try {
+    const respuesta = await getDocs(collection(db, 'Equipos'))
+    data.value = respuesta.docs.map((registro) => registro.data())
+  } catch (error) {
+    console.error('Error al obtener datos: ', error)
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const userIcon = document.getElementById('userIcon')
   const userDropdown = document.getElementById('userDropdown')
 
-  userIcon.addEventListener('click', () => {
-    userDropdown.classList.toggle('show')
+  userIcon?.addEventListener('click', () => {
+    userDropdown?.classList.toggle('show')
   })
 })
 
-const sections = ref([
+interface datosDepartamentos {
+  id?: number
+  name?: string
+  shortName?: string
+  iconClass?: string
+}
+const sections = ref<datosDepartamentos[]>([
   { id: 1, name: 'TALENTO HUMANO', shortName: 'TH', iconClass: 'th' },
   { id: 2, name: 'SAGRILAF', shortName: 'SAG', iconClass: 'sag' },
   { id: 3, name: 'SEGURIDAD Y SALUD EN EL TRABAJO', shortName: 'SST', iconClass: 'sst' },
@@ -34,6 +60,40 @@ const sections = ref([
   { id: 14, name: 'JURIDICO', shortName: 'JU', iconClass: 'ju' },
   { id: 15, name: 'AUDIO VISUAL', shortName: 'AV', iconClass: 'av' }
 ])
+
+const crearRegistro = async (
+  name: string,
+  post: string,
+  etiqueta: string,
+  descripcion: string,
+  marca: string,
+  serie: string,
+  Nserial: string,
+  disco: string,
+  ram: string,
+  estado: string,
+  observacion: string
+) => {
+  try {
+    const response = await addDoc(collection(db, 'Equipos'), {
+      name,
+      post,
+      etiqueta,
+      descripcion,
+      marca,
+      serie,
+      Nserial,
+      disco,
+      ram,
+      estado,
+      observacion
+    })
+    console.log('Registro agregado:', response)
+    obtenerDatos()
+  } catch (error) {
+    console.error('Error al agregar registro: ', error)
+  }
+}
 </script>
 
 <template>
@@ -41,7 +101,7 @@ const sections = ref([
     <div class="sidebar">
       <ul>
         <li>
-          <a href="#">Inicio</a>
+          <a href="../views/inventarioEquipos.vue">Inicio</a>
         </li>
         <hr class="separador-1" />
       </ul>
@@ -898,19 +958,6 @@ header h2 {
     width: 50px;
   }
 
-  /* .dropdown-menu {
-    position: absolute;
-    top: 0px;
-    right: -500px;
-    background-color: rgba(67, 42, 136, 0.8);
-    border-radius: 10px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    padding: 10px;
-    z-index: 1;
-    min-width: 150px;
-    transition: all 0.3s ease;
-  } */
-
   .content {
     padding: 10px;
     justify-content: center;
@@ -921,12 +968,6 @@ header h2 {
     top: 10px;
     right: -500px;
   }
-
-  /* .userIcon-white {
-    position: relative;
-    top: 10px;
-    right: -500px;
-  } */
 
   .header-right input {
     width: 100%;
