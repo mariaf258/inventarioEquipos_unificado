@@ -1,15 +1,8 @@
 <script setup lang="ts">
-import inventarioEquipos_departamentos from '@/views/inventarioEquipos_departamentos.vue'
-import inventarioEquipos_login from '@/views/inventarioEquipos_login.vue'
 
 import { ref } from 'vue'
-import app from '@/utils/firebase.ts'
+import app from '../../utils/firebase.js'
 import { getFirestore, getDocs, addDoc, collection } from 'firebase/firestore'
-
-app.use(inventarioEquipos_departamentos)
-app.use(inventarioEquipos_login)
-
-app.mount('#app')
 
 const db = getFirestore(app)
 
@@ -21,7 +14,7 @@ const toggleDropdown = () => {
 
 const obtenerDatos = async () => {
   try {
-    const respuesta = await getDocs(collection(db, 'Equipos'))
+    const respuesta = await getDocs(collection(db, 'Modulos'))
     data.value = respuesta.docs.map((registro) => registro.data())
   } catch (error) {
     console.error('Error al obtener datos: ', error)
@@ -61,39 +54,48 @@ const sections = ref<datosDepartamentos[]>([
   { id: 15, name: 'AUDIO VISUAL', shortName: 'AV', iconClass: 'av' }
 ])
 
-const crearRegistro = async (
-  name: string,
-  post: string,
-  etiqueta: string,
-  descripcion: string,
-  marca: string,
-  serie: string,
-  Nserial: string,
-  disco: string,
-  ram: string,
-  estado: string,
-  observacion: string
-) => {
+interface departamentoEmpresa {
+  id?: number
+  name?: string
+  shortName?: string
+  iconClass?: string
+}
+
+const crearRegistro = async () => {
   try {
-    const response = await addDoc(collection(db, 'Equipos'), {
-      name,
-      post,
-      etiqueta,
-      descripcion,
-      marca,
-      serie,
-      Nserial,
-      disco,
-      ram,
-      estado,
-      observacion
-    })
+    const response = await addDoc(collection(db, 'Modulos'), {})
     console.log('Registro agregado:', response)
     obtenerDatos()
   } catch (error) {
     console.error('Error al agregar registro: ', error)
   }
 }
+
+function searchElement(Modulo: string, listaModulo: string[]): string {
+  const resultado = listaModulo.find((n) => n.toLowerCase() === Modulo.toLowerCase())
+  return resultado ? `Modulo encontrado: ${resultado}` : `Modulo "${Modulo}" no encontrado`
+}
+
+const listaModulo = [
+  'TALENTO HUMANO',
+  'SAGRILAF',
+  'SEGURIDAD Y SALUD EN EL TRABAJO',
+  'GERENCIA',
+  'DEPARTAMENTO DE CONTABILIDAD',
+  'DIRECCION DE SISTEMAS',
+  'DIRECCION DE COMPRAS',
+  'DIRECCION TECNICA',
+  'GESTION DE CALIDAD',
+  'COMERCIAL',
+  'ADMINISTRACION',
+  'DIRECCION AMBIENTAL',
+  'DIRECCION DE ARCHIVO',
+  'JURIDICO',
+  'AUDIO VISUAL'
+]
+const ModuloABuscar = 'talento humano'
+console.log(searchElement(ModuloABuscar, listaModulo))
+
 </script>
 
 <template>
@@ -101,7 +103,11 @@ const crearRegistro = async (
     <div class="sidebar">
       <ul>
         <li>
-          <a href="../views/inventarioEquipos.vue">Inicio</a>
+          <a href="#">Inicio</a>
+        </li>
+        <hr class="separador-1" />
+        <li class="nav2">
+          <router-link  to="/crearDepartamento">Crear Departamento</router-link>
         </li>
         <hr class="separador-1" />
       </ul>
@@ -130,7 +136,8 @@ const crearRegistro = async (
                     @click="toggleDropdown"
                     class="userIcon-white"
                   />
-                  <a class="dropdown-item" href="#">Iniciar Sesión</a>
+                  <a class="dropdown-item">
+                  <router-link  to="/inventarioEquipos_login">Iniciar Sesión</router-link></a>
                   <hr class="dropdown-divider" />
                   <a class="dropdown-item" href="#">Cerrar Sesión</a>
                 </ul>
@@ -168,10 +175,10 @@ const crearRegistro = async (
 
         <div class="card-grid">
           <div class="card" v-for="section in sections" :key="section.id">
-            <div :class="`card-icon ${section.iconClass}`">{{ section.shortName }}</div>
-            <p>
-              <b>{{ section.name }}</b>
-            </p>
+            <router-link :to="`/${section.shortName.toLowerCase()}`">
+              <div :class="`card-icon ${section.iconClass}`">{{ section.shortName }}</div>
+              <p><b>{{ section.name }}</b></p>
+            </router-link>
           </div>
         </div>
       </div>
@@ -184,6 +191,7 @@ const crearRegistro = async (
   width: 100%;
   height: 100%;
   display: flex;
+  background-color: white;
 }
 
 body,
@@ -194,6 +202,7 @@ html {
   padding: 0;
   box-sizing: border-box;
   height: 100%;
+  background-color: white;
 }
 
 .show {
@@ -209,11 +218,12 @@ html {
   flex-direction: column;
   justify-content: space-between;
   border-right: 1px solid #ccc;
-  position: fixed;
+  position: fixed; 
   top: 0;
   bottom: 0;
   left: 0;
   z-index: 1;
+  padding: 50px 0px 0px 0px;
 }
 
 .sidebar ul {
@@ -222,7 +232,6 @@ html {
 
 .sidebar ul li {
   padding: 20px;
-  margin-top: 80px;
   margin-bottom: -10px;
 }
 
@@ -238,6 +247,12 @@ html {
 
 .sidebar ul img {
   align-items: center;
+}
+
+.sidebar ul li .nav2{
+  padding: 20px;
+  margin-top: -20px;
+  margin-bottom: -10px;
 }
 
 .logo {
@@ -263,7 +278,7 @@ html {
   margin-bottom: 20px;
   width: 100%;
   position: absolute;
-  z-index: -1;
+  z-index: 0;
   top: 50px;
   left: 0;
 }
@@ -495,6 +510,10 @@ header h2 {
   text-align: center;
   text-decoration: none;
   display: block;
+}
+
+.a{
+  color: white;
 }
 
 .dropdown-item:hover {

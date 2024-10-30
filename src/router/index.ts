@@ -1,29 +1,41 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import InventarioEquipos from '../views/inventarioEquipos.vue'
-import InventarioEquipos_departamentos from '@/views/inventarioEquipos_departamentos.vue'
-import InventarioEquipos_login from '@/views/inventarioEquipos_login.vue'
+import InventarioEquipos from '../views/InventarioEquipos.vue'
+import CrearDepartamento from '../views/CrearDepartamento.vue'
+import InventarioEquipos_login from '../views/InventarioEquipos_login.vue'
+import th from '../views/th.vue'
+import AgregarEmpleado from '../views/AgregarEmpleado.vue'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
     {
       path: '/',
-      name: 'InventarioEquipos',
+      // name: 'InventarioEquipos',
       component: InventarioEquipos
     },
     {
-      path: '/departamentos',
-      name: 'InventarioEquipos_departamentos',
-      component: InventarioEquipos_departamentos
+      path: '/crearDepartamento',
+      // name: 'CrearDepartamento',
+      component: CrearDepartamento
     },
     {
-      path: '/login',
-      name: 'InventarioEquipos_login',
+      path: '/inventarioEquipos_login',
+      // name: 'InventarioEquipos_login',
       component: InventarioEquipos_login
     },
     {
+      path: '/th',
+      // name: 'th',
+      component: th
+    },
+    {
+      path:'/agregarEmpleado',
+      // name: 'AgregarEmpleado',
+      component: AgregarEmpleado
+    },
+    {
       path: '/about',
-      name: 'about',
+      // name: 'about',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.

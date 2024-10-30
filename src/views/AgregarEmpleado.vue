@@ -1,68 +1,76 @@
-<script setup lang="ts">
-import { ref } from 'vue'
-function togglePassword() {
-  const passwordField = document.getElementById('password')
-  if (passwordField.type === 'password') {
-    passwordField.type = 'text'
-  } else {
-    passwordField.type = 'password'
-  }
-}
-</script>
-
+<script></script>
 <template>
-  <!-- <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  /> -->
-  <div id="app3">
-    <div class="form3 justify-content-center">
-      <div class="d-flex w-100 justify-content-center">
-        <img src="../../public/img/user.png" alt="user" />
-      </div>
-      <div class="login">
-        <h1>
-          INVENTARIO DE EQUIPOS
-          <hr />
-        </h1>
+  <div id="app4">
+      <div class="form4 justify-content-center">
+        
+        <div class="login">
+          <h1>
+            AGREGAR EMPLEADO
+            <hr />
+          </h1>
 
-        <h2>C.I. MINAS LA AURORA S.A.S.</h2>
-        <br />
-        <h3>Iniciar Sesión</h3>
+          <h2>C.I. MINAS LA AURORA S.A.S.</h2>
+          <br />
+          <h3>DATOS</h3>
 
-        <section>
-    <div class="form-group">
-      <input type="email" v-model="email" placeholder="" />
-      <label class="form-label">Correo Electrónico</label>
-    </div>
-    <div class="form-group">
-      <input :type="showPassword ? 'text' : 'password'" v-model="password" placeholder="" />
-      <label class="form-label">Contraseña</label>
-      <span class="toggle-password" @click="showPassword = !showPassword">
-        <i :class="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
-      </span>
-    </div>
-  </section>
+          
+          <section>
+            <div class="form-group">
+              <input type="name" v-model="name" placeholder="" />
+              <label class="form-label">Nombre Empleado</label>
+            </div>
+            <div class="form-group">
+              <input type="post" v-model="post" placeholder="" />
+              <label class="form-label">Cargo del Empleado</label>
+            </div>
+            <div class="form-group">
+              <input type="etiqueta" v-model="etiqueta" placeholder="" />
+              <label class="form-label">Etiqueta del Equipo</label>
+            </div>
+            <div class="form-group">
+              <input type="descripcion" v-model="descripcion" placeholder="" />
+              <label class="form-label">Descripción del Equipo</label>
+            </div>
+            <div class="form-group">
+              <input type="marca" v-model="marca" placeholder="" />
+              <label class="form-label">Marca del Equipo</label>
+            </div>
+            <div class="form-group">
+              <input type="serie" v-model="serie" placeholder="" />
+              <label class="form-label">Serie del Equipo</label>
+            </div>
+            <div class="form-group">
+              <input type="Nserial" v-model="Nserial" placeholder="" />
+              <label class="form-label">Número serial del Equipo</label>
+            </div>
+            <div class="form-group">
+              <input type="disco" v-model="disco" placeholder="" />
+              <label class="form-label">Disco del Equipo</label>
+            </div>
+            <div class="form-group">
+              <input type="ram" v-model="ram" placeholder="" />
+              <label class="form-label">Ram del Equipo</label>
+            </div>
+            <div class="form-group">
+              <input type="estado" v-model="estado" placeholder="" />
+              <label class="form-label">Estado del Equipo</label>
+            </div>
+            <div class="form-group">
+              <input type="observacion" v-model="observacion" placeholder="" />
+              <label class="form-label">Observacion del Equipo</label>
+            </div>
 
-        <button class="btn btn-primary">INICIAR SESIÓN</button>
-        <div class="img-login">
-          <a href="" target="_blank">
-            <img src="../../public/img/facebook-circle.png" alt="facebook" />
-          </a>
-          <a href="" target="_blank">
-            <img src="../../public/img/instagram.png" alt="instagram"
-          /></a>
-          <a href="" target="_blank"> <img src="../../public/img/linkedin.png" alt="linkedin" /></a>
-          <a href="" target="_blank">
-            <img src="../../public/img/global-line.png" alt="global line"
-          /></a>
+          </section>
+
+          <button class="btn btn-primary">Agregar</button>
+          
         </div>
       </div>
-    </div>
-  </div>
-  <footer class="footer d-flex w-100 justify-content-center">
-    <img src="../../public/img/logo-mla.png" alt="Logo MLA" />
-  </footer>
+    
+    <footer class="footer d-flex w-100 justify-content-center">
+      <img src="../../public/img/logo-mla.png" alt="Logo MLA" />
+    </footer> 
+</div>
 </template>
 
 <style>
@@ -75,13 +83,12 @@ html {
   box-sizing: border-box;
 }
 
-#app3 {
+#app4 {
   width: 100%;
-  background-color: #f5f5f5;
+  background-color: #F6F6F6;
   align-items: center;
   display: grid;
   place-items: center;
-  min-height: 100vh;
 }
 
 .login {
@@ -175,20 +182,18 @@ section {
   color: black;
 }
 
-.form3 {
+.form4 {
   width: 350px;
   color: black;
   background-color: #ffffff;
   justify-content: center;
-  padding: 20px 20px 0px 20px;
+  padding: 40px 20px;
   border-radius: 10px;
-  margin-top: 70px;
-  margin-bottom: 200px;
-  align-items: center;
-
+  margin-top: 100px;
+  margin-bottom: 110px;
 }
 
-.form3 img {
+.form4 img {
   width: 40px;
   height: 40px;
   align-items: center;
@@ -197,7 +202,7 @@ section {
   margin-bottom: 20px;
 }
 
-.form3 button {
+.form4 button {
   cursor: pointer;
   background-color: #432a88;
   text-align: center;
@@ -229,58 +234,19 @@ section {
   background-color: white;
 }
 
-.img-login {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.img-login img {
-  width: 20px;
-  height: 20px;
-  margin-top: 20px;
-  transition:
-    filter 0.3s ease,
-    transform 0.3s ease;
-}
-
-.img-login img:hover {
-  filter: brightness(1.5);
-  transform: scale(1.1);
-}
-
-.img-login img[alt='facebook']:hover {
-  filter: invert(31%) sepia(72%) saturate(5350%) hue-rotate(203deg) brightness(92%) contrast(103%);
-}
-
-.img-login img[alt='instagram']:hover {
-  filter: invert(45%) sepia(100%) saturate(3230%) hue-rotate(326deg) brightness(90%) contrast(103%);
-}
-
-.img-login img[alt='linkedin']:hover {
-  filter: invert(36%) sepia(84%) saturate(4657%) hue-rotate(170deg) brightness(88%) contrast(105%);
-}
-
-.img-login img[alt='global line']:hover {
-  filter: invert(71%) sepia(31%) saturate(1347%) hue-rotate(146deg) brightness(94%) contrast(96%);
-}
-
 .footer {
   background: linear-gradient(to bottom, #432a88, #5132aa);
   align-items: center;
   height: 64px;
-  display: flex;
-  justify-content: center;
-  position: fixed;
-  bottom: 0;
   width: 100%;
+  text-align: center;
 }
+
 .footer img {
   background-color: transparent;
   align-items: center;
   cursor: pointer;
-  justify-content: center;
-  position: fixed;
+  margin-top: 15px;
 }
 
 @media screen and (max-width: 1200px) {
@@ -485,4 +451,4 @@ section {
     margin-top: 10px;
   }
 }
-</style>
+</style> -->

@@ -1,15 +1,8 @@
 <script setup lang="ts">
-import inventarioEquipos from '@/views/inventarioEquipos.vue'
-import inventarioEquipos_login from '@/views/inventarioEquipos_login.vue'
-
-import { ref, onMounted, defineComponent } from 'vue'
-import app from '@/utils/firebase.ts'
+import TheWelcome from '../components/TheWelcome.vue'
+import { ref, onMounted, defineComponent, Ref } from 'vue'
+import app from '../../utils/firebase.js'
 import { getFirestore, getDocs, addDoc, collection } from 'firebase/firestore'
-
-app.use(inventarioEquipos)
-app.use(inventarioEquipos_login)
-
-app.mount('#app')
 
 const db = getFirestore(app)
 const isDropdownVisible = ref(false)
@@ -762,10 +755,10 @@ button.btn-link {
 
 @media screen and (max-width: 1200px) {
   /* .main-content {
-            padding: 20px 20px 20px 240px;
-            flex-grow: 1;
-            box-sizing: border-box;
-        } */
+    padding: 20px 20px 20px 240px;
+    flex-grow: 1;
+    box-sizing: border-box;
+  } */
 
   .header-container {
     flex-direction: column;
@@ -802,10 +795,10 @@ button.btn-link {
 
 @media screen and (max-width: 1050px) {
   /* .main-content {
-            padding: 20px 20px 20px 240px;
-            flex-grow: 1;
-            box-sizing: border-box;
-        } */
+    padding: 20px 20px 20px 240px;
+    flex-grow: 1;
+    box-sizing: border-box;
+  } */
 
   .header-container {
     flex-direction: column;
