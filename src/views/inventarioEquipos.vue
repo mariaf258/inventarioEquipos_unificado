@@ -1,7 +1,6 @@
 <script setup lang="ts">
-
-import { ref } from 'vue'
-import app from '../../utils/firebase.js'
+import { onMounted, ref } from 'vue'
+import app from '../../utils/firebase.ts'
 import { getFirestore, getDocs, addDoc, collection } from 'firebase/firestore'
 
 const db = getFirestore(app)
@@ -13,13 +12,33 @@ const toggleDropdown = () => {
 }
 
 const obtenerDatos = async () => {
-  try {
     const respuesta = await getDocs(collection(db, 'Modulos'))
-    data.value = respuesta.docs.map((registro) => registro.data())
+    console.log({ respuesta })
+    console.log(respuesta.docs.map(registro => registro.data()))
+}
+
+const crearRegistro = async (idModulo: number, idUsuario: number, name: string, shortName: string) => {
+  try {
+    const response = await addDoc(collection(db, 'Modulos'), {
+      idModulo,
+      idUsuario,
+      name,
+      shortName,
+    })
+    console.log('Registro agregado:', { response })
   } catch (error) {
-    console.error('Error al obtener datos: ', error)
+    console.error('Error al agregar registro: ', error)
   }
 }
+
+onMounted(() => {
+  obtenerDatos()
+  crearRegistro(1, 1, 'TALENTO HUMANO', 'TH')
+  console.log(sections);
+  
+  filteredSections.value = sections.value;
+  console.log(filteredSections);
+})
 
 document.addEventListener('DOMContentLoaded', () => {
   const userIcon = document.getElementById('userIcon')
@@ -37,6 +56,7 @@ interface datosDepartamentos {
   iconClass?: string
   path?: string 
 }
+
 const sections = ref<datosDepartamentos[]>([
   { id: 1, name: 'TALENTO HUMANO', shortName: 'TH', iconClass: 'th', path: 'talentoHumano'},
   { id: 2, name: 'SAGRILAF', shortName: 'SAG', iconClass: 'sag' , path: 'sag'},
@@ -55,47 +75,31 @@ const sections = ref<datosDepartamentos[]>([
   { id: 15, name: 'AUDIO VISUAL', shortName: 'AV', iconClass: 'av' , path: 'audioVisual'}
 ])
 
-interface departamentoEmpresa {
-  id?: number
-  name?: string
-  shortName?: string
-  iconClass?: string
+let filteredSections = ref<datosDepartamentos[]>([])
+console.log(filteredSections);
+
+
+const filtrarModulos = (value:any) => {
+  console.log('buscando la variable', value.target.value
+  );
+
+  const respuestaInput = value.target.value;
+
+// if(!respuestaInput){
+//   filteredSections.value = [...sections.value]
+// } else {
+      const respuesta = sections.value.filter(section =>
+      section.name.toLowerCase().includes(respuestaInput) || section.shortName.toLowerCase().includes(respuestaInput)
+      )
+      filteredSections.value = respuesta
+// }
+
+//       sections.value = sections.value.filter(section =>
+//       section.name.toLowerCase().includes(respuestaInput) || section.shortName.toLowerCase().includes(respuestaInput)
+//       )
+//       filteredSections.value = [...sections.value]
 }
 
-const crearRegistro = async () => {
-  try {
-    const response = await addDoc(collection(db, 'Modulos'), {})
-    console.log('Registro agregado:', response)
-    obtenerDatos()
-  } catch (error) {
-    console.error('Error al agregar registro: ', error)
-  }
-}
-
-function searchElement(Modulo: string, listaModulo: string[]): string {
-  const resultado = listaModulo.find((n) => n.toLowerCase() === Modulo.toLowerCase())
-  return resultado ? `Modulo encontrado: ${resultado}` : `Modulo "${Modulo}" no encontrado`
-}
-
-const listaModulo = [
-  'TALENTO HUMANO',
-  'SAGRILAF',
-  'SEGURIDAD Y SALUD EN EL TRABAJO',
-  'GERENCIA',
-  'DEPARTAMENTO DE CONTABILIDAD',
-  'DIRECCION DE SISTEMAS',
-  'DIRECCION DE COMPRAS',
-  'DIRECCION TECNICA',
-  'GESTION DE CALIDAD',
-  'COMERCIAL',
-  'ADMINISTRACION',
-  'DIRECCION AMBIENTAL',
-  'DIRECCION DE ARCHIVO',
-  'JURIDICO',
-  'AUDIO VISUAL'
-]
-const ModuloABuscar = 'talento humano'
-console.log(searchElement(ModuloABuscar, listaModulo))
 
 </script>
 
@@ -104,7 +108,7 @@ console.log(searchElement(ModuloABuscar, listaModulo))
     <div class="sidebar">
       <ul>
         <li>
-          <a href="#">Inicio</a>
+          <router-link  to="/">Inicio</router-link>
         </li>
         <hr class="separador-1" />
         <li class="nav2">
@@ -158,15 +162,12 @@ console.log(searchElement(ModuloABuscar, listaModulo))
               </div>
 
               <div class="header-right">
-                <input type="text" id="searchInput" placeholder="Buscar" />
-                <button @click="searchElement" class="btn btn-primary addBtn">
-                  <img src="../../public/img/search.png" alt="search" />
-                </button>
+                <input @input="filtrarModulos"  type="text" id="searchInput" placeholder="Buscar" />
                 <div id="results" class="results">
                   <ul>
-                    <li v-for="(result, index) in searchResults" :key="index">
+                    <!-- <li v-for="(result, index) in searchResults" :key="index">
                       {{ result.titulo }} - {{ result.descripcion }}
-                    </li>
+                    </li> -->
                   </ul>
                 </div>
               </div>
@@ -175,7 +176,7 @@ console.log(searchElement(ModuloABuscar, listaModulo))
         </div>
 
         <div class="card-grid">
-          <div class="card" v-for="section in sections" :key="section.id">
+          <div class="card" v-for="section in filteredSections" :key="section.id">
             <router-link :to="`/${section.path.toLowerCase()}`">
               <div :class="`card-icon ${section.iconClass}`">{{ section.shortName }}</div>
               <p><b>{{ section.name }}</b></p>

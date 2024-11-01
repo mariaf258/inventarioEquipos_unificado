@@ -32,47 +32,24 @@ const data = ref<datosEquipos[]>([
     ram: 'DDR4 16GB 2666Mhz',
     estado: '',
     observacion: ''
-  },
+  }
+])
+
+const data2 = ref<datosEquipos>(
   {
-    name: 'Wendy Pacheco',
-    post: 'Coordinador Talento Humano',
-    etiqueta: 'MLA-TH-002',
+    name: 'Liliana',
+    post: 'Director Talento Humano',
+    etiqueta: 'MLA-TH-001',
     descripcion: 'Torre',
-    marca: 'HP',
-    serie: 'Compaq 6200 Pro MT',
-    Nserial: 'MLX2051DP8',
-    disco: 'SSD 256 GB - HDD WD 500GB',
-    ram: 'DDR3 8GB (2x4GB) 1333Mhz',
-    estado: '',
-    observacion: ''
-  },
-  {
-    name: 'Mayra Sierra',
-    post: 'Coordinador Talento Humano',
-    etiqueta: 'MLA-TH-003',
-    descripcion: 'All in one',
-    marca: 'Dell',
-    serie: 'Vostro 360',
-    Nserial: '31C9BQ1',
-    disco: 'SSD 480GB',
-    ram: 'DDR3 4GB 1333Mhz',
-    estado: '',
-    observacion: ''
-  },
-  {
-    name: 'Nini Johana Blanco',
-    post: 'Jefe Responsabilidad Social',
-    etiqueta: 'MLA-TH-004',
-    descripcion: 'Torre',
-    marca: 'HP',
-    serie: 'Compaq 6200 Pro MT',
-    Nserial: 'MLX2051DP8',
-    disco: 'SSD 240GB',
-    ram: 'DDR3 4GB 1333Mhz',
+    marca: 'Compumax',
+    serie: '',
+    Nserial: '102SN56746',
+    disco: 'M.2 512GB',
+    ram: 'DDR4 16GB 2666Mhz',
     estado: '',
     observacion: ''
   }
-])
+)
 
 const toggleDropdown = () => {
   isDropdownVisible.value = !isDropdownVisible.value
@@ -81,39 +58,19 @@ const toggleDropdown = () => {
 const obtenerDatos = async () => {
   try {
     const respuesta = await getDocs(collection(db, 'Equipos'))
+    console.log({respuesta})
     data.value = respuesta.docs.map((registro) => registro.data())
   } catch (error) {
     console.error('Error al obtener datos: ', error)
   }
 }
 
-const crearRegistro = async (
-  name: string,
-  post: string,
-  etiqueta: string,
-  descripcion: string,
-  marca: string,
-  serie: string,
-  Nserial: string,
-  disco: string,
-  ram: string,
-  estado: string,
-  observacion: string
-) => {
+const crearRegistro = async ( datos: datosEquipos) => {
   try {
-    const response = await addDoc(collection(db, 'Equipos'), {
-      name,
-      post,
-      etiqueta,
-      descripcion,
-      marca,
-      serie,
-      Nserial,
-      disco,
-      ram,
-      estado,
-      observacion
-    })
+    console.log({datos});
+    
+    const response = await addDoc(collection(db, 'Equipos'), datos)
+
     console.log('Registro agregado:', response)
     obtenerDatos()
   } catch (error) {
@@ -122,59 +79,11 @@ const crearRegistro = async (
 }
 
 onMounted(() => {
-  obtenerDatos()
-  crearRegistro(
-    'Liliana',
-    'Director Talento Humano',
-    'MLA-TH-001',
-    'Torre',
-    'Compumax',
-    '',
-    '102SN56746',
-    'M.2 512GB',
-    'DDR4 16GB 2666Mhz',
-    '',
-    ''
-  )
-  crearRegistro(
-    'Wendy Pacheco',
-    'Coordinador Talento Humano',
-    'MLA-TH-002',
-    'Torre',
-    'HP',
-    'Compaq 6200 Pro MT',
-    'MLX2051DP8',
-    'SSD 256 GB - HDD WD 500GB',
-    'DDR3 8GB (2x4GB) 1333Mhz',
-    '',
-    ''
-  )
-  crearRegistro(
-    'Mayra Sierra',
-    'Coordinador Talento Humano',
-    'MLA-TH-003',
-    'All in one',
-    'Dell',
-    'Vostro 360',
-    '31C9BQ1',
-    'SSD 480GB',
-    'DDR3 4GB 1333Mhz',
-    '',
-    ''
-  )
-  crearRegistro(
-    'Nini Johana Blanco',
-    'Jefe Responsabilidad Social',
-    'MLA-TH-004',
-    'Torre',
-    'HP',
-    'Compaq 6200 Pro MT',
-    'MLX2051DP8',
-    'SSD 240GB',
-    'DDR3 4GB 1333Mhz',
-    '',
-    ''
-  )
+  crearRegistro(data2.value)
+  // crearRegistro(
+    
+  // )
+
 })
 
 onMounted(() => {

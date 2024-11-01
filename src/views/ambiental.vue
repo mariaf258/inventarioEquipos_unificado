@@ -21,54 +21,15 @@ interface datosEquipos {
 }
 const data = ref<datosEquipos[]>([
   {
-    name: 'Liliana',
-    post: 'Director Talento Humano',
-    etiqueta: 'MLA-TH-001',
-    descripcion: 'Torre',
-    marca: 'Compumax',
+    name: '',
+    post: '',
+    etiqueta: '',
+    descripcion: '',
+    marca: '',
     serie: '',
-    Nserial: '102SN56746',
-    disco: 'M.2 512GB',
-    ram: 'DDR4 16GB 2666Mhz',
-    estado: '',
-    observacion: ''
-  },
-  {
-    name: 'Wendy Pacheco',
-    post: 'Coordinador Talento Humano',
-    etiqueta: 'MLA-TH-002',
-    descripcion: 'Torre',
-    marca: 'HP',
-    serie: 'Compaq 6200 Pro MT',
-    Nserial: 'MLX2051DP8',
-    disco: 'SSD 256 GB - HDD WD 500GB',
-    ram: 'DDR3 8GB (2x4GB) 1333Mhz',
-    estado: '',
-    observacion: ''
-  },
-  {
-    name: 'Mayra Sierra',
-    post: 'Coordinador Talento Humano',
-    etiqueta: 'MLA-TH-003',
-    descripcion: 'All in one',
-    marca: 'Dell',
-    serie: 'Vostro 360',
-    Nserial: '31C9BQ1',
-    disco: 'SSD 480GB',
-    ram: 'DDR3 4GB 1333Mhz',
-    estado: '',
-    observacion: ''
-  },
-  {
-    name: 'Nini Johana Blanco',
-    post: 'Jefe Responsabilidad Social',
-    etiqueta: 'MLA-TH-004',
-    descripcion: 'Torre',
-    marca: 'HP',
-    serie: 'Compaq 6200 Pro MT',
-    Nserial: 'MLX2051DP8',
-    disco: 'SSD 240GB',
-    ram: 'DDR3 4GB 1333Mhz',
+    Nserial: '',
+    disco: '',
+    ram: '',
     estado: '',
     observacion: ''
   }
@@ -123,58 +84,9 @@ const crearRegistro = async (
 
 onMounted(() => {
   obtenerDatos()
-  crearRegistro(
-    'Liliana',
-    'Director Talento Humano',
-    'MLA-TH-001',
-    'Torre',
-    'Compumax',
-    '',
-    '102SN56746',
-    'M.2 512GB',
-    'DDR4 16GB 2666Mhz',
-    '',
-    ''
-  )
-  crearRegistro(
-    'Wendy Pacheco',
-    'Coordinador Talento Humano',
-    'MLA-TH-002',
-    'Torre',
-    'HP',
-    'Compaq 6200 Pro MT',
-    'MLX2051DP8',
-    'SSD 256 GB - HDD WD 500GB',
-    'DDR3 8GB (2x4GB) 1333Mhz',
-    '',
-    ''
-  )
-  crearRegistro(
-    'Mayra Sierra',
-    'Coordinador Talento Humano',
-    'MLA-TH-003',
-    'All in one',
-    'Dell',
-    'Vostro 360',
-    '31C9BQ1',
-    'SSD 480GB',
-    'DDR3 4GB 1333Mhz',
-    '',
-    ''
-  )
-  crearRegistro(
-    'Nini Johana Blanco',
-    'Jefe Responsabilidad Social',
-    'MLA-TH-004',
-    'Torre',
-    'HP',
-    'Compaq 6200 Pro MT',
-    'MLX2051DP8',
-    'SSD 240GB',
-    'DDR3 4GB 1333Mhz',
-    '',
-    ''
-  )
+  // crearRegistro(
+  // )
+  
 })
 
 onMounted(() => {

@@ -21,15 +21,15 @@ interface datosEquipos {
 }
 const data = ref<datosEquipos[]>([
   {
-    name: 'Felipe Bautista',
-    post: 'Coordinador de Compras',
-    etiqueta: 'MLA-CO-001',
-    descripcion: 'All in One',
-    marca: 'Dell',
-    serie: 'Vostro 3267',
-    Nserial: 'CCWT6M2',
-    disco: 'SSD 240GB',
-    ram: 'DDR4 4GB 2133Mhz',
+    name: '',
+    post: '',
+    etiqueta: '',
+    descripcion: '',
+    marca: '',
+    serie: '',
+    Nserial: '',
+    disco: '',
+    ram: '',
     estado: '',
     observacion: ''
   }
@@ -84,19 +84,8 @@ const crearRegistro = async (
 
 onMounted(() => {
   obtenerDatos()
-  crearRegistro(
-    'Felipe Bautista',
-    'Coordinador de Compras',
-    'MLA-CO-001',
-    'All in One',
-    'Dell',
-    'Vostro 3267',
-    'CCWT6M2',
-    'SSD 240GB',
-    'DDR4 4GB 2133Mhz',
-    '',
-    ''
-  )
+  // crearRegistro(
+  // )
 })
 
 onMounted(() => {
