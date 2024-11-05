@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import app from '../../utils/firebase.ts'
+import app from '../utils/firebase.js'
 import { getFirestore, getDocs, addDoc, collection } from 'firebase/firestore'
 
 const db = getFirestore(app)

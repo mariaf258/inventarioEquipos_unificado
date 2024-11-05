@@ -2,12 +2,9 @@
 </script>
 
 <template>
-  <!-- <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  /> -->
+
   <div id="app2">
-    <button class="btn btn-primary"><router-link to="/">Inicio</router-link></button>
+    <button class="btn btn-primary"><router-link to="/"><img src="../../public/img/icon-park-left.png" alt=""></router-link></button>
 
       <div class="form2 justify-content-center">
         
@@ -21,7 +18,8 @@
           <br />
           <h3>DATOS</h3>
 
-          <section>
+          <section class="form-2">
+            <form class="form-2" @submit.prevent="crearEmpleado()">
             <div class="form-group">
               <input type="name" v-model="name" placeholder="" />
               <label class="form-label">Nombre departamento</label>
@@ -30,10 +28,11 @@
               <input type="shortName" v-model="shortName" placeholder="" />
               <label class="form-label">Nombre corto</label>
             </div>
-            
-          </section>
 
-          <button class="btn btn-primary">Agregar</button>
+            <button class="btn btn-primary" type="submit">Agregar</button>
+
+            </form>
+          </section>
           
         </div>
       </div>

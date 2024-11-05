@@ -1,100 +1,3 @@
-<script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
-import { ref, onMounted, defineComponent, Ref } from 'vue'
-import app from '../../utils/firebase.js'
-import { getFirestore, getDocs, addDoc, collection } from 'firebase/firestore'
-
-const db = getFirestore(app)
-const isDropdownVisible = ref(false)
-interface datosEquipos {
-  name?: string
-  post?: string
-  etiqueta?: string
-  descripcion?: string
-  marca?: string
-  serie?: string
-  Nserial?: string
-  disco?: string
-  ram?: string
-  estado?: string
-  observacion?: string
-}
-const data = ref<datosEquipos[]>([
-  {
-    name: 'Liliana',
-    post: 'Director Talento Humano',
-    etiqueta: 'MLA-TH-001',
-    descripcion: 'Torre',
-    marca: 'Compumax',
-    serie: '',
-    Nserial: '102SN56746',
-    disco: 'M.2 512GB',
-    ram: 'DDR4 16GB 2666Mhz',
-    estado: '',
-    observacion: ''
-  }
-])
-
-const data2 = ref<datosEquipos>(
-  {
-    name: 'Liliana',
-    post: 'Director Talento Humano',
-    etiqueta: 'MLA-TH-001',
-    descripcion: 'Torre',
-    marca: 'Compumax',
-    serie: '',
-    Nserial: '102SN56746',
-    disco: 'M.2 512GB',
-    ram: 'DDR4 16GB 2666Mhz',
-    estado: '',
-    observacion: ''
-  }
-)
-
-const toggleDropdown = () => {
-  isDropdownVisible.value = !isDropdownVisible.value
-}
-
-const obtenerDatos = async () => {
-  try {
-    const respuesta = await getDocs(collection(db, 'Equipos'))
-    console.log({respuesta})
-    data.value = respuesta.docs.map((registro) => registro.data())
-  } catch (error) {
-    console.error('Error al obtener datos: ', error)
-  }
-}
-
-const crearRegistro = async ( datos: datosEquipos) => {
-  try {
-    console.log({datos});
-    
-    const response = await addDoc(collection(db, 'Equipos'), datos)
-
-    console.log('Registro agregado:', response)
-    obtenerDatos()
-  } catch (error) {
-    console.error('Error al agregar registro: ', error)
-  }
-}
-
-onMounted(() => {
-  crearRegistro(data2.value)
-  // crearRegistro(
-    
-  // )
-
-})
-
-onMounted(() => {
-  const userIcon = document.getElementById('userIcon')
-  const userDropdown = document.getElementById('userDropdown')
-
-  userIcon?.addEventListener('click', () => {
-    userDropdown?.classList.toggle('show')
-  })
-})
-</script>
 
 <template>
   <div id="app1">
@@ -202,3 +105,39 @@ onMounted(() => {
 <style>
 @import '/src/assets/datosDepartamentos.css'
 </style>
+
+<script setup lang="ts">
+import TheWelcome from '../components/TheWelcome.vue'
+import { ref, onMounted, defineComponent, Ref } from 'vue'
+
+const isDropdownVisible = ref(false)
+
+
+const toggleDropdown = () => {
+  isDropdownVisible.value = !isDropdownVisible.value
+}
+
+/*const obtenerDatos = async () => {
+  try {
+    const respuesta = await getDocs(collection(db, 'Equipos'))
+    console.log({respuesta})
+    data.value = respuesta.docs.map((registro) => registro.data())
+  } catch (error) {
+    console.error('Error al obtener datos: ', error)
+  }
+}*/
+
+
+/*onMounted(() => {
+  obtenerEmpleados(empleado : Equipo)
+})*/
+
+onMounted(() => {
+  const userIcon = document.getElementById('userIcon')
+  const userDropdown = document.getElementById('userDropdown')
+
+  userIcon?.addEventListener('click', () => {
+    userDropdown?.classList.toggle('show')
+  })
+})
+</script>

@@ -31,17 +31,19 @@ function togglePassword() {
         <h3>Iniciar Sesión</h3>
 
         <section>
-    <div class="form-group">
-      <input type="email" v-model="email" placeholder="" />
-      <label class="form-label">Correo Electrónico</label>
-    </div>
-    <div class="form-group">
-      <input :type="showPassword ? 'text' : 'password'" v-model="password" placeholder="" />
-      <label class="form-label">Contraseña</label>
-      <span class="toggle-password" @click="showPassword = !showPassword">
-        <i :class="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
-      </span>
-    </div>
+          <form class="form-3" @submit.prevent="crearEmpleado()">
+            <div class="form-group">
+              <input type="email" v-model="email" placeholder="" />
+              <label class="form-label">Correo Electrónico</label>
+            </div>
+            <div class="form-group">
+              <input :type="showPassword ? 'text' : 'password'" v-model="password" placeholder="" />
+              <label class="form-label">Contraseña</label>
+              <span class="toggle-password" @click="showPassword = !showPassword">
+                <i :class="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
+              </span>
+            </div>
+          </form>
   </section>
 
         <button class="btn btn-primary">INICIAR SESIÓN</button>

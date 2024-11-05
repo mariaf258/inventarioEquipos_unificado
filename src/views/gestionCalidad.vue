@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import TheWelcome from '../components/TheWelcome.vue'
 import { ref, onMounted, defineComponent, Ref } from 'vue'
-import app from '../../utils/firebase.js'
+import app from '../utils/firebase.js'
 import { getFirestore, getDocs, addDoc, collection } from 'firebase/firestore'
 
 const db = getFirestore(app)

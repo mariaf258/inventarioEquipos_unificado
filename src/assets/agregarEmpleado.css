@@ -56,7 +56,7 @@ html {
   color: black;
 }
 
-.section {
+section, form  {
   align-items: center;
   width: 100%;
   display: grid;
