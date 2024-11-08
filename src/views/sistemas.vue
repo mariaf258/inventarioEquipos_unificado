@@ -1,216 +1,50 @@
 <script setup lang="ts">
 import TheWelcome from '../components/TheWelcome.vue'
-import { ref, onMounted, defineComponent, Ref } from 'vue'
-import app from '../utils/firebase.js'
-import { getFirestore, getDocs, addDoc, collection } from 'firebase/firestore'
+import EquipoDefault from '@/utils/interfaces/InterfaceEquipos';
+import {EmpleadoServicio} from '@/services/empleados/EmpleadoServicio';
+import { ref, onMounted } from 'vue'
+import type { Equipo } from '@/utils/interfaces/InterfaceEquipos';
 
-const db = getFirestore(app)
+const empleadoServicio = new EmpleadoServicio()
+
 const isDropdownVisible = ref(false)
-interface datosEquipos {
-  name?: string
-  post?: string
-  etiqueta?: string
-  descripcion?: string
-  marca?: string
-  serie?: string
-  Nserial?: string
-  disco?: string
-  ram?: string
-  estado?: string
-  observacion?: string
-}
-const data = ref<datosEquipos[]>([
-  {
-    name: 'Diego Medina',
-    post: 'Desarrollador Backend',
-    etiqueta: 'MLA-SI-001',
-    descripcion: 'Laptop',
-    marca: 'Hp',
-    serie: 'Laptop - 15 dw3505la',
-    Nserial: 'CND2375LDF',
-    disco: 'SSD 240 GB',
-    ram: 'DDR4 16GB (2X8GB) 2667Mhz',
-    estado: '',
-    observacion: ''
-  },
-  {
-    name: 'Junior Campos',
-    post: 'Desarrollador Frontend',
-    etiqueta: 'MLA-SI-003',
-    descripcion: 'Laptop',
-    marca: 'HP',
-    serie: 'Laptop - 15 dw3505la',
-    Nserial: 'CND2371L9G',
-    disco: 'NVME 240 GB',
-    ram: 'DDR4 8GB 3200Mhz',
-    estado: '',
-    observacion: ''
-  },
-  {
-    name: 'Jhonny Guarin',
-    post: 'Desarrollador Frontend',
-    etiqueta: 'MLA-SI-004',
-    descripcion: 'Laptop',
-    marca: 'Hp',
-    serie: 'Laptop - 15 dw3505la',
-    Nserial: 'CDN2371LCN',
-    disco: 'SSD 240 GB',
-    ram: 'DDR4 8GB 3200Mhz',
-    estado: '',
-    observacion: ''
-  },
-  {
-    name: 'Thomas Rodriguez',
-    post: 'Desarrollador Backend',
-    etiqueta: 'MLA-SI-005',
-    descripcion: 'Laptop',
-    marca: 'Asus',
-    serie: 'Vivo-book X41SEA',
-    Nserial: 'R2NOC12C794091 ',
-    disco: 'NVME 512 GB',
-    ram: 'DDR4 12GB 3200Mhz',
-    estado: '',
-    observacion: ''
-  },
-  {
-    name: 'Maria Fernanda',
-    post: 'Auxiliar SENA',
-    etiqueta: 'MLA-SI-006',
-    descripcion: 'Laptop',
-    marca: 'Hp',
-    serie: 'Laptop - 15 dw3505la',
-    Nserial: 'CND2371LBZ ',
-    disco: 'NVME 240 GB',
-    ram: 'DDR4 8GB 3200Mhz',
-    estado: '',
-    observacion: ''
-  }
-])
+
 
 const toggleDropdown = () => {
   isDropdownVisible.value = !isDropdownVisible.value
 }
 
+let empleadosModuloSistemas =ref<Equipo[]>([]);
 const obtenerDatos = async () => {
-  try {
-    const respuesta = await getDocs(collection(db, 'Equipos'))
-    data.value = respuesta.docs.map((registro) => registro.data())
-  } catch (error) {
-    console.error('Error al obtener datos: ', error)
-  }
+  const empleados:Equipo[] = await empleadoServicio.obtenerEmpleados()
+  console.log(empleados);
+  
+  const empleadosSistemas: Equipo[] = empleados.filter(empleado => /^MLA-SI-\d+$/
+  .test(empleado.etiqueta))
+  .sort((a, b) => { 
+      const numA = parseInt(a.etiqueta.split('-')[2], 10);
+      const numB = parseInt(b.etiqueta.split('-')[2], 10);
+      return numA - numB;
+    });   
+  console.log(empleadosSistemas);
+  empleadosModuloSistemas.value = empleadosSistemas;
+  console.log({empleadosModuloSistemas})
+  
 }
 
-const crearRegistro = async (
-  name: string,
-  post: string,
-  etiqueta: string,
-  descripcion: string,
-  marca: string,
-  serie: string,
-  Nserial: string,
-  disco: string,
-  ram: string,
-  estado: string,
-  observacion: string
-) => {
-  try {
-    const response = await addDoc(collection(db, 'Equipos'), {
-      name,
-      post,
-      etiqueta,
-      descripcion,
-      marca,
-      serie,
-      Nserial,
-      disco,
-      ram,
-      estado,
-      observacion
-    })
-    console.log('Registro agregado:', response)
-    obtenerDatos()
-  } catch (error) {
-    console.error('Error al agregar registro: ', error)
-  }
-}
 
 onMounted(() => {
   obtenerDatos()
-  crearRegistro(
-    'Diego Medina',
-    'Desarrollador Backend',
-    'MLA-SI-001',
-    'Laptop',
-    'Hp',
-    'Laptop - 15 dw3505la',
-    'CND2375LDF',
-    'SSD 240 GB',
-    'DDR4 16GB (2X8GB) 2667Mhz',
-    '',
-    ''
-  )
-  crearRegistro(
-    'Junior Campos',
-    'Desarrollador Frontend',
-    'MLA-SI-003',
-    'Laptop',
-    'HP',
-    'Laptop - 15 dw3505la',
-    'CND2371L9G',
-    'NVME 240 GB',
-    'DDR4 8GB 3200Mhz',
-    '',
-    ''
-  )
-  crearRegistro(
-    'Jhonny Guarin',
-    'Desarrollador Frontend',
-    'MLA-SI-004',
-    'Laptop',
-    'Hp',
-    'Laptop - 15 dw3505la',
-    'CDN2371LCN',
-    'SSD 240 GB',
-    'DDR4 8GB 3200Mhz',
-    '',
-    ''
-  )
-  crearRegistro(
-    'Thomas Rodriguez',
-    'Desarrollador Backend',
-    'MLA-SI-005',
-    'Laptop',
-    'Asus',
-    'Vivo-book X41SEA',
-    'R2NOC12C794091 ',
-    'NVME 512 GB',
-    'DDR4 12GB 3200Mhz',
-    '',
-    ''
-  )
-  crearRegistro(
-    'Maria Fernanda',
-    'Auxiliar SENA',
-    'MLA-SI-006',
-    'Laptop',
-    'Hp',
-    'Laptop - 15 dw3505la',
-    'CND2371LBZ ',
-    'NVME 240 GB',
-    'DDR4 8GB 3200Mhz',
-    '',
-    ''
-  )
+
 })
 
-onMounted(() => {
   const userIcon = document.getElementById('userIcon')
   const userDropdown = document.getElementById('userDropdown')
 
   userIcon?.addEventListener('click', () => {
     userDropdown?.classList.toggle('show')
   })
-})
+
 </script>
 
 <template>
@@ -268,9 +102,9 @@ onMounted(() => {
 
               <div class="header-right">
                 <input type="text" id="searchInput" placeholder="Buscar" />
-                <button @click="searchElement" class="btn btn-primary addBtn">
+                <!-- <button @click="searchElement" class="btn btn-primary addBtn">
                   <img src="../../public/img/search.png" alt="search" />
-                </button>
+                </button> -->
               </div>
             </div>
           </header>
@@ -279,7 +113,7 @@ onMounted(() => {
         <div class="departamento"><h1>DIRECCION DE SISTEMAS</h1></div>
 
         <div class="container-er">
-          <div v-for="(item, index) in data" :key="index" class="card1">
+          <div v-for="(item, index) in empleadosModuloSistemas" :key="index" class="card1" v-bind:item="item as Equipo">
             <div class="face face1">
               <img
                 src="../../public/img/user-solid.png"

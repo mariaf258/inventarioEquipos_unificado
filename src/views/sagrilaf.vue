@@ -1,35 +1,33 @@
 <script setup lang="ts">
 import TheWelcome from '../components/TheWelcome.vue'
-import { ref, onMounted, defineComponent } from 'vue'
-import app from '../utils/firebase.js'
-import { getFirestore, getDocs, addDoc, collection } from 'firebase/firestore'
-import type { Equipo } from '@/utils/interfaces/InterfaceEquipos';
+import EquipoDefault from '@/utils/interfaces/InterfaceEquipos';
 import {EmpleadoServicio} from '@/services/empleados/EmpleadoServicio';
+import { ref, onMounted } from 'vue'
+import type { Equipo } from '@/utils/interfaces/InterfaceEquipos';
 
 const empleadoServicio = new EmpleadoServicio()
-
-const db = getFirestore(app)
 const isDropdownVisible = ref(false)
+
 
 const toggleDropdown = () => {
   isDropdownVisible.value = !isDropdownVisible.value
 }
 
-let empleadosModuloArchivo =ref<Equipo[]>([]);
+let empleadosModuloSagrilaf =ref<Equipo[]>([]);
 const obtenerDatos = async () => {
   const empleados:Equipo[] = await empleadoServicio.obtenerEmpleados()
   console.log(empleados);
   
-  const empleadosArchivo: Equipo[] = empleados.filter(empleado => /^MLA-AR-\d+$/
+  const empleadosSagrilaf: Equipo[] = empleados.filter(empleado => /^MLA-SAG-\d+$/
   .test(empleado.etiqueta))
   .sort((a, b) => { 
       const numA = parseInt(a.etiqueta.split('-')[2], 10);
       const numB = parseInt(b.etiqueta.split('-')[2], 10);
       return numA - numB;
-    }); 
-  console.log(empleadosArchivo);
-  empleadosModuloArchivo.value = empleadosArchivo;
-  console.log({empleadosModuloArchivo})
+    });   
+  console.log(empleadosSagrilaf);
+  empleadosModuloSagrilaf.value = empleadosSagrilaf;
+  console.log({empleadosModuloSagrilaf})
   
 }
 
@@ -39,6 +37,12 @@ onMounted(() => {
 
 })
 
+const actualizarDatos =async(id: string, empleadoActualizado: UsuariosDefault)=>{
+  const respuestaActualizar = await empleadoServicio.actualizadoEmpleado(id, empleadoActualizado)
+  console.log(respuestaActualizar);
+  
+}
+
   const userIcon = document.getElementById('userIcon')
   const userDropdown = document.getElementById('userDropdown')
 
@@ -46,6 +50,10 @@ onMounted(() => {
     userDropdown?.classList.toggle('show')
   })
 
+onMounted(() => {
+  obtenerDatos()
+
+})
 </script>
 
 <template>
@@ -111,10 +119,10 @@ onMounted(() => {
           </header>
         </div>
 
-        <div class="departamento"><h1>DIRECCION DE ARCHIVO</h1></div>
+        <div class="departamento"><h1>SAGRILAF</h1></div>
 
         <div class="container-er">
-          <div v-for="(item, index) in empleadosModuloArchivo" :key="index" class="card1" v-bind:item="item as Equipo">
+          <div v-for="(item, index) in empleadosModuloSagrilaf" :key="index" class="card1" v-bind:item="item as Equipo">
             <div class="face face1">
               <img
                 src="../../public/img/user-solid.png"

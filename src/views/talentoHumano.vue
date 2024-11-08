@@ -1,190 +1,71 @@
 <script setup lang="ts">
 import TheWelcome from '../components/TheWelcome.vue'
-import { ref, onMounted, defineComponent, Ref } from 'vue'
-import app from '../utils/firebase.js'
-import { getFirestore, getDocs, addDoc, collection } from 'firebase/firestore'
+import EquipoDefault from '@/utils/interfaces/InterfaceEquipos';
+import UsuariosDefault from '@/utils/interfaces/interfaceUsuarios';
+import {EmpleadoServicio} from '@/services/empleados/EmpleadoServicio';
+import { ref, onMounted } from 'vue'
+import type { Equipo } from '@/utils/interfaces/InterfaceEquipos';
 
-const db = getFirestore(app)
+const empleadoServicio = new EmpleadoServicio()
 const isDropdownVisible = ref(false)
-interface datosEquipos {
-  name?: string
-  post?: string
-  etiqueta?: string
-  descripcion?: string
-  marca?: string
-  serie?: string
-  Nserial?: string
-  disco?: string
-  ram?: string
-  estado?: string
-  observacion?: string
-}
-const data = ref<datosEquipos[]>([
-  {
-    name: 'Liliana',
-    post: 'Director Talento Humano',
-    etiqueta: 'MLA-TH-001',
-    descripcion: 'Torre',
-    marca: 'Compumax',
-    serie: '',
-    Nserial: '102SN56746',
-    disco: 'M.2 512GB',
-    ram: 'DDR4 16GB 2666Mhz',
-    estado: '',
-    observacion: ''
-  },
-  {
-    name: 'Wendy Pacheco',
-    post: 'Coordinador Talento Humano',
-    etiqueta: 'MLA-TH-002',
-    descripcion: 'Torre',
-    marca: 'HP',
-    serie: 'Compaq 6200 Pro MT',
-    Nserial: 'MLX2051DP8',
-    disco: 'SSD 256 GB - HDD WD 500GB',
-    ram: 'DDR3 8GB (2x4GB) 1333Mhz',
-    estado: '',
-    observacion: ''
-  },
-  {
-    name: 'Mayra Sierra',
-    post: 'Coordinador Talento Humano',
-    etiqueta: 'MLA-TH-003',
-    descripcion: 'All in one',
-    marca: 'Dell',
-    serie: 'Vostro 360',
-    Nserial: '31C9BQ1',
-    disco: 'SSD 480GB',
-    ram: 'DDR3 4GB 1333Mhz',
-    estado: '',
-    observacion: ''
-  },
-  {
-    name: 'Nini Johana Blanco',
-    post: 'Jefe Responsabilidad Social',
-    etiqueta: 'MLA-TH-004',
-    descripcion: 'Torre',
-    marca: 'HP',
-    serie: 'Compaq 6200 Pro MT',
-    Nserial: 'MLX2051DP8',
-    disco: 'SSD 240GB',
-    ram: 'DDR3 4GB 1333Mhz',
-    estado: '',
-    observacion: ''
-  }
-])
+
 
 const toggleDropdown = () => {
   isDropdownVisible.value = !isDropdownVisible.value
 }
 
+let empleadosModuloTalentoHumano = ref<Equipo[]>([]);
 const obtenerDatos = async () => {
-  try {
-    const respuesta = await getDocs(collection(db, 'Equipos'))
-    data.value = respuesta.docs.map((registro) => registro.data())
-  } catch (error) {
-    console.error('Error al obtener datos: ', error)
-  }
+  const empleados:Equipo[] = await empleadoServicio.obtenerEmpleados()
+  console.log(empleados);
+
+const empleadosTalentoHumano:Equipo[] = empleados.filter(empleado => /^MLA-TH-\d+$/
+  .test(empleado.etiqueta))
+  .sort((a, b) => { 
+      const numA = parseInt(a.etiqueta.split('-')[2], 10);
+      const numB = parseInt(b.etiqueta.split('-')[2], 10);
+      return numA - numB;
+    });
+console.log(empleadosTalentoHumano);
+empleadosModuloTalentoHumano.value = empleadosTalentoHumano;
+console.log({empleadosModuloTalentoHumano});
+
 }
 
-const crearRegistro = async (
-  name: string,
-  post: string,
-  etiqueta: string,
-  descripcion: string,
-  marca: string,
-  serie: string,
-  Nserial: string,
-  disco: string,
-  ram: string,
-  estado: string,
-  observacion: string
-) => {
-  try {
-    const response = await addDoc(collection(db, 'Equipos'), {
-      name,
-      post,
-      etiqueta,
-      descripcion,
-      marca,
-      serie,
-      Nserial,
-      disco,
-      ram,
-      estado,
-      observacion
-    })
-    console.log('Registro agregado:', response)
-    obtenerDatos()
-  } catch (error) {
-    console.error('Error al agregar registro: ', error)
-  }
-}
+
+// let filteredEquipo = ref<Equipo[]>([])
+// console.log(filteredEquipo);
+
+
+//     const filtrarEquipos = (value:any) => {
+//     console.log('buscando la variable', value.target.value
+//     );
+
+//     const respuestaInput = value.target.value;
+
+
+//     const respuesta = Equipo.value.filter(Equipo =>
+//         Equipo.name.toLowerCase().includes(respuestaInput) || Equipo.Nserial.toLowerCase().includes(respuestaInput)
+//         )
+//         filteredEquipo.value = respuesta
+
+// }
+
 
 onMounted(() => {
   obtenerDatos()
-  crearRegistro(
-    'Liliana',
-    'Director Talento Humano',
-    'MLA-TH-001',
-    'Torre',
-    'Compumax',
-    '',
-    '102SN56746',
-    'M.2 512GB',
-    'DDR4 16GB 2666Mhz',
-    '',
-    ''
-  )
-  crearRegistro(
-    'Wendy Pacheco',
-    'Coordinador Talento Humano',
-    'MLA-TH-002',
-    'Torre',
-    'HP',
-    'Compaq 6200 Pro MT',
-    'MLX2051DP8',
-    'SSD 256 GB - HDD WD 500GB',
-    'DDR3 8GB (2x4GB) 1333Mhz',
-    '',
-    ''
-  )
-  crearRegistro(
-    'Mayra Sierra',
-    'Coordinador Talento Humano',
-    'MLA-TH-003',
-    'All in one',
-    'Dell',
-    'Vostro 360',
-    '31C9BQ1',
-    'SSD 480GB',
-    'DDR3 4GB 1333Mhz',
-    '',
-    ''
-  )
-  crearRegistro(
-    'Nini Johana Blanco',
-    'Jefe Responsabilidad Social',
-    'MLA-TH-004',
-    'Torre',
-    'HP',
-    'Compaq 6200 Pro MT',
-    'MLX2051DP8',
-    'SSD 240GB',
-    'DDR3 4GB 1333Mhz',
-    '',
-    ''
-  )
+
+  // filteredEquipo.value = Equipo.value;
+  // console.log(filteredEquipo);  
 })
 
-onMounted(() => {
   const userIcon = document.getElementById('userIcon')
   const userDropdown = document.getElementById('userDropdown')
 
   userIcon?.addEventListener('click', () => {
     userDropdown?.classList.toggle('show')
   })
-})
+
 </script>
 
 <template>
@@ -242,9 +123,9 @@ onMounted(() => {
 
               <div class="header-right">
                 <input type="text" id="searchInput" placeholder="Buscar" />
-                <button @click="searchElement" class="btn btn-primary addBtn">
+                <!-- <button @click="searchElement" class="btn btn-primary addBtn">
                   <img src="../../public/img/search.png" alt="search" />
-                </button>
+                </button> -->
               </div>
             </div>
           </header>
@@ -253,7 +134,7 @@ onMounted(() => {
         <div class="departamento"><h1>TALENTO HUMANO</h1></div>
 
         <div class="container-er">
-          <div v-for="(item, index) in data" :key="index" class="card1">
+          <div v-for="(item, index) in empleadosModuloTalentoHumano" :key="index" class="card1" v-bind:item="item as Equipo">
             <div class="face face1">
               <img
                 src="../../public/img/user-solid.png"
@@ -278,6 +159,10 @@ onMounted(() => {
               <b>RAM:</b> {{ item.ram }}<br />
               <b>ESTADO:</b> {{ item.estado || 'No state provided' }}<br />
               <b>OBSERVACIONES:</b> {{ item.observacion || 'No observations' }}
+
+              <!-- <div class="button-add">
+                <router-link to="/agregarEmpleado">Actualizar</router-link>
+              </div> -->
             </div>
           </div>
         </div>

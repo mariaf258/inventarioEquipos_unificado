@@ -1,164 +1,50 @@
 <script setup lang="ts">
 import TheWelcome from '../components/TheWelcome.vue'
-import { ref, onMounted, defineComponent, Ref } from 'vue'
-import app from '../utils/firebase.js'
-import { getFirestore, getDocs, addDoc, collection } from 'firebase/firestore'
+import EquipoDefault from '@/utils/interfaces/InterfaceEquipos'
+import { ref, onMounted } from 'vue'
+import type { Equipo } from '@/utils/interfaces/InterfaceEquipos'
+import {EmpleadoServicio} from '@/services/empleados/EmpleadoServicio'
 
-const db = getFirestore(app)
+const empleadoServicio = new EmpleadoServicio()
+
 const isDropdownVisible = ref(false)
-interface datosEquipos {
-  name?: string
-  post?: string
-  etiqueta?: string
-  descripcion?: string
-  marca?: string
-  serie?: string
-  Nserial?: string
-  disco?: string
-  ram?: string
-  estado?: string
-  observacion?: string
-}
-const data = ref<datosEquipos[]>([
-  {
-    name: 'Margareth Perez',
-    post: 'Directora de SST',
-    etiqueta: 'MLA-SS-001',
-    descripcion: 'All in One',
-    marca: 'Lenovo',
-    serie: '',
-    Nserial: 'MP24M7YK',
-    disco: 'NVME 240 GB',
-    ram: 'DDR4 16GB 3200Mhz',
-    estado: '',
-    observacion: ''
-  },
-  {
-    name: 'Laura Carvajal',
-    post: 'Coordinador de SST',
-    etiqueta: 'MLA-SS-002',
-    descripcion: 'Torre',
-    marca: 'HP',
-    serie: 'Compaq 6200 Pro MT',
-    Nserial: 'MXL2051QDNW',
-    disco: 'SSD 960 GB',
-    ram: 'DDR3 10GB 1333Mhz',
-    estado: '',
-    observacion: ''
-  },
-  {
-    name: 'Maria Gonzalez',
-    post: 'Inspector de SST',
-    etiqueta: 'MLA-SS-003',
-    descripcion: 'All in one',
-    marca: 'Dell',
-    serie: 'Vostro 360',
-    Nserial: '3MB9BQ1',
-    disco: 'SSD 256 GB',
-    ram: 'DDR3 6GB 1333Mhz',
-    estado: '',
-    observacion: ''
-  }
-])
+
 
 const toggleDropdown = () => {
   isDropdownVisible.value = !isDropdownVisible.value
 }
 
+let empleadosModuloSst =ref<Equipo[]>([]);
 const obtenerDatos = async () => {
-  try {
-    const respuesta = await getDocs(collection(db, 'Equipos'))
-    data.value = respuesta.docs.map((registro) => registro.data())
-  } catch (error) {
-    console.error('Error al obtener datos: ', error)
-  }
+  const empleados:Equipo[] = await empleadoServicio.obtenerEmpleados()
+  console.log(empleados);
+  
+  const empleadosSst: Equipo[] = empleados.filter(empleado => /^MLA-SS-\d+$/
+  .test(empleado.etiqueta))
+  .sort((a, b) => { 
+      const numA = parseInt(a.etiqueta.split('-')[2], 10);
+      const numB = parseInt(b.etiqueta.split('-')[2], 10);
+      return numA - numB;
+    });
+  console.log(empleadosSst);
+  empleadosModuloSst.value = empleadosSst;
+  console.log({empleadosModuloSst})
+  
 }
 
-const crearRegistro = async (
-  name: string,
-  post: string,
-  etiqueta: string,
-  descripcion: string,
-  marca: string,
-  serie: string,
-  Nserial: string,
-  disco: string,
-  ram: string,
-  estado: string,
-  observacion: string
-) => {
-  try {
-    const response = await addDoc(collection(db, 'Equipos'), {
-      name,
-      post,
-      etiqueta,
-      descripcion,
-      marca,
-      serie,
-      Nserial,
-      disco,
-      ram,
-      estado,
-      observacion
-    })
-    console.log('Registro agregado:', response)
-    obtenerDatos()
-  } catch (error) {
-    console.error('Error al agregar registro: ', error)
-  }
-}
 
 onMounted(() => {
   obtenerDatos()
-  crearRegistro(
-    'Margareth Perez',
-    'Directora de Seguridad y Salud en el Trabajo',
-    'MLA-SS-001',
-    'All in One',
-    'Lenovo',
-    '',
-    'MP24M7YK',
-    'NVME 240 GB',
-    'DDR4 16GB 3200Mhz',
-    '',
-    ''
-  )
-  crearRegistro(
-    'Laura Carvajal',
-    'Coordinador de Seguridad y Salud en el Trabajo',
-    'MLA-SS-002',
-    'Torre',
-    'HP',
-    'Compaq 6200 Pro MT',
-    'MXL2051QDNW',
-    'SSD 960 GB',
-    'DDR3 10GB 1333Mhz',
-    '',
-    ''
-  )
-  crearRegistro(
-    'Maria Gonzalez',
-    'Inspector de Seguridad y Salud',
-    'MLA-SS-003',
-    'All in one',
-    'Dell',
-    'Vostro 360',
-    '3MB9BQ1',
-    'SSD 256 GB',
-    'DDR3 6GB 1333Mhz',
-    '',
-    ''
-  )
 })
 
-onMounted(() => {
+
   const userIcon = document.getElementById('userIcon')
   const userDropdown = document.getElementById('userDropdown')
 
   userIcon?.addEventListener('click', () => {
     userDropdown?.classList.toggle('show')
   })
-})
+
 </script>
 
 <template>
@@ -216,9 +102,9 @@ onMounted(() => {
 
               <div class="header-right">
                 <input type="text" id="searchInput" placeholder="Buscar" />
-                <button @click="searchElement" class="btn btn-primary addBtn">
+                <!-- <button @click="searchElement" class="btn btn-primary addBtn">
                   <img src="../../public/img/search.png" alt="search" />
-                </button>
+                </button> -->
               </div>
             </div>
           </header>
@@ -227,7 +113,7 @@ onMounted(() => {
         <div class="departamento"><h1>SEGURIDAD Y SALUD EN EL TRABAJO</h1></div>
 
         <div class="container-er">
-          <div v-for="(item, index) in data" :key="index" class="card1">
+          <div v-for="(item, index) in empleadosModuloSst" :key="index" class="card1" v-bind:item="item as Equipo">
             <div class="face face1">
               <img
                 src="../../public/img/user-solid.png"

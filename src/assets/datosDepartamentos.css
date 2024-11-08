@@ -45,16 +45,19 @@ html {
   height: 100%;
   transition: transform 0.5s;
 }
+
 .face:hover {
   border: 0px solid white;
   border-radius: 10px 10px 0px 0px;
 }
+
 .face.face1:hover {
   background-color: white !important;
   border: 0px solid white;
   height: 70px;
   border-radius: 10px 10px 0px 0px;
 }
+
 .face.face1 {
   position: relative;
   background-color: white;

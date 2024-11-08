@@ -11,12 +11,6 @@ const toggleDropdown = () => {
   isDropdownVisible.value = !isDropdownVisible.value
 }
 
-const obtenerDatos = async () => {
-    const respuesta = await getDocs(collection(db, 'Modulos'))
-    console.log({ respuesta })
-    console.log(respuesta.docs.map(registro => registro.data()))
-}
-
 const crearRegistro = async (idModulo: number, idUsuario: number, name: string, shortName: string) => {
   try {
     const response = await addDoc(collection(db, 'Modulos'), {
@@ -31,9 +25,21 @@ const crearRegistro = async (idModulo: number, idUsuario: number, name: string, 
   }
 }
 
+let ModuloInventario = ref<Modulo[]>([]);
+const obtenerDatos = async () => {
+  const modulos:Modulo[] = await moduloServicio.obtenerModulos()
+  console.log(modulos);
+
+const DatosModuloInventario:Modulo[] = modulos.filter((modulos) => modulos.shortName)
+console.log(DatosModuloInventario);
+ModuloInventario.value = DatosModuloInventario;
+console.log({ModuloInventario});
+
+}
+
 onMounted(() => {
   obtenerDatos()
-  crearRegistro(1, 1, 'TALENTO HUMANO', 'TH')
+  crearRegistro()
   console.log(sections);
   
   filteredSections.value = sections.value;
@@ -59,7 +65,7 @@ interface datosDepartamentos {
 
 const sections = ref<datosDepartamentos[]>([
   { id: 1, name: 'TALENTO HUMANO', shortName: 'TH', iconClass: 'th', path: 'talentoHumano'},
-  { id: 2, name: 'SAGRILAF', shortName: 'SAG', iconClass: 'sag' , path: 'sag'},
+  { id: 2, name: 'SAGRILAF', shortName: 'SAG', iconClass: 'sag' , path: 'sagrilaf'},
   { id: 3, name: 'SEGURIDAD Y SALUD EN EL TRABAJO', shortName: 'SST', iconClass: 'sst' , path: 'sst'},
   { id: 4, name: 'GERENCIA', shortName: 'GE', iconClass: 'ge' , path: 'gerencia'},
   { id: 5, name: 'DEPARTAMENTO DE CONTABILIDAD', shortName: 'CT', iconClass: 'ct', path: 'contabilidad' },
@@ -85,19 +91,12 @@ const filtrarModulos = (value:any) => {
 
   const respuestaInput = value.target.value;
 
-// if(!respuestaInput){
-//   filteredSections.value = [...sections.value]
-// } else {
+
       const respuesta = sections.value.filter(section =>
       section.name.toLowerCase().includes(respuestaInput) || section.shortName.toLowerCase().includes(respuestaInput)
       )
       filteredSections.value = respuesta
-// }
 
-//       sections.value = sections.value.filter(section =>
-//       section.name.toLowerCase().includes(respuestaInput) || section.shortName.toLowerCase().includes(respuestaInput)
-//       )
-//       filteredSections.value = [...sections.value]
 }
 
 
@@ -112,7 +111,7 @@ const filtrarModulos = (value:any) => {
         </li>
         <hr class="separador-1" />
         <li class="nav2">
-          <router-link  to="/crearDepartamento">Crear Departamento</router-link>
+          <router-link  to="/crearModulo">Crear Departamento</router-link>
         </li>
         <hr class="separador-1" />
       </ul>
@@ -187,6 +186,9 @@ const filtrarModulos = (value:any) => {
     </div>
   </div>
 </template>
+
+
+
 
 <style>
 @import '/src/assets/inventarioEquipos.css'

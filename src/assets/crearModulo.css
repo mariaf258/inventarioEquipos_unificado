@@ -7,13 +7,12 @@ html {
   box-sizing: border-box;
 }
 
-#app3 {
+#app2 {
   width: 100%;
-  background-color: #f5f5f5;
+  background-color: #F6F6F6;
   align-items: center;
-  /* display: grid; */
+  display: grid;
   place-items: center;
-  min-height: 100vh;
 }
 
 .login {
@@ -56,7 +55,14 @@ html {
   color: black;
 }
 
-section {
+section{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  flex-flow: column;
+}
+
+.form-2{
   display: flex;
   align-items: center;
   width: 100%;
@@ -107,30 +113,27 @@ section {
   color: black;
 }
 
-.form3 {
+.form2 {
   width: 350px;
   color: black;
   background-color: #ffffff;
   justify-content: center;
-  padding: 20px 20px 0px 20px;
+  padding: 40px 20px;
   border-radius: 10px;
-  margin-top: 70px;
-  margin-bottom: 200px;
-  align-items: center;
-
+  margin-top: 100px;
+  margin-bottom: 110px;
 }
 
-.form3 img {
+.form2 img {
   width: 40px;
   height: 40px;
   align-items: center;
   justify-content: center;
   text-indent: 5rem;
   margin-bottom: 20px;
-
 }
 
-.form3 button {
+.form2 button {
   cursor: pointer;
   background-color: #432a88;
   text-align: center;
@@ -143,7 +146,7 @@ section {
 
 .btn-primary {
   color: #432a88;
-  background-color: white;
+  background-color: #432a88;
   border: 2px solid #432a88;
   transition: all 0.3s ease;
 }
@@ -162,58 +165,28 @@ section {
   background-color: white;
 }
 
-.img-login {
-  display: flex;
+.btn img {
+  width: 10px;
+  height: 10px;
+  align-items: center;
   justify-content: center;
-  gap: 20px;
-}
-
-.img-login img {
-  width: 20px;
-  height: 20px;
-  margin-top: 20px;
-  transition:
-    filter 0.3s ease,
-    transform 0.3s ease;
-}
-
-.img-login img:hover {
-  filter: brightness(1.5);
-  transform: scale(1.1);
-}
-
-.img-login img[alt='facebook']:hover {
-  filter: invert(31%) sepia(72%) saturate(5350%) hue-rotate(203deg) brightness(92%) contrast(103%);
-}
-
-.img-login img[alt='instagram']:hover {
-  filter: invert(45%) sepia(100%) saturate(3230%) hue-rotate(326deg) brightness(90%) contrast(103%);
-}
-
-.img-login img[alt='linkedin']:hover {
-  filter: invert(36%) sepia(84%) saturate(4657%) hue-rotate(170deg) brightness(88%) contrast(105%);
-}
-
-.img-login img[alt='global line']:hover {
-  filter: invert(71%) sepia(31%) saturate(1347%) hue-rotate(146deg) brightness(94%) contrast(96%);
+  text-indent: 5rem;
+  margin-bottom: 20px;
 }
 
 .footer {
   background: linear-gradient(to bottom, #432a88, #5132aa);
   align-items: center;
   height: 64px;
-  display: flex;
-  justify-content: center;
-  position: fixed;
-  bottom: 0;
   width: 100%;
+  text-align: center;
 }
+
 .footer img {
   background-color: transparent;
   align-items: center;
   cursor: pointer;
-  justify-content: center;
-  position: fixed;
+  margin-top: 15px;
 }
 
 @media screen and (max-width: 1200px) {

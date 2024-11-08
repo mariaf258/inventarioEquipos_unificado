@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import InventarioEquipos from '../views/InventarioEquipos.vue'
-import CrearDepartamento from '../views/CrearDepartamento.vue'
-import InventarioEquipos_login from '../views/InventarioEquipos_login.vue'
+import InventarioEquipos from '@/views/inventarioEquipos.vue'
+import CrearModulo from '@/views/CrearModulo.vue'
+import InventarioEquipos_login from '@/views/inventarioEquipos_login.vue'
 
 import talentoHumano from '../views/talentoHumano.vue'
-import sag from '../views/sag.vue'
+import sagrilaf from '@/views/sagrilaf.vue'
 import sst from '../views/sst.vue'
 import gerencia from '../views/gerencia.vue'
 import contabilidad from '../views/contabilidad.vue'
@@ -30,9 +30,9 @@ const router = createRouter({
       component: InventarioEquipos
     },
     {
-      path: '/crearDepartamento',
-      // name: 'CrearDepartamento',
-      component: CrearDepartamento
+      path: '/crearModulo',
+      // name: 'CrearModulo',
+      component: CrearModulo
     },
     {
       path: '/inventarioEquipos_login',
@@ -45,9 +45,9 @@ const router = createRouter({
       component: talentoHumano
     },
     {
-      path: '/sag',
-      // name: 'sag',
-      component: sag
+      path: '/sagrilaf',
+      // name: 'sagrilaf',
+      component: sagrilaf
     },
     {
       path: '/sst',

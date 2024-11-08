@@ -1,112 +1,51 @@
 <script setup lang="ts">
 import TheWelcome from '../components/TheWelcome.vue'
-import { ref, onMounted, defineComponent, Ref } from 'vue'
+import { ref, onMounted, defineComponent } from 'vue'
 import app from '../utils/firebase.js'
 import { getFirestore, getDocs, addDoc, collection } from 'firebase/firestore'
+import type { Equipo } from '@/utils/interfaces/InterfaceEquipos';
+import {EmpleadoServicio} from '@/services/empleados/EmpleadoServicio'
 
-const db = getFirestore(app)
+const empleadoServicio = new EmpleadoServicio()
+
+
 const isDropdownVisible = ref(false)
-interface datosEquipos {
-  name?: string
-  post?: string
-  etiqueta?: string
-  descripcion?: string
-  marca?: string
-  serie?: string
-  Nserial?: string
-  disco?: string
-  ram?: string
-  estado?: string
-  observacion?: string
-}
-const data = ref<datosEquipos[]>([
-  {
-    name: 'Felipe Bautista',
-    post: 'Coordinador de Compras',
-    etiqueta: 'MLA-CO-001',
-    descripcion: 'All in One',
-    marca: 'Dell',
-    serie: 'Vostro 3267',
-    Nserial: 'CCWT6M2',
-    disco: 'SSD 240GB',
-    ram: 'DDR4 4GB 2133Mhz',
-    estado: '',
-    observacion: ''
-  }
-])
+
 
 const toggleDropdown = () => {
   isDropdownVisible.value = !isDropdownVisible.value
 }
 
+let empleadosModuloCompras =ref<Equipo[]>([]);
 const obtenerDatos = async () => {
-  try {
-    const respuesta = await getDocs(collection(db, 'Equipos'))
-    data.value = respuesta.docs.map((registro) => registro.data())
-  } catch (error) {
-    console.error('Error al obtener datos: ', error)
-  }
+  const empleados:Equipo[] = await empleadoServicio.obtenerEmpleados()
+  console.log(empleados);
+  
+  const empleadosCompras: Equipo[] = empleados.filter(empleado => /^MLA-CO-\d+$/
+  .test(empleado.etiqueta))
+  .sort((a, b) => { 
+      const numA = parseInt(a.etiqueta.split('-')[2], 10);
+      const numB = parseInt(b.etiqueta.split('-')[2], 10);
+      return numA - numB;
+    }); 
+  console.log(empleadosCompras);
+  empleadosModuloCompras.value = empleadosCompras;
+  console.log({empleadosModuloCompras})
+  
 }
 
-const crearRegistro = async (
-  name: string,
-  post: string,
-  etiqueta: string,
-  descripcion: string,
-  marca: string,
-  serie: string,
-  Nserial: string,
-  disco: string,
-  ram: string,
-  estado: string,
-  observacion: string
-) => {
-  try {
-    const response = await addDoc(collection(db, 'Equipos'), {
-      name,
-      post,
-      etiqueta,
-      descripcion,
-      marca,
-      serie,
-      Nserial,
-      disco,
-      ram,
-      estado,
-      observacion
-    })
-    console.log('Registro agregado:', response)
-    obtenerDatos()
-  } catch (error) {
-    console.error('Error al agregar registro: ', error)
-  }
-}
 
 onMounted(() => {
   obtenerDatos()
-  crearRegistro(
-    'Felipe Bautista',
-    'Coordinador de Compras',
-    'MLA-CO-001',
-    'All in One',
-    'Dell',
-    'Vostro 3267',
-    'CCWT6M2',
-    'SSD 240GB',
-    'DDR4 4GB 2133Mhz',
-    '',
-    ''
-  )
+
 })
 
-onMounted(() => {
-  const userIcon = document.getElementById('userIcon')
+const userIcon = document.getElementById('userIcon')
   const userDropdown = document.getElementById('userDropdown')
 
   userIcon?.addEventListener('click', () => {
     userDropdown?.classList.toggle('show')
   })
-})
 </script>
 
 <template>
@@ -164,18 +103,18 @@ onMounted(() => {
 
               <div class="header-right">
                 <input type="text" id="searchInput" placeholder="Buscar" />
-                <button @click="searchElement" class="btn btn-primary addBtn">
+                <!-- <button @click="searchElement" class="btn btn-primary addBtn">
                   <img src="../../public/img/search.png" alt="search" />
-                </button>
+                </button> -->
               </div>
             </div>
           </header>
         </div>
 
         <div class="departamento"><h1>DIRECCION DE COMPRAS</h1></div>
-
+        <!-- <pre>{{ empleadosModuloCompras }}</pre> -->
         <div class="container-er">
-          <div v-for="(item, index) in data" :key="index" class="card1">
+          <div v-for="(item, index) in empleadosModuloCompras" :key="index" class="card1" v-bind:item="item as Equipo">
             <div class="face face1">
               <img
                 src="../../public/img/user-solid.png"

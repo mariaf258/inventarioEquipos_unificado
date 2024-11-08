@@ -1,3 +1,51 @@
+<script setup lang="ts">
+import TheWelcome from '../components/TheWelcome.vue'
+import EquipoDefault from '@/utils/interfaces/InterfaceEquipos';
+import { ref, onMounted } from 'vue'
+import type { Equipo } from '@/utils/interfaces/InterfaceEquipos';
+import {EmpleadoServicio} from '@/services/empleados/EmpleadoServicio'
+
+const empleadoServicio = new EmpleadoServicio()
+
+const isDropdownVisible = ref(false)
+
+
+const toggleDropdown = () => {
+  isDropdownVisible.value = !isDropdownVisible.value
+}
+
+let empleadosModuloGerencia =ref<Equipo[]>([]);
+const obtenerDatos = async () => {
+  const empleados:Equipo[] = await empleadoServicio.obtenerEmpleados()
+  console.log(empleados);
+  
+  const empleadosGerencia: Equipo[] = empleados.filter(empleado => /^MLA-GE-\d+$/
+  .test(empleado.etiqueta))
+  .sort((a, b) => { 
+      const numA = parseInt(a.etiqueta.split('-')[2], 10);
+      const numB = parseInt(b.etiqueta.split('-')[2], 10);
+      return numA - numB;
+    });   
+  console.log(empleadosGerencia);
+  empleadosModuloGerencia.value = empleadosGerencia;
+  console.log({empleadosModuloGerencia})
+  
+}
+
+
+onMounted(() => {
+  obtenerDatos()
+
+})
+
+  const userIcon = document.getElementById('userIcon')
+  const userDropdown = document.getElementById('userDropdown')
+
+  userIcon?.addEventListener('click', () => {
+    userDropdown?.classList.toggle('show')
+  })
+
+</script>
 
 <template>
   <div id="app1">
@@ -54,9 +102,10 @@
 
               <div class="header-right">
                 <input type="text" id="searchInput" placeholder="Buscar" />
-                <button @click="searchElement" class="btn btn-primary addBtn">
+                <!-- <button @click="searchElement" class="btn btn-primary addBtn">
                   <img src="../../public/img/search.png" alt="search" />
-                </button>
+                </button> -->
+                
               </div>
             </div>
           </header>
@@ -65,7 +114,7 @@
         <div class="departamento"><h1>GERENCIA</h1></div>
 
         <div class="container-er">
-          <div v-for="(item, index) in data" :key="index" class="card1">
+          <div v-for="(item, index) in empleadosModuloGerencia" :key="index" class="card1" v-bind:item="item as Equipo">
             <div class="face face1">
               <img
                 src="../../public/img/user-solid.png"
@@ -106,38 +155,4 @@
 @import '/src/assets/datosDepartamentos.css'
 </style>
 
-<script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
-import { ref, onMounted, defineComponent, Ref } from 'vue'
 
-const isDropdownVisible = ref(false)
-
-
-const toggleDropdown = () => {
-  isDropdownVisible.value = !isDropdownVisible.value
-}
-
-/*const obtenerDatos = async () => {
-  try {
-    const respuesta = await getDocs(collection(db, 'Equipos'))
-    console.log({respuesta})
-    data.value = respuesta.docs.map((registro) => registro.data())
-  } catch (error) {
-    console.error('Error al obtener datos: ', error)
-  }
-}*/
-
-
-/*onMounted(() => {
-  obtenerEmpleados(empleado : Equipo)
-})*/
-
-onMounted(() => {
-  const userIcon = document.getElementById('userIcon')
-  const userDropdown = document.getElementById('userDropdown')
-
-  userIcon?.addEventListener('click', () => {
-    userDropdown?.classList.toggle('show')
-  })
-})
-</script>
