@@ -130,4 +130,27 @@ const router = createRouter({
   ]
 })
 
+// let conectado = false;
+
+// router.beforeEach((to, from) => {
+
+//   if (conectado && to.path === '/inventarioEquipos_login'){
+//   return { path: '/' }
+//   }
+
+//   if (!conectado && to.path !== "/inventarioEquipos_login"){
+//     return { name: '/inventarioEquipos_login' }
+//   }
+// })
+
+// function iniciarSesion() {
+//   conectado = true;
+// }
+
+// function cerrarSesion() {
+//   conectado = false;
+// }
+
+
+// export { iniciarSesion, cerrarSesion }
 export default router

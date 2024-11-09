@@ -59,7 +59,7 @@ onMounted(() => {
           <section class="form-2">
             <form class="form-2" @submit.prevent="crearModulo()">
             <div class="form-group">
-              <input @input="filtrarEquipos" type="name" v-model="name" placeholder="Buscar" />
+              <input @input="filtrarEquipos" type="name" v-model="name" placeholder="" />
               <label class="form-label">Nombre departamento</label>
             </div>
             <div class="form-group">
