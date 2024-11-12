@@ -5,10 +5,12 @@ import UsuariosDefault from '@/utils/interfaces/interfaceUsuarios';
 import {EmpleadoServicio} from '@/services/empleados/EmpleadoServicio';
 import { ref, onMounted } from 'vue'
 import type { Equipo } from '@/utils/interfaces/InterfaceEquipos';
+import { cerrarSesion } from '../router/index'
+import { useRouter } from 'vue-router'
 
 const empleadoServicio = new EmpleadoServicio()
 const isDropdownVisible = ref(false)
-
+const router = useRouter();
 
 const toggleDropdown = () => {
   isDropdownVisible.value = !isDropdownVisible.value
@@ -68,6 +70,21 @@ onMounted(() => {
 
 // }
 
+
+// Cerrar Sesion
+const logout = () => {
+  console.log('Cerrando sesión...');
+  
+  localStorage.removeItem('savedUsername')
+  localStorage.removeItem('savedPassword')
+  localStorage.removeItem('rememberCredentials')
+  router.replace('/inventarioEquipos_login')
+
+cerrarSesion();
+  router.replace('/inventarioEquipos_login');
+}
+
+
 </script>
 
 <template>
@@ -104,7 +121,7 @@ onMounted(() => {
                     @click="toggleDropdown"
                     class="userIcon-white"
                   />
-                  <a class="dropdown-item" href="#">Cerrar Sesión</a>
+                  <a class="dropdown-item" @click="logout">Cerrar Sesión</a>
                 </ul>
               </ul>
             </div>

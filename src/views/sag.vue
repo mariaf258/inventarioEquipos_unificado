@@ -3,6 +3,10 @@ import TheWelcome from '../components/TheWelcome.vue'
 import { ref, onMounted, defineComponent, Ref } from 'vue'
 import app from '../utils/firebase.js'
 import { getFirestore, getDocs, addDoc, collection } from 'firebase/firestore'
+import { cerrarSesion } from '../router/index'
+import { useRouter } from 'vue-router'
+
+const router = useRouter();
 
 const db = getFirestore(app)
 const isDropdownVisible = ref(false)
@@ -96,6 +100,20 @@ onMounted(() => {
     userDropdown?.classList.toggle('show')
   })
 })
+
+// Cerrar Sesion
+const logout = () => {
+  console.log('Cerrando sesión...');
+  
+  localStorage.removeItem('savedUsername')
+  localStorage.removeItem('savedPassword')
+  localStorage.removeItem('rememberCredentials')
+  router.replace('/inventarioEquipos_login')
+
+cerrarSesion();
+  router.replace('/inventarioEquipos_login');
+}
+
 </script>
 
 <template>
@@ -132,9 +150,8 @@ onMounted(() => {
                     @click="toggleDropdown"
                     class="userIcon-white"
                   />
-                  <a class="dropdown-item" href="#">Iniciar Sesión</a>
-                  <hr class="dropdown-divider" />
-                  <a class="dropdown-item" href="#">Cerrar Sesión</a>
+                 
+                  <a class="dropdown-item" @click="logout">Cerrar Sesión</a>
                 </ul>
               </ul>
             </div>
