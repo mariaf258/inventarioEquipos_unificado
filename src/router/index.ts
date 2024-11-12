@@ -26,97 +26,97 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      // name: 'InventarioEquipos',
+      name: 'InventarioEquipos',
       component: InventarioEquipos
     },
     {
       path: '/crearModulo',
-      // name: 'CrearModulo',
+      name: 'CrearModulo',
       component: CrearModulo
     },
     {
       path: '/inventarioEquipos_login',
-      // name: 'InventarioEquipos_login',
+      name: 'InventarioEquipos_login',
       component: InventarioEquipos_login
     },
     {
       path: '/talentoHumano',
-      // name: 'talentoHumano',
+      name: 'talentoHumano',
       component: talentoHumano
     },
     {
       path: '/sagrilaf',
-      // name: 'sagrilaf',
+      name: 'sagrilaf',
       component: sagrilaf
     },
     {
       path: '/sst',
-      // name: 'sst',
+      name: 'sst',
       component: sst
     },
     {
       path: '/gerencia',
-      // name: 'gerencia',
+      name: 'gerencia',
       component: gerencia
     },
     {
       path: '/contabilidad',
-      // name: 'contabilidad',
+      name: 'contabilidad',
       component: contabilidad
     },
     {
       path: '/sistemas',
-      // name: 'sistemas',
+      name: 'sistemas',
       component: sistemas
     },
     {
       path: '/compras',
-      // name: 'compras',
+      name: 'compras',
       component: compras
     },
     {
       path: '/direccionTecnica',
-      // name: 'direccionTecnica',
+      name: 'direccionTecnica',
       component: direccionTecnica
     },
     {
       path: '/gestionCalidad',
-      // name: 'gestionCalidad',
+      name: 'gestionCalidad',
       component: gestionCalidad
     },
     {
       path: '/comercial',
-      // name: 'comercial',
+      name: 'comercial',
       component: comercial
     },
     {
       path: '/administracion',
-      // name: 'administracion',
+      name: 'administracion',
       component: administracion
     },
     {
       path: '/ambiental',
-      // name: 'ambiental',
+      name: 'ambiental',
       component: ambiental
     },
     {
       path: '/archivo',
-      // name: 'archivo',
+      name: 'archivo',
       component: archivo
     },
     {
       path: '/juridico',
-      // name: 'juridico',
+      name: 'juridico',
       component: juridico
     },
     {
       path: '/audioVisual',
-      // name: 'audioVisual',
+      name: 'audioVisual',
       component: audioVisual
     },
     {
       path:'/agregarEmpleado',
-      // name: 'AgregarEmpleado',
+      name: 'AgregarEmpleado',
       component: AgregarEmpleado
     },
     {
@@ -130,27 +130,31 @@ const router = createRouter({
   ]
 })
 
-// let conectado = false;
+let conectado = false;
 
-// router.beforeEach((to, from) => {
+router.beforeEach((to) => {
 
-//   if (conectado && to.path === '/inventarioEquipos_login'){
-//   return { path: '/' }
-//   }
+  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
 
-//   if (!conectado && to.path !== "/inventarioEquipos_login"){
-//     return { name: '/inventarioEquipos_login' }
-//   }
-// })
+  if (isAuthenticated && to.path === '/inventarioEquipos_login') {
+    return { path: '/' };
+  }
 
-// function iniciarSesion() {
-//   conectado = true;
-// }
+  if (!isAuthenticated && to.path !== '/inventarioEquipos_login') {
+    return { path: '/inventarioEquipos_login' };
+  }
+});
 
-// function cerrarSesion() {
-//   conectado = false;
-// }
+function iniciarSesion() {
+  conectado = true;
+  localStorage.setItem('isAuthenticated', 'true');
+}
+
+function cerrarSesion() {
+  conectado = false;
+  localStorage.removeItem('isAuthenticated');
+}
 
 
-// export { iniciarSesion, cerrarSesion }
+export { iniciarSesion, cerrarSesion }
 export default router

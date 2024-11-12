@@ -1,3 +1,15 @@
+.goBack{
+  cursor: pointer;
+  background-color: #432a88;
+  text-align: center;
+  color: white;
+  align-items: center;
+  border-radius: 3px;
+  margin-bottom: 20px !important;
+  height: 37px;
+}
+
+
 body,
 html {
   font-family: Arial, Helvetica, sans-serif;

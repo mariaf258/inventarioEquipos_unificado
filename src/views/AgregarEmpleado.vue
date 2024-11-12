@@ -60,79 +60,84 @@ const eliminarEmpleado =async(etiqueta : string)=>{
           <h3>DATOS</h3>
 
           
-          <section >
-            <form @submit.prevent="crearEmpleado()">
+          <section class="section-empleado">
+            <div class="formulario">
+            <form class="form-empleado" @submit.prevent="crearEmpleado()">
               <!-- <button class="btn btn-primary-volver" type="submit"> Volver </button> -->
 
                 <div class="form-group">
                   <input type="name" v-model="datos.name" placeholder="" />
                   <label class="form-label">Nombre Empleado</label>
-                  <!-- <label for="campo" style="color: red;  font-size: 12px;"> * Este campo es obligatorio</label> -->
                 </div>
                 
                 <div class="form-group">
                   <input type="post" v-model="datos.post" placeholder="" />
                   <label class="form-label">Cargo del Empleado</label>
-                  <!-- <label for="campo" style="color: red;  font-size: 12px;">* Este campo es obligatorio</label> -->
                 </div>
                 
                 <div class="form-group">
                   <input type="etiqueta" v-model="datos.etiqueta" placeholder="" />
                   <label class="form-label">Etiqueta del Equipo</label>
-                  <!-- <label for="campo" style="color: red;  font-size: 12px;">* Este campo es obligatorio</label> -->
                 </div>
                 
                 <div class="form-group">
                   <input type="descripcion" v-model="datos.descripcion" placeholder="" />
                   <label class="form-label">Descripción del Equipo</label>
-                  <!-- <label for="campo" style="color: red;  font-size: 12px;">* Este campo es obligatorio</label> -->
                 </div>
                 
                 <div class="form-group">
                   <input type="marca" v-model="datos.marca" placeholder="" />
                   <label class="form-label">Marca del Equipo</label>
-                  <!-- <label for="campo" style="color: red;  font-size: 12px;">* Este campo es obligatorio</label> -->
+                  
                 </div>
                 
                 <div class="form-group">
                   <input type="serie" v-model="datos.serie" placeholder="" />
                   <label class="form-label">Serie del Equipo</label>
-                  <!-- <label for="campo" style="color: red; font-size: 12px;">* Este campo es obligatorio</label> -->
+                
                 </div>
                 
                 <div class="form-group">
                   <input type="Nserial" v-model="datos.Nserial" placeholder="" />
                   <label class="form-label">Número serial del Equipo</label>
-                  <!-- <label for="campo" style="color: red;  font-size: 12px;">* Este campo es obligatorio</label> -->
+                  
                 </div>
 
                 <div class="form-group">
                   <input type="disco" v-model="datos.disco" placeholder="" />
                   <label class="form-label">Disco del Equipo</label>
-                  <!-- <label for="campo" style="color: red;  font-size: 12px;">* Este campo es obligatorio</label> -->
+                  
                 </div>
                 
                 <div class="form-group">
                   <input type="ram" v-model="datos.ram" placeholder="" />
                   <label class="form-label">Ram del Equipo</label>
-                  <!-- <label for="campo" style="color: red;  font-size: 12px;">* Este campo es obligatorio</label> -->
+                  
                 </div>
                 
                 <div class="form-group">
                   <input type="estado" v-model="datos.estado" placeholder="" />
                   <label class="form-label">Estado del Equipo</label>
-                  <!-- <label for="campo" style="color: red;  font-size: 12px;">* Este campo es obligatorio</label> -->
+                  
                 </div>
                 
                 <div class="form-group">
                   <input type="observacion" v-model="datos.observacion" placeholder="" />
                   <label class="form-label">Observacion del Equipo</label>
-                  <!-- <label for="campo" style="color: red;  font-size: 12px;">* Este campo es obligatorio</label> -->
+                  
                 </div>
-                
-                <button class="btn btn-primary" type="submit"> Crear Empleado </button>
             
-            </form>
+              </form>
+
+                <div class="buttons">
+                    <button class="btn btn-primary" type="submit"> Crear Empleado </button>
+                    <button class="btn btn-success" type="submit"> Actualizar Empleado </button>
+
+                </div>
+
+              </div>
+            
+            
           </section>
         </div>
       </div>

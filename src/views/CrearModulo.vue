@@ -1,41 +1,29 @@
 <script setup lang="ts">
-import ModuloDefault from '@/utils/interfaces/InterfaceModulos';
-import { ModuloServicio } from '@/services/empleados/ModuloServicio';
 import { ref, onMounted } from 'vue'
-import type { Modulo } from '@/utils/interfaces/InterfaceModulos';
+import { ModuloServicio } from '@/services/modulos/ModuloServicio'
+import type { Modulos } from '@/utils/interfaces/InterfaceModulos'
 
-const moduloServicio = new ModuloServicio();
+const moduloServicio = new ModuloServicio()
+const name = ref<string>('')
+const shortName = ref<string>('')
 
-const datos = new ModuloDefault();
-
-
-const crearModulo =async()=>{
-  const respuestaCrear = await moduloServicio.crearModulo(datos)
+const crearModulo = async () => {
+  const nuevoModulo: Modulos = { name: name.value, shortName: shortName.value }
+  await moduloServicio.crearModulo(nuevoModulo)
+  console.log('Nuevo módulo creado:', nuevoModulo)
+  name.value = ''
+  shortName.value = ''
 }
-
-const obtenerModulos =async()=>{
-  const respuestaObtener = await moduloServicio.obtenerModulos(datos)
-}
-
-const actualizadoModulo =async(shortName: string, moduloActualizado: ModuloDefault)=>{
-  const respuestaActualizar = await moduloServicio.actualizadoModulo(shortName, moduloActualizado)
-}
-
-const eliminarModulo =async(shortName : string )=>{
-  const respuestaEliminar = await moduloServicio.eliminarModulo(shortName)
-}
-
-
-// const actualizarDatos =async(id: string, empleadoActualizado: UsuariosDefault)=>{
-//   const respuestaActualizar = await empleadoServicio.actualizadoEmpleado(id, empleadoActualizado)
-//   console.log(respuestaActualizar);
-  
-// }
 
 onMounted(() => {
-  obtenerDatos()
-
+  obtenerModulos()
 })
+
+const obtenerModulos = async () => {
+  const modulos: Modulos[] = await moduloServicio.obtenerModulos()
+  console.log(modulos)
+}
+
 
 </script>
 
@@ -43,6 +31,7 @@ onMounted(() => {
 
   <div id="app2">
     <!-- <button class="btn btn-primary"><router-link to="/"><img src="../../public/img/icon-park-left.png" alt=""></router-link></button> -->
+    
 
       <div class="form2 justify-content-center">
         
@@ -59,7 +48,7 @@ onMounted(() => {
           <section class="form-2">
             <form class="form-2" @submit.prevent="crearModulo()">
             <div class="form-group">
-              <input @input="filtrarEquipos" type="name" v-model="name" placeholder="" />
+              <input type="name" v-model="name" placeholder="" />
               <label class="form-label">Nombre departamento</label>
             </div>
             <div class="form-group">

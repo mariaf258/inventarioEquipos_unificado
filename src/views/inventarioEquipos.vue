@@ -1,36 +1,57 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref, watch, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import app from '../utils/firebase.js'
 import { getFirestore, getDocs, addDoc, collection } from 'firebase/firestore'
+import { cerrarSesion } from '../router/index'
+import type { Modulos } from '@/utils/interfaces/InterfaceModulos';
+import { ModuloServicio } from '@/services/modulos/ModuloServicio';
+import ModuloDefault from '@/utils/interfaces/InterfaceModulos'
 
+const moduloServicio = new ModuloServicio();
 const db = getFirestore(app)
+const router = useRouter();
+
 
 const isDropdownVisible = ref(false)
-
 const toggleDropdown = () => {
   isDropdownVisible.value = !isDropdownVisible.value
+  console.log("Dropdown visible:", isDropdownVisible.value);
+  
 }
 
 const crearRegistro = async (idModulo: number, idUsuario: number, name: string, shortName: string) => {
   try {
+    const color = generarColorAleatorio();
     const response = await addDoc(collection(db, 'Modulos'), {
       idModulo,
       idUsuario,
       name,
       shortName,
+      color,
     })
     console.log('Registro agregado:', { response })
+    sections.value.push({
+      id: idModulo, 
+      name,
+      shortName,
+      iconClass: 'nuevo-icono', 
+      path: shortName.toLowerCase(),
+      color,
+    });
   } catch (error) {
     console.error('Error al agregar registro: ', error)
   }
 }
 
-let ModuloInventario = ref<Modulo[]>([]);
+
+
+let ModuloInventario = ref<Modulos[]>([]);
 const obtenerDatos = async () => {
-  const modulos:Modulo[] = await moduloServicio.obtenerModulos()
+  const modulos:Modulos[] = await moduloServicio.obtenerModulos()
   console.log(modulos);
 
-const DatosModuloInventario:Modulo[] = modulos.filter((modulos) => modulos.shortName)
+const DatosModuloInventario:Modulos[] = modulos.filter((modulos) => modulos.shortName)
 console.log(DatosModuloInventario);
 ModuloInventario.value = DatosModuloInventario;
 console.log({ModuloInventario});
@@ -39,7 +60,7 @@ console.log({ModuloInventario});
 
 onMounted(() => {
   obtenerDatos()
-  crearRegistro()
+  // crearRegistro()
   console.log(sections);
   
   filteredSections.value = sections.value;
@@ -61,24 +82,25 @@ interface datosDepartamentos {
   shortName?: string
   iconClass?: string
   path?: string 
+  color?: string
 }
 
 const sections = ref<datosDepartamentos[]>([
-  { id: 1, name: 'TALENTO HUMANO', shortName: 'TH', iconClass: 'th', path: 'talentoHumano'},
-  { id: 2, name: 'SAGRILAF', shortName: 'SAG', iconClass: 'sag' , path: 'sagrilaf'},
-  { id: 3, name: 'SEGURIDAD Y SALUD EN EL TRABAJO', shortName: 'SST', iconClass: 'sst' , path: 'sst'},
-  { id: 4, name: 'GERENCIA', shortName: 'GE', iconClass: 'ge' , path: 'gerencia'},
-  { id: 5, name: 'DEPARTAMENTO DE CONTABILIDAD', shortName: 'CT', iconClass: 'ct', path: 'contabilidad' },
-  { id: 6, name: 'DIRECCION DE SISTEMAS', shortName: 'DS', iconClass: 'ds' , path: 'sistemas'},
-  { id: 7, name: 'DIRECCION DE COMPRAS', shortName: 'CO', iconClass: 'co' , path: 'compras'},
-  { id: 8, name: 'DIRECCION TECNICA', shortName: 'DT', iconClass: 'dt', path: 'direccionTecnica' },
-  { id: 9, name: 'GESTION DE CALIDAD', shortName: 'GC', iconClass: 'gc', path: 'gestionCalidad' },
-  { id: 10, name: 'COMERCIAL', shortName: 'CM', iconClass: 'cm' , path: 'comercial'},
-  { id: 11, name: 'ADMINISTRACION', shortName: 'AD', iconClass: 'ad' , path: 'administracion'},
-  { id: 12, name: 'DIRECCION AMBIENTAL', shortName: 'AM', iconClass: 'am' , path: 'ambiental'},
-  { id: 13, name: 'DIRECCION DE ARCHIVO', shortName: 'AR', iconClass: 'ar', path: 'archivo' },
-  { id: 14, name: 'JURIDICO', shortName: 'JU', iconClass: 'ju', path: 'juridico' },
-  { id: 15, name: 'AUDIO VISUAL', shortName: 'AV', iconClass: 'av' , path: 'audioVisual'}
+  { id: 1, name: 'TALENTO HUMANO', shortName: 'TH', iconClass: 'th', path: 'talentoHumano', color: '#ff6f61'},
+  { id: 2, name: 'SAGRILAF', shortName: 'SAG', iconClass: 'sag' , path: 'sagrilaf', color: '#6a5acd'},
+  { id: 3, name: 'SEGURIDAD Y SALUD EN EL TRABAJO', shortName: 'SST', iconClass: 'sst' , path: 'sst', color: '#48d1cc'},
+  { id: 4, name: 'GERENCIA', shortName: 'GE', iconClass: 'ge' , path: 'gerencia', color: '#2e8b57'},
+  { id: 5, name: 'DEPARTAMENTO DE CONTABILIDAD', shortName: 'CT', iconClass: 'ct', path: 'contabilidad', color: '#ffd700' },
+  { id: 6, name: 'DIRECCION DE SISTEMAS', shortName: 'DS', iconClass: 'ds' , path: 'sistemas', color: '#4682b4'},
+  { id: 7, name: 'DIRECCION DE COMPRAS', shortName: 'CO', iconClass: 'co' , path: 'compras', color: '#da70d6'},
+  { id: 8, name: 'DIRECCION TECNICA', shortName: 'DT', iconClass: 'dt', path: 'direccionTecnica', color: '#8b4513' },
+  { id: 9, name: 'GESTION DE CALIDAD', shortName: 'GC', iconClass: 'gc', path: 'gestionCalidad', color: '#00fa9a' },
+  { id: 10, name: 'COMERCIAL', shortName: 'CM', iconClass: 'cm' , path: 'comercial', color: '#ff8c00'},
+  { id: 11, name: 'ADMINISTRACION', shortName: 'AD', iconClass: 'ad' , path: 'administracion', color: '#c71585'},
+  { id: 12, name: 'DIRECCION AMBIENTAL', shortName: 'AM', iconClass: 'am' , path: 'ambiental', color: '#32cd32'},
+  { id: 13, name: 'DIRECCION DE ARCHIVO', shortName: 'AR', iconClass: 'ar', path: 'archivo', color: '#808080' },
+  { id: 14, name: 'JURIDICO', shortName: 'JU', iconClass: 'ju', path: 'juridico', color: '#800000' },
+  { id: 15, name: 'AUDIO VISUAL', shortName: 'AV', iconClass: 'av' , path: 'audioVisual', color: '#ff4500'}
 ])
 
 let filteredSections = ref<datosDepartamentos[]>([])
@@ -93,11 +115,37 @@ const filtrarModulos = (value:any) => {
 
 
       const respuesta = sections.value.filter(section =>
-      section.name.toLowerCase().includes(respuestaInput) || section.shortName.toLowerCase().includes(respuestaInput)
+      section.name.includes(respuestaInput) || section.shortName.includes(respuestaInput)
       )
       filteredSections.value = respuesta
 
 }
+
+
+// Cerrar Sesion
+const logout = () => {
+  console.log('Cerrando sesión...');
+  
+  localStorage.removeItem('savedUsername')
+  localStorage.removeItem('savedPassword')
+  localStorage.removeItem('rememberCredentials')
+  router.replace('/inventarioEquipos_login')
+
+cerrarSesion();
+  router.replace('/inventarioEquipos_login');
+}
+
+
+// color de shortName
+const generarColorAleatorio = (): string => {
+  const letras = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letras[Math.floor(Math.random() * 16)];
+  }
+  return color;
+  
+};
 
 
 </script>
@@ -106,10 +154,6 @@ const filtrarModulos = (value:any) => {
   <div id="app">
     <div class="sidebar">
       <ul>
-        <li>
-          <router-link  to="/">Inicio</router-link>
-        </li>
-        <hr class="separador-1" />
         <li class="nav2">
           <router-link  to="/crearModulo">Crear Departamento</router-link>
         </li>
@@ -140,10 +184,7 @@ const filtrarModulos = (value:any) => {
                     @click="toggleDropdown"
                     class="userIcon-white"
                   />
-                  <a class="dropdown-item">
-                  <router-link  to="/inventarioEquipos_login">Iniciar Sesión</router-link></a>
-                  <hr class="dropdown-divider" />
-                  <a class="dropdown-item" href="#">Cerrar Sesión</a>
+                  <a class="dropdown-item" @click="logout">Cerrar Sesión</a>
                 </ul>
               </ul>
             </div>
@@ -164,9 +205,7 @@ const filtrarModulos = (value:any) => {
                 <input @input="filtrarModulos"  type="text" id="searchInput" placeholder="Buscar" />
                 <div id="results" class="results">
                   <ul>
-                    <!-- <li v-for="(result, index) in searchResults" :key="index">
-                      {{ result.titulo }} - {{ result.descripcion }}
-                    </li> -->
+                
                   </ul>
                 </div>
               </div>
@@ -181,10 +220,20 @@ const filtrarModulos = (value:any) => {
               <p><b>{{ section.name }}</b></p>
             </router-link>
           </div>
+
+          <div v-for="(item, index) in ModuloInventario" :key="index" class="card-modulo" v-bind:item="item as Modulos">
+            <div class="card-modulo2" >
+              <p :style="{ backgroundColor: generarColorAleatorio() }">{{ item.shortName.toUpperCase() || 'No post provided' }}</p>
+              <h2>{{ item.name.toUpperCase() || 'No name provided' }}</h2>
+            </div>
+          </div>
         </div>
+          
+
       </div>
     </div>
   </div>
+
 </template>
 
 

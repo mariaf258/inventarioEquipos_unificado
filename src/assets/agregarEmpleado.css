@@ -64,6 +64,13 @@ section, form  {
   gap: 20px;
 }
 
+.formulario {
+  align-items: center;
+  width: 100%;
+  grid-template-columns: 1fr 1fr 1fr; /* Tres columnas iguales */
+  gap: 20px;
+}
+
 .form-group {
   position: relative;
   margin: 12px 0;
@@ -128,26 +135,36 @@ section, form  {
   margin-bottom: 20px;
 }
 
-.form4 button {
-  cursor: pointer;
-  background-color: #432a88;
+.form4 .buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: 10px;
+  margin-top: 20px; 
   text-align: center;
-  color: white;
-  align-items: center;
-  border-radius: 3px;
-  margin-bottom: 0 !important;
-  height: 37px;
+  width: 490px;
+  gap: 20px;
 }
+
+
+.form4 .buttons button {
+  height: 37px;
+  color: white;
+  border-radius: 3px;
+  margin: 0; 
+  font-size: 16px;
+}
+
 
 .btn-primary {
   color: #432a88;
-  background-color: white;
+  background-color: #432a88;
   border: 2px solid #432a88;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .btn-primary:hover {
-  color: #432a88;
+  color: #432a88 !important;
   background-color: white;
   border: 2px solid #432a88;
   transition: all 0.3s ease;
@@ -155,10 +172,34 @@ section, form  {
 }
 
 .btn-primary:active {
-  color: #5132aa;
+  color: #5132aa !important;
   border-color: #5132aa;
   background-color: white;
 }
+
+.btn-success {
+  color: #488b09;
+  background-color: #488b09;
+  border: 2px solid #488b09;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-success:hover {
+  color: #488b09 !important;
+  background-color: white;
+  border: 2px solid #488b09;
+  transition: all 0.3s ease;
+  border-color: #488b09;
+}
+
+.btn-success:active {
+  color: #488b09 !important;
+  border-color: #488b09;
+  background-color: white;
+}
+
+
 
 .footer4 {
   background: linear-gradient(to bottom, #432a88, #5132aa);

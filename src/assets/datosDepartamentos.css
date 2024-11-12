@@ -378,7 +378,7 @@ button.btn-link {
   cursor: pointer;
   border-radius: 3px;
   height: 35px;
-  width: 70px;
+  width: 75px;
   text-align: center;
   text-decoration: none;
 }
@@ -388,6 +388,8 @@ button.btn-link {
   color: #432a88;
   /* border: 1px solid #432a88; */
 }
+
+
 
 .dropdown-menu {
   position: absolute;

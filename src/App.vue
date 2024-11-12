@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// import inventarioEquipos from './views/InventarioEquipos.vue'
+import {RouterView } from 'vue-router'
 </script>
 
 <template>

@@ -60,29 +60,3 @@ export class EmpleadoServicio {
 
 }
 
-
-// onMounted(() => {
-    
-//     filteredEquipo.value = Equipo.value;
-//     console.log(filteredEquipo);
-// })
-
-
-// let filteredEquipo = ref<Equipo[]>([])
-// console.log(filteredEquipo);
-
-
-//     const filtrarEquipos = (value:any) => {
-//     console.log('buscando la variable', value.target.value
-//     );
-
-//     const respuestaInput = value.target.value;
-
-
-//     const respuesta = Equipo.value.filter(Equipo =>
-//         Equipo.name.toLowerCase().includes(respuestaInput) || Equipo.Nserial.toLowerCase().includes(respuestaInput)
-//         )
-//         filteredEquipo.value = respuesta
-
-// }
-

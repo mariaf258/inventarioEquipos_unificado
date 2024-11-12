@@ -104,6 +104,8 @@ onMounted(() => {
                     @click="toggleDropdown"
                     class="userIcon-white"
                   />
+                  <a class="dropdown-item" href="#">Iniciar Sesión</a>
+                  <hr class="dropdown-divider" />
                   <a class="dropdown-item" href="#">Cerrar Sesión</a>
                 </ul>
               </ul>
@@ -166,9 +168,7 @@ onMounted(() => {
         </div>
 
         <div class="button-add">
-          <router-link to="/agregarEmpleado" class="btn btn-primary">Agregar</router-link>
-          <router-link to="#" class="btn btn-danger">Eliminar</router-link>
-
+          <router-link to="/agregarEmpleado">Agregar</router-link>
         </div>
       </div>
     </div>

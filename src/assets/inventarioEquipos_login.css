@@ -56,7 +56,14 @@ html {
   color: black;
 }
 
-section {
+.section-3 {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  flex-flow: column;
+}
+
+.form-3{
   display: flex;
   align-items: center;
   width: 100%;
@@ -88,10 +95,10 @@ section {
   color: #9f9f9f;
 }
 
-.form-group .form-label {
+.form-group .form-label3 {
   position: absolute;
   top: 9px;
-  left: 0;
+  left: 10px;
   font-size: 16px;
   padding: 0 10px;
   color: #595959;
@@ -99,8 +106,8 @@ section {
   transition: 0.15s all ease;
 }
 
-.form-group input:focus + .form-label,
-.form-group input:not(:placeholder-shown) + .form-label {
+.form-group input:focus + .form-label3,
+.form-group input:not(:placeholder-shown) + .form-label3 {
   transform: translate(5px, -22px);
   background-color: white;
   font-size: 14px;
@@ -114,19 +121,20 @@ section {
   justify-content: center;
   padding: 20px 20px 0px 20px;
   border-radius: 10px;
-  margin-top: 70px;
+  margin-top: 30px;
   margin-bottom: 200px;
   align-items: center;
 
 }
 
 .form3 img {
+  display: block;
   width: 40px;
   height: 40px;
   align-items: center;
   justify-content: center;
   text-indent: 5rem;
-  margin-bottom: 20px;
+  margin: 0 auto 20px auto; 
 
 }
 
@@ -137,8 +145,17 @@ section {
   color: white;
   align-items: center;
   border-radius: 3px;
-  margin-bottom: 0 !important;
+  margin-bottom: 20px !important;
   height: 37px;
+}
+
+.forget {
+  margin-bottom: 10px !important;
+}
+
+.forget label {
+  margin-bottom: 10px !important;
+  margin-left: -150px;
 }
 
 .btn-primary {
