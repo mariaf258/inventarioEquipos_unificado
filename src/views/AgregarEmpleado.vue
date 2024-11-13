@@ -130,13 +130,12 @@ const eliminarEmpleado =async(etiqueta : string)=>{
               </form>
 
                 <div class="buttons">
-<<<<<<< HEAD
+
                     <button class="btn btn-primary" type="submit"> Crear Empleado </button>
                     <button class="btn btn-success" type="submit"> Actualizar Empleado </button>
-=======
+
                   <button class="btn btn-primary" type="submit"> Agregar Empleado </button>
                     <!-- <button class="btn btn-success" type="submit"> Actualizar Empleado </button> -->
->>>>>>> ddd8a8d (cambios)
 
                 </div>
 
