@@ -161,7 +161,20 @@ cerrarSesion();
         </div>
 
         <div class="button-add">
+<<<<<<< HEAD
           <router-link to="/agregarEmpleado">Agregar</router-link>
+=======
+          <router-link to="/agregarEmpleado" class="btn btn-primary">Agregar</router-link>
+          <button @click="enableDeleteMode" class="btn btn-success">Actualizar</button>
+          <button @click="enableDeleteMode" class="btn btn-danger">Eliminar</button>
+          <button v-if="deleteMode" @click="deleteSelectedCards">Confirmar eliminación</button>
+
+          <div v-for="empleado in empleados" :key="empleado.id" 
+              :class="{ selected: empleado.selected }" 
+              @click="toggleCardSelection(empleado)">
+              <h3>{{ empleado.title }}</h3>
+          </div>
+>>>>>>> ddd8a8d (cambios)
         </div>
       </div>
     </div>

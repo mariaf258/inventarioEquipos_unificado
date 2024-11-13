@@ -8,6 +8,11 @@ import type { Equipo } from '@/utils/interfaces/InterfaceEquipos';
 import { cerrarSesion } from '../router/index'
 import { useRouter } from 'vue-router'
 
+<<<<<<< HEAD
+=======
+// import { filtrarEmpleados } from '../components/buscadorEmpleados.vue'
+
+>>>>>>> ddd8a8d (cambios)
 const empleadoServicio = new EmpleadoServicio()
 const isDropdownVisible = ref(false)
 const router = useRouter();
@@ -20,8 +25,12 @@ let empleadosModuloTalentoHumano = ref<Equipo[]>([]);
 const obtenerDatos = async () => {
   const empleados:Equipo[] = await empleadoServicio.obtenerEmpleados()
   console.log(empleados);
+<<<<<<< HEAD
   // EquipoDefault.value = empleados;
   // filteredEquipoDefault.value = empleados;
+=======
+
+>>>>>>> ddd8a8d (cambios)
 
 const empleadosTalentoHumano:Equipo[] = empleados.filter(empleado => /^MLA-TH-\d+$/
   .test(empleado.etiqueta))
@@ -40,9 +49,13 @@ console.log({empleadosModuloTalentoHumano});
 
 onMounted(() => {
   obtenerDatos()
+<<<<<<< HEAD
   // filteredEquipoDefault.value = EquipoDefault.value;
   // console.log(filteredEquipoDefault);
   
+=======
+
+>>>>>>> ddd8a8d (cambios)
 })
 
   const userIcon = document.getElementById('userIcon')
@@ -52,6 +65,7 @@ onMounted(() => {
     userDropdown?.classList.toggle('show')
   })
 
+<<<<<<< HEAD
 //   const EquipoDefault = ref<Equipo[]>([]);
 //   const filteredEquipoDefault = ref<Equipo[]>([])
 // console.log(filteredEquipoDefault);
@@ -69,6 +83,8 @@ onMounted(() => {
 //       filteredEquipoDefault.value = respuesta
 
 // }
+=======
+>>>>>>> ddd8a8d (cambios)
 
 
 // Cerrar Sesion
@@ -85,6 +101,33 @@ cerrarSesion();
 }
 
 
+<<<<<<< HEAD
+=======
+function selectCard(index: number) {
+  empleadosModuloTalentoHumano.value.forEach((empleado, idx) => {
+    empleado.selected = idx === index; 
+  });
+}
+
+async function actualizadoEmpleado() {
+  const empleadoSeleccionado = empleadosModuloTalentoHumano.value.find((empleado) => empleado.selected);
+  
+  if (empleadoSeleccionado) {
+    try {
+      const response = await EmpleadoServicio.actualizadoEmpleado(
+        empleadoSeleccionado.etiqueta,
+        empleadoSeleccionado
+      );
+      console.log("Actualización exitosa:", response);
+    } catch (error) {
+      console.error("Error al actualizar:", error);
+    }
+  } else {
+    alert("Por favor, selecciona una tarjeta para actualizar.");
+  }
+}
+
+>>>>>>> ddd8a8d (cambios)
 </script>
 
 <template>
@@ -139,7 +182,11 @@ cerrarSesion();
               </div>
 
               <div class="header-right">
+<<<<<<< HEAD
                 <input @input="filtrarEmpleados" type="text" id="searchInput" placeholder="Buscar Empleado" />
+=======
+                <input @input="filteredEmpleados" type="text" id="searchInput" placeholder="Buscar Empleado" />
+>>>>>>> ddd8a8d (cambios)
                 <div id="results" class="results"></div>
               </div>
             </div>
@@ -149,7 +196,11 @@ cerrarSesion();
         <div class="departamento"><h1>TALENTO HUMANO</h1></div>
 
         <div class="container-er">
+<<<<<<< HEAD
           <div v-for="(item, index) in empleadosModuloTalentoHumano" :key="index" class="card1" v-bind:item="item as Equipo">
+=======
+          <div v-for="(item, index) in empleadosModuloTalentoHumano" :key="index" class="card1" :class="{ selected: item.selected }" @click="selectCard(index)" v-bind:item="item as Equipo">
+>>>>>>> ddd8a8d (cambios)
             <div class="face face1">
               <img
                 src="../../public/img/user-solid.png"
@@ -184,8 +235,20 @@ cerrarSesion();
 
         <div class="button-add">
           <router-link to="/agregarEmpleado" class="btn btn-primary">Agregar</router-link>
+<<<<<<< HEAD
           <router-link to="#" class="btn btn-danger">Eliminar</router-link>
 
+=======
+          <button @click="actualizadoEmpleado" class="btn btn-success">Actualizar</button>
+          <button @click="enableDeleteMode" class="btn btn-danger">Eliminar</button>
+          <button v-if="deleteMode" @click="deleteSelectedCards">Confirmar eliminación</button>
+
+          <div v-for="empleado in empleados" :key="empleado.id" 
+              :class="{ selected: empleado.selected }" 
+              @click="toggleCardSelection(empleado)">
+              <h3>{{ empleado.title }}</h3>
+          </div>
+>>>>>>> ddd8a8d (cambios)
         </div>
       </div>
     </div>

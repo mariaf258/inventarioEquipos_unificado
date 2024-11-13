@@ -136,13 +136,23 @@ section, form  {
 }
 
 .form4 .buttons {
+<<<<<<< HEAD
   display: grid;
+=======
+  /* display: grid; */
+>>>>>>> ddd8a8d (cambios)
   grid-template-columns: 1fr 1fr; 
   gap: 10px;
   margin-top: 20px; 
   text-align: center;
+<<<<<<< HEAD
   width: 490px;
   gap: 20px;
+=======
+  /* width: 490px; */
+  gap: 20px;
+
+>>>>>>> ddd8a8d (cambios)
 }
 
 
@@ -152,6 +162,10 @@ section, form  {
   border-radius: 3px;
   margin: 0; 
   font-size: 16px;
+<<<<<<< HEAD
+=======
+  
+>>>>>>> ddd8a8d (cambios)
 }
 
 
@@ -199,6 +213,31 @@ section, form  {
   background-color: white;
 }
 
+<<<<<<< HEAD
+=======
+.btn-danger {
+  color: white;
+  background-color: #8b0909;
+  border: 2px solid #8b0909;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  color: #8b0909 !important;
+  background-color: white;
+  border: 2px solid #8b0909;
+  transition: all 0.3s ease;
+  border-color: #8b0909;
+}
+
+.btn-danger:active {
+  color: #8b0909 !important;
+  border-color: #8b0909;
+  background-color: white;
+}
+
+>>>>>>> ddd8a8d (cambios)
 
 
 .footer4 {

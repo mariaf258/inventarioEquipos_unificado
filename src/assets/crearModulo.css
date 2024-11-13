@@ -27,6 +27,45 @@ html {
   place-items: center;
 }
 
+<<<<<<< HEAD
+=======
+.button-btn {
+  text-align: right;
+  float: right;
+  margin-top: 10px;
+  display: flex;
+  height: 35px;
+  border-radius: 10px;
+  position: absolute; 
+  top: 10px; 
+  right: 10px; 
+  z-index: 1000;
+}
+
+.button-btn .btn-primary {
+  color: white;
+  background-color: #432a88;
+  border: 1px solid #432a88;
+  /* margin-top: 20px; */
+  margin-right: 20px;
+  cursor: pointer;
+  border-radius: 5px; 
+  height: 35px;
+  width: 75px;
+  text-align: center;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.button-btn .btn-primary:hover {
+  background-color: white;
+  color: #432a88;
+}
+
+>>>>>>> ddd8a8d (cambios)
 .login {
   text-align: center;
 }

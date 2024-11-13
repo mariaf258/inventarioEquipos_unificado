@@ -137,6 +137,7 @@ cerrarSesion();
 
 
 // color de shortName
+<<<<<<< HEAD
 const generarColorAleatorio = (): string => {
   const letras = '0123456789ABCDEF';
   let color = '#';
@@ -146,6 +147,18 @@ const generarColorAleatorio = (): string => {
   return color;
   
 };
+=======
+// const generarColorAleatorio = (): string => {
+//   const letras = '0123456789ABCDEF';
+//   let color = '#';
+//   for (let i = 0; i < 6; i++) {
+//     color += letras[Math.floor(Math.random() * 16)];
+//   }
+//   return color;
+  
+// };
+
+>>>>>>> ddd8a8d (cambios)
 
 
 </script>
