@@ -9,8 +9,12 @@ import { cerrarSesion } from '../router/index'
 import { useRouter } from 'vue-router'
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 // import { filtrarEmpleados } from '../components/buscadorEmpleados.vue'
+=======
+import { filtrarEmpleados } from '../components/buscadorEmpleados.vue'
+>>>>>>> cf3c2fa (cambios)
 
 >>>>>>> ddd8a8d (cambios)
 const empleadoServicio = new EmpleadoServicio()

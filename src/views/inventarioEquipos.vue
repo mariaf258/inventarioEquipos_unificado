@@ -86,21 +86,21 @@ interface datosDepartamentos {
 }
 
 const sections = ref<datosDepartamentos[]>([
-  { id: 1, name: 'TALENTO HUMANO', shortName: 'TH', iconClass: 'th', path: 'talentoHumano', color: '#ff6f61'},
-  { id: 2, name: 'SAGRILAF', shortName: 'SAG', iconClass: 'sag' , path: 'sagrilaf', color: '#6a5acd'},
-  { id: 3, name: 'SEGURIDAD Y SALUD EN EL TRABAJO', shortName: 'SST', iconClass: 'sst' , path: 'sst', color: '#48d1cc'},
-  { id: 4, name: 'GERENCIA', shortName: 'GE', iconClass: 'ge' , path: 'gerencia', color: '#2e8b57'},
-  { id: 5, name: 'DEPARTAMENTO DE CONTABILIDAD', shortName: 'CT', iconClass: 'ct', path: 'contabilidad', color: '#ffd700' },
-  { id: 6, name: 'DIRECCION DE SISTEMAS', shortName: 'DS', iconClass: 'ds' , path: 'sistemas', color: '#4682b4'},
-  { id: 7, name: 'DIRECCION DE COMPRAS', shortName: 'CO', iconClass: 'co' , path: 'compras', color: '#da70d6'},
-  { id: 8, name: 'DIRECCION TECNICA', shortName: 'DT', iconClass: 'dt', path: 'direccionTecnica', color: '#8b4513' },
-  { id: 9, name: 'GESTION DE CALIDAD', shortName: 'GC', iconClass: 'gc', path: 'gestionCalidad', color: '#00fa9a' },
-  { id: 10, name: 'COMERCIAL', shortName: 'CM', iconClass: 'cm' , path: 'comercial', color: '#ff8c00'},
-  { id: 11, name: 'ADMINISTRACION', shortName: 'AD', iconClass: 'ad' , path: 'administracion', color: '#c71585'},
-  { id: 12, name: 'DIRECCION AMBIENTAL', shortName: 'AM', iconClass: 'am' , path: 'ambiental', color: '#32cd32'},
-  { id: 13, name: 'DIRECCION DE ARCHIVO', shortName: 'AR', iconClass: 'ar', path: 'archivo', color: '#808080' },
-  { id: 14, name: 'JURIDICO', shortName: 'JU', iconClass: 'ju', path: 'juridico', color: '#800000' },
-  { id: 15, name: 'AUDIO VISUAL', shortName: 'AV', iconClass: 'av' , path: 'audioVisual', color: '#ff4500'}
+  { id: 1, name: 'talento humano', shortName: 'th', iconClass: 'th', path: 'talentoHumano', color: '#ff6f61'},
+  { id: 2, name: 'sagrilaf', shortName: 'sag', iconClass: 'sag' , path: 'sagrilaf', color: '#6a5acd'},
+  { id: 3, name: 'seguridad y salud en el trabajo', shortName: 'sst', iconClass: 'sst' , path: 'sst', color: '#48d1cc'},
+  { id: 4, name: 'gerencia', shortName: 'ge', iconClass: 'ge' , path: 'gerencia', color: '#2e8b57'},
+  { id: 5, name: 'departamento de contabilidad', shortName: 'ct', iconClass: 'ct', path: 'contabilidad', color: '#ffd700' },
+  { id: 6, name: 'direccion de sistemas', shortName: 'ds', iconClass: 'ds' , path: 'sistemas', color: '#4682b4'},
+  { id: 7, name: 'direccion de compras', shortName: 'co', iconClass: 'co' , path: 'compras', color: '#da70d6'},
+  { id: 8, name: 'direccion tecnica', shortName: 'dt', iconClass: 'dt', path: 'direccionTecnica', color: '#8b4513' },
+  { id: 9, name: 'gestion de calidad', shortName: 'gc', iconClass: 'gc', path: 'gestionCalidad', color: '#00fa9a' },
+  { id: 10, name: 'comercial', shortName: 'cm', iconClass: 'cm' , path: 'comercial', color: '#ff8c00'},
+  { id: 11, name: 'administracion', shortName: 'ad', iconClass: 'ad' , path: 'administracion', color: '#c71585'},
+  { id: 12, name: 'direccion ambiental', shortName: 'am', iconClass: 'am' , path: 'ambiental', color: '#32cd32'},
+  { id: 13, name: 'direccion de archivo', shortName: 'ar', iconClass: 'ar', path: 'archivo', color: '#808080' },
+  { id: 14, name: 'juridico', shortName: 'ju', iconClass: 'ju', path: 'juridico', color: '#800000' },
+  { id: 15, name: 'audio visual', shortName: 'av', iconClass: 'av' , path: 'audioVisual', color: '#ff4500'}
 ])
 
 let filteredSections = ref<datosDepartamentos[]>([])
@@ -111,7 +111,7 @@ const filtrarModulos = (value:any) => {
   console.log('buscando la variable', value.target.value
   );
 
-  const respuestaInput = value.target.value;
+  const respuestaInput = value.target.value.toLowerCase();
 
 
       const respuesta = sections.value.filter(section =>
@@ -138,6 +138,9 @@ cerrarSesion();
 
 // color de shortName
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> cf3c2fa (cambios)
 const generarColorAleatorio = (): string => {
   const letras = '0123456789ABCDEF';
   let color = '#';
@@ -145,6 +148,7 @@ const generarColorAleatorio = (): string => {
     color += letras[Math.floor(Math.random() * 16)];
   }
   return color;
+<<<<<<< HEAD
   
 };
 =======
@@ -155,8 +159,11 @@ const generarColorAleatorio = (): string => {
 //     color += letras[Math.floor(Math.random() * 16)];
 //   }
 //   return color;
+=======
+>>>>>>> cf3c2fa (cambios)
   
-// };
+};
+
 
 >>>>>>> ddd8a8d (cambios)
 
@@ -229,8 +236,8 @@ const generarColorAleatorio = (): string => {
         <div class="card-grid">
           <div class="card" v-for="section in filteredSections" :key="section.id">
             <router-link :to="`/${section.path.toLowerCase()}`">
-              <div :class="`card-icon ${section.iconClass}`">{{ section.shortName }}</div>
-              <p><b>{{ section.name }}</b></p>
+              <div :class="`card-icon ${section.iconClass}`">{{ section.shortName.toUpperCase() }}</div>
+              <p><b>{{ section.name.toUpperCase() }}</b></p>
             </router-link>
           </div>
 
