@@ -136,23 +136,12 @@ section, form  {
 }
 
 .form4 .buttons {
-<<<<<<< HEAD
-  display: grid;
-=======
-  /* display: grid; */
->>>>>>> ddd8a8d (cambios)
   grid-template-columns: 1fr 1fr; 
   gap: 10px;
   margin-top: 20px; 
   text-align: center;
-<<<<<<< HEAD
-  width: 490px;
-  gap: 20px;
-=======
-  /* width: 490px; */
   gap: 20px;
 
->>>>>>> ddd8a8d (cambios)
 }
 
 
@@ -162,14 +151,11 @@ section, form  {
   border-radius: 3px;
   margin: 0; 
   font-size: 16px;
-<<<<<<< HEAD
-=======
-  
->>>>>>> ddd8a8d (cambios)
+
 }
 
 
-.btn-primary {
+/* .btn-primary {
   color: #432a88;
   background-color: #432a88;
   border: 2px solid #432a88;
@@ -189,7 +175,7 @@ section, form  {
   color: #5132aa !important;
   border-color: #5132aa;
   background-color: white;
-}
+} */
 
 .btn-success {
   color: #488b09;
@@ -213,8 +199,7 @@ section, form  {
   background-color: white;
 }
 
-<<<<<<< HEAD
-=======
+/* 
 .btn-danger {
   color: white;
   background-color: #8b0909;
@@ -235,9 +220,7 @@ section, form  {
   color: #8b0909 !important;
   border-color: #8b0909;
   background-color: white;
-}
-
->>>>>>> ddd8a8d (cambios)
+} */
 
 
 .footer4 {

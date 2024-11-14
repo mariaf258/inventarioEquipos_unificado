@@ -50,23 +50,7 @@ onMounted(() => {
     userDropdown?.classList.toggle('show')
   })
 
-//   const EquipoDefault = ref<Equipo[]>([]);
-//   const filteredEquipoDefault = ref<Equipo[]>([])
-// console.log(filteredEquipoDefault);
 
-
-// const filtrarEmpleados = (Event:Event) => {
-//   console.log('buscando el empleado')
-//   const target = Event.target as HTMLInputElement;
-//   const respuestaInput = target.value.toLowerCase();
-
-
-//       const respuesta = EquipoDefault.value.filter((equipo) =>
-//       equipo.name?.toLowerCase().includes(respuestaInput) || equipo.etiqueta?.toLowerCase().includes(respuestaInput)
-//       )
-//       filteredEquipoDefault.value = respuesta
-
-// }
 
 </script>
 
@@ -104,8 +88,6 @@ onMounted(() => {
                     @click="toggleDropdown"
                     class="userIcon-white"
                   />
-                  <a class="dropdown-item" href="#">Iniciar Sesión</a>
-                  <hr class="dropdown-divider" />
                   <a class="dropdown-item" href="#">Cerrar Sesión</a>
                 </ul>
               </ul>

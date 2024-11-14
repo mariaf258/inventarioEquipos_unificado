@@ -97,7 +97,7 @@ cerrarSesion();
                     @click="toggleDropdown"
                     class="userIcon-white"
                   />
-                 
+                
                   <a class="dropdown-item" @click="logout">Cerrar Sesión</a>
                 </ul>
               </ul>
@@ -158,9 +158,7 @@ cerrarSesion();
         </div>
 
         <div class="button-add">
-<<<<<<< HEAD
-          <router-link to="/agregarEmpleado">Agregar</router-link>
-=======
+
           <router-link to="/agregarEmpleado" class="btn btn-primary">Agregar</router-link>
           <button @click="enableDeleteMode" class="btn btn-success">Actualizar</button>
           <button @click="enableDeleteMode" class="btn btn-danger">Eliminar</button>
@@ -171,7 +169,7 @@ cerrarSesion();
               @click="toggleCardSelection(empleado)">
               <h3>{{ empleado.title }}</h3>
           </div>
->>>>>>> ddd8a8d (cambios)
+
         </div>
       </div>
     </div>

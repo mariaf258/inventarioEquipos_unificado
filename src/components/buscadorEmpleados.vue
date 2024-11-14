@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import type { Equipo } from '@/utils/interfaces/InterfaceEquipos';
 
 
@@ -6,7 +7,7 @@ let filteredEmpleados = ref<Equipo[]>([])
 console.log(filteredEmpleados);
 
 
-const filtrarEmpleados = (value:any) => {
+const filtrarEmpleado = (value:any) => {
     console.log('buscando la variable', value.target.value
     );
 
@@ -30,7 +31,7 @@ onMounted(() => {
 })
 
 </script>
-
+<!-- 
 <template>
         <div class="header-right">
                     <input @input="filteredEmpleados" type="text" id="searchInput" placeholder="Buscar Empleado" />
@@ -40,4 +41,4 @@ onMounted(() => {
                 
         </div>
 
-</template>
+</template> -->

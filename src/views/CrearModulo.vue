@@ -30,15 +30,12 @@ const obtenerModulos = async () => {
 <template>
 
   <div id="app2">
-<<<<<<< HEAD
-    <!-- <button class="btn btn-primary"><router-link to="/"><img src="../../public/img/icon-park-left.png" alt=""></router-link></button> -->
-    
-=======
+
       <div class="button-btn">
         <a><router-link to="/" class="btn btn-primary">Volver</router-link></a>
         
       </div>    
->>>>>>> ddd8a8d (cambios)
+
 
       <div class="form2 justify-content-center">
         

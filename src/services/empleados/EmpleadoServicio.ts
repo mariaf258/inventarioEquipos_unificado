@@ -47,10 +47,6 @@ export class EmpleadoServicio {
 
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> ddd8a8d (cambios)
     async eliminarEmpleado(etiqueta : string ){
         try {
             const response = await deleteDoc(collection(db, 'Usuarios', etiqueta))

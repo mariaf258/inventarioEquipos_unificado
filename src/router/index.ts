@@ -20,6 +20,7 @@ import juridico from '../views/juridico.vue'
 import audioVisual from '../views/audioVisual.vue'
 
 import AgregarEmpleado from '../views/AgregarEmpleado.vue'
+import actualizarEmpleado from '../views/actualizarEmpleado.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -118,6 +119,11 @@ const router = createRouter({
       path:'/agregarEmpleado',
       name: 'AgregarEmpleado',
       component: AgregarEmpleado
+    },
+    {
+      path:'/actualizarEmpleado',
+      name: 'actualizarEmpleado',
+      component: actualizarEmpleado
     },
     {
       path: '/about',

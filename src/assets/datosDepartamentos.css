@@ -361,21 +361,14 @@ button.btn-link {
   font-size: 18px;
 }
 
-<<<<<<< HEAD
 .button-add {
-=======
-.button-add  {
->>>>>>> ddd8a8d (cambios)
   text-align: right;
   float: right;
   margin-top: 10px;
   display: flex;
   justify-content: center;
-<<<<<<< HEAD
-=======
   height: 35px;
   border-radius: 10px;
->>>>>>> ddd8a8d (cambios)
 }
 
 .button-add a {
@@ -398,8 +391,7 @@ button.btn-link {
   /* border: 1px solid #432a88; */
 }
 
-<<<<<<< HEAD
-=======
+
 .button-add .btn-success{
   color: white;
   background-color: #488b09;
@@ -433,8 +425,6 @@ button.btn-link {
   color: #432a88;
   /* border: 1px solid #432a88; */
 }
-
->>>>>>> ddd8a8d (cambios)
 
 
 .dropdown-menu {

@@ -2,7 +2,9 @@
 import EquipoDefault from '@/utils/interfaces/InterfaceEquipos';
 import UsuariosDefault from '@/utils/interfaces/interfaceUsuarios';
 import {EmpleadoServicio} from '@/services/empleados/EmpleadoServicio';
+import {alertaCamposEmpleado} from '@/utils/alertaCampos';
 import { onMounted, ref } from 'vue';
+
 
 const empleadoServicio = new EmpleadoServicio();
 
@@ -11,11 +13,14 @@ const datosUsuario = new UsuariosDefault();
 
 
 const crearEmpleado =async()=>{
+  if (!alertaCamposEmpleado(datos)) {
+    return;
+  }
   const respuestaCrear = await empleadoServicio.crearEmpleado(datos)
 }
 
 const obtenerEmpleados =async()=>{
-  const respuestaObtener = await empleadoServicio.obtenerEmpleados(datos)
+  const respuestaObtener = await empleadoServicio.obtenerEmpleados()
 }
 
 const actualizadoEmpleado =async(etiqueta: string, empleadoActualizado: UsuariosDefault)=>{
@@ -131,11 +136,7 @@ const eliminarEmpleado =async(etiqueta : string)=>{
 
                 <div class="buttons">
 
-                    <button class="btn btn-primary" type="submit"> Crear Empleado </button>
-                    <button class="btn btn-success" type="submit"> Actualizar Empleado </button>
-
-                  <button class="btn btn-primary" type="submit"> Agregar Empleado </button>
-                    <!-- <button class="btn btn-success" type="submit"> Actualizar Empleado </button> -->
+                  <button class="btn btn-primary" type="submit" @click="crearEmpleado"> Agregar Empleado </button>
 
                 </div>
 

@@ -8,13 +8,11 @@ import type { Equipo } from '@/utils/interfaces/InterfaceEquipos';
 import { cerrarSesion } from '../router/index'
 import { useRouter } from 'vue-router'
 
-
-import { filtrarEmpleados } from '../components/buscadorEmpleados.vue'
-
-
-
 const empleadoServicio = new EmpleadoServicio()
 const isDropdownVisible = ref(false)
+const mensajeVisible = ref(false);
+const deleteMode = ref(false);
+
 const router = useRouter();
 
 const toggleDropdown = () => {
@@ -73,29 +71,55 @@ cerrarSesion();
 }
 
 
+// actualizar empleado
 function selectCard(index: number) {
-  empleadosModuloTalentoHumano.value.forEach((empleado, idx) => {
-    empleado.selected = idx === index; 
-  });
+    empleadosModuloTalentoHumano.value.forEach((empleado, idx) => {
+        empleado.selected = idx === index; 
+    });
+    }
+
+    async function actualizadoEmpleado() {
+    const empleadoSeleccionado = empleadosModuloTalentoHumano.value.find((empleado) => empleado.selected);
+    
+    if (empleadoSeleccionado) {
+        try {
+        const response = await EmpleadoServicio.actualizadoEmpleado(
+            empleadoSeleccionado.etiqueta,
+            empleadoSeleccionado
+        );
+        console.log("Actualización exitosa:", response);
+        } catch (error) {
+        console.error("Error al actualizar:", error);
+        }
+    } else {
+        alert("Por favor, selecciona una tarjeta para actualizar.");
+    }
 }
 
-async function actualizadoEmpleado() {
-  const empleadoSeleccionado = empleadosModuloTalentoHumano.value.find((empleado) => empleado.selected);
-  
-  if (empleadoSeleccionado) {
-    try {
-      const response = await EmpleadoServicio.actualizadoEmpleado(
-        empleadoSeleccionado.etiqueta,
-        empleadoSeleccionado
-      );
-      console.log("Actualización exitosa:", response);
-    } catch (error) {
-      console.error("Error al actualizar:", error);
-    }
-  } else {
-    alert("Por favor, selecciona una tarjeta para actualizar.");
-  }
-}
+// eliminar empleado
+// function selectCard(index: number) {
+//     empleadosModuloTalentoHumano.value.forEach((empleado, idx) => {
+//         empleado.selected = idx === index; 
+//     });
+//     }
+
+//     async function actualizadoEmpleado() {
+//     const empleadoSeleccionado = empleadosModuloTalentoHumano.value.find((empleado) => empleado.selected);
+    
+//     if (empleadoSeleccionado) {
+//         try {
+//         const response = await EmpleadoServicio.actualizadoEmpleado(
+//             empleadoSeleccionado.etiqueta,
+//             empleadoSeleccionado
+//         );
+//         console.log("Actualización exitosa:", response);
+//         } catch (error) {
+//         console.error("Error al actualizar:", error);
+//         }
+//     } else {
+//         alert("Por favor, selecciona una tarjeta para actualizar.");
+//     }
+// }
 
 
 </script>
@@ -166,9 +190,9 @@ async function actualizadoEmpleado() {
 
         <div class="container-er">
 
-          <div v-for="(item, index) in empleadosModuloTalentoHumano" :key="index" class="card1" v-bind:item="item as Equipo">
-
           <div v-for="(item, index) in empleadosModuloTalentoHumano" :key="index" class="card1" :class="{ selected: item.selected }" @click="selectCard(index)" v-bind:item="item as Equipo">
+
+  
 
             <div class="face face1">
               <img
@@ -204,20 +228,25 @@ async function actualizadoEmpleado() {
 
         <div class="button-add">
           <router-link to="/agregarEmpleado" class="btn btn-primary">Agregar</router-link>
-          <button @click="actualizadoEmpleado" class="btn btn-success">Actualizar</button>
+          <router-link to="/actualizarEmpleado" @click="actualizadoEmpleado" class="btn btn-success">Actualizar</router-link>
+          <div v-show="mensajeVisible" class="tooltip">
+            Selecciona una tarjeta para actualizar.
+          </div>
+
           <button @click="enableDeleteMode" class="btn btn-danger">Eliminar</button>
           <button v-if="deleteMode" @click="deleteSelectedCards">Confirmar eliminación</button>
 
-          <div v-for="empleado in empleados" :key="empleado.id" 
-              :class="{ selected: empleado.selected }" 
-              @click="toggleCardSelection(empleado)">
-              <h3>{{ empleado.title }}</h3>
-          </div>
+            <div v-for="empleado in empleados" :key="empleado.id" 
+                :class="{ selected: empleado.selected }" 
+                @click="toggleCardSelection(empleado)">
+                <h3>{{ empleado.title }}</h3>
+            </div>
 
         </div>
       </div>
     </div>
   </div>
+<!-- </div> -->
 </template>
 
 <style>

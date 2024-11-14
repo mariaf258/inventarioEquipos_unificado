@@ -6,7 +6,9 @@ import { getFirestore, getDocs, addDoc, collection } from 'firebase/firestore'
 import { cerrarSesion } from '../router/index'
 import type { Modulos } from '@/utils/interfaces/InterfaceModulos';
 import { ModuloServicio } from '@/services/modulos/ModuloServicio';
-import ModuloDefault from '@/utils/interfaces/InterfaceModulos'
+import { sections } from '@/utils/sesionesDepartamentos.js'
+
+
 
 const moduloServicio = new ModuloServicio();
 const db = getFirestore(app)
@@ -23,26 +25,19 @@ const toggleDropdown = () => {
 const crearRegistro = async (idModulo: number, idUsuario: number, name: string, shortName: string) => {
   try {
     const color = generarColorAleatorio();
-    const response = await addDoc(collection(db, 'Modulos'), {
-      idModulo,
-      idUsuario,
-      name,
-      shortName,
-      color,
-    })
-    console.log('Registro agregado:', { response })
+    await addDoc(collection(db, 'Modulos'),  { idModulo, idUsuario, name, shortName, color });
     sections.value.push({
-      id: idModulo, 
+      id: idModulo,
       name,
       shortName,
-      iconClass: 'nuevo-icono', 
+      iconClass: 'nuevo-icono',
       path: shortName.toLowerCase(),
       color,
     });
   } catch (error) {
-    console.error('Error al agregar registro: ', error)
+    console.error('Error al agregar registro: ', error);
   }
-}
+};
 
 
 
@@ -61,7 +56,7 @@ console.log({ModuloInventario});
 onMounted(() => {
   obtenerDatos()
   // crearRegistro()
-  console.log(sections);
+  console.log(sections.value);
   
   filteredSections.value = sections.value;
   console.log(filteredSections);
@@ -76,34 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 })
 
-interface datosDepartamentos {
-  id?: number
-  name?: string
-  shortName?: string
-  iconClass?: string
-  path?: string 
-  color?: string
-}
 
-const sections = ref<datosDepartamentos[]>([
-  { id: 1, name: 'talento humano', shortName: 'th', iconClass: 'th', path: 'talentoHumano', color: '#ff6f61'},
-  { id: 2, name: 'sagrilaf', shortName: 'sag', iconClass: 'sag' , path: 'sagrilaf', color: '#6a5acd'},
-  { id: 3, name: 'seguridad y salud en el trabajo', shortName: 'sst', iconClass: 'sst' , path: 'sst', color: '#48d1cc'},
-  { id: 4, name: 'gerencia', shortName: 'ge', iconClass: 'ge' , path: 'gerencia', color: '#2e8b57'},
-  { id: 5, name: 'departamento de contabilidad', shortName: 'ct', iconClass: 'ct', path: 'contabilidad', color: '#ffd700' },
-  { id: 6, name: 'direccion de sistemas', shortName: 'ds', iconClass: 'ds' , path: 'sistemas', color: '#4682b4'},
-  { id: 7, name: 'direccion de compras', shortName: 'co', iconClass: 'co' , path: 'compras', color: '#da70d6'},
-  { id: 8, name: 'direccion tecnica', shortName: 'dt', iconClass: 'dt', path: 'direccionTecnica', color: '#8b4513' },
-  { id: 9, name: 'gestion de calidad', shortName: 'gc', iconClass: 'gc', path: 'gestionCalidad', color: '#00fa9a' },
-  { id: 10, name: 'comercial', shortName: 'cm', iconClass: 'cm' , path: 'comercial', color: '#ff8c00'},
-  { id: 11, name: 'administracion', shortName: 'ad', iconClass: 'ad' , path: 'administracion', color: '#c71585'},
-  { id: 12, name: 'direccion ambiental', shortName: 'am', iconClass: 'am' , path: 'ambiental', color: '#32cd32'},
-  { id: 13, name: 'direccion de archivo', shortName: 'ar', iconClass: 'ar', path: 'archivo', color: '#808080' },
-  { id: 14, name: 'juridico', shortName: 'ju', iconClass: 'ju', path: 'juridico', color: '#800000' },
-  { id: 15, name: 'audio visual', shortName: 'av', iconClass: 'av' , path: 'audioVisual', color: '#ff4500'}
-])
-
-let filteredSections = ref<datosDepartamentos[]>([])
+let filteredSections = ref<any[]>([])
 console.log(filteredSections);
 
 
@@ -114,10 +83,27 @@ const filtrarModulos = (value:any) => {
   const respuestaInput = value.target.value.toLowerCase();
 
 
-      const respuesta = sections.value.filter(section =>
-      section.name.includes(respuestaInput) || section.shortName.includes(respuestaInput)
-      )
-      filteredSections.value = respuesta
+      const respuestaSections = sections.value.filter(section =>
+      section.name.toLowerCase().includes(respuestaInput) || section.shortName.toLowerCase().includes(respuestaInput)
+      );
+
+      const respuestaModuloInventario = ModuloInventario.value.filter(modulo =>
+      modulo.name.toLowerCase().includes(respuestaInput) || modulo.shortName.toLowerCase().includes(respuestaInput)
+      );
+
+      filteredSections.value = [
+        ...respuestaSections,
+        ...respuestaModuloInventario.map(item => ({
+          id:item.idModulo,
+          name:item.name,
+          shortName:item.shortName,
+          iconClass: 'nuevo-icono', 
+          path: item.shortName.toLowerCase(),
+          color:generarColorAleatorio(),
+        }))
+      ]
+
+    
 
 }
 
@@ -140,18 +126,8 @@ cerrarSesion();
 
 const generarColorAleatorio = (): string => {
   const letras = '0123456789ABCDEF';
-  let color = '#';
-  for (let i = 0; i < 6; i++) {
-    color += letras[Math.floor(Math.random() * 16)];
-  }
-  return color;
-
-  
+  return `#${Array.from({ length: 6 }, () => letras[Math.floor(Math.random() * 16)]).join('')}`;
 };
-
-
-
-
 
 
 
@@ -223,17 +199,17 @@ const generarColorAleatorio = (): string => {
         <div class="card-grid">
           <div class="card" v-for="section in filteredSections" :key="section.id">
             <router-link :to="`/${section.path.toLowerCase()}`">
-              <div :class="`card-icon ${section.iconClass}`">{{ section.shortName.toUpperCase() }}</div>
+              <div :class="`card-icon ${section.iconClass}`" :style="{ backgroundColor: section.color }">{{ section.shortName.toUpperCase() }}</div>
               <p><b>{{ section.name.toUpperCase() }}</b></p>
             </router-link>
           </div>
-
-          <div v-for="(item, index) in ModuloInventario" :key="index" class="card-modulo" v-bind:item="item as Modulos">
-            <div class="card-modulo2" >
-              <p :style="{ backgroundColor: generarColorAleatorio() }">{{ item.shortName.toUpperCase() || 'No post provided' }}</p>
-              <h2>{{ item.name.toUpperCase() || 'No name provided' }}</h2>
-            </div>
+          <div class="card" v-for="modulo in ModuloInventario" :key="modulo.idModulo">
+            <router-link :to="`/${modulo.shortName.toLowerCase()}`">
+              <div class="card-icon" :style="{ backgroundColor:  generarColorAleatorio()}">{{ modulo.shortName.toUpperCase() }}</div>
+              <p><b>{{ modulo.name.toUpperCase() }}</b></p>
+            </router-link>
           </div>
+
         </div>
           
 
