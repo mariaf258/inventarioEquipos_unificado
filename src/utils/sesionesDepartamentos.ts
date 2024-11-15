@@ -1,6 +1,14 @@
 
-import type { datosDepartamentos } from '@/utils/interfaces/sesionesDepartamentos';
 import { ref } from 'vue';
+
+interface datosDepartamentos {
+        id: number;
+        name: string;
+        shortName: string;
+        iconClass: string;
+        path: string;
+        color: string;
+}
 
 export const sections = ref<datosDepartamentos[]>([
     { id: 1, name: 'talento humano', shortName: 'th', iconClass: 'th', path: 'talentoHumano', color: '#ff6f61' },

@@ -1,6 +1,6 @@
 
 import { ref } from 'vue';
-import type { datosDepartamentos } from '@/utils/interfaces/sesionesModulos';
+import type { datosDepartamentos } from '@/utils/sesionesDepartamentos';
 
 export const filteredSections = ref<datosDepartamentos[]>([]);
 

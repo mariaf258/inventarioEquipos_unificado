@@ -18,6 +18,7 @@ import ambiental from '../views/ambiental.vue'
 import archivo from '../views/archivo.vue'
 import juridico from '../views/juridico.vue'
 import audioVisual from '../views/audioVisual.vue'
+import moduloNuevo from '../views/moduloNuevo.vue'
 
 import AgregarEmpleado from '../views/AgregarEmpleado.vue'
 import actualizarEmpleado from '../views/actualizarEmpleado.vue'
@@ -124,6 +125,11 @@ const router = createRouter({
       path:'/actualizarEmpleado',
       name: 'actualizarEmpleado',
       component: actualizarEmpleado
+    },
+    {
+      path:'/moduloNuevo',
+      name: 'moduloNuevo',
+      component: moduloNuevo
     },
     {
       path: '/about',

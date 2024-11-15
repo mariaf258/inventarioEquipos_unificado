@@ -42,9 +42,11 @@ console.log({empleadosModuloTalentoHumano});
 
 
 onMounted(() => {
-  obtenerDatos()
+  obtenerDatos().then(() => {
+    filteredEmpleado.value = [...empleadosModuloTalentoHumano.value];
+  });
+});
 
-})
 
   const userIcon = document.getElementById('userIcon')
   const userDropdown = document.getElementById('userDropdown')
@@ -52,7 +54,6 @@ onMounted(() => {
   userIcon?.addEventListener('click', () => {
     userDropdown?.classList.toggle('show')
   })
-
 
 
 
@@ -69,6 +70,29 @@ const logout = () => {
 cerrarSesion();
   router.replace('/inventarioEquipos_login');
 }
+
+
+// Buscador
+let filteredEmpleado = ref<any[]>([]);
+
+const filtrarEmpleados = (event: Event) => {
+  const input = (event.target as HTMLInputElement).value.toLowerCase();
+  console.log('Buscando empleados con:', input);
+
+  if (!input) {
+    filteredEmpleado.value = [...empleadosModuloTalentoHumano.value];
+    return;
+  }
+
+  filteredEmpleado.value = empleadosModuloTalentoHumano.value.filter((empleado) =>
+    (empleado.name && empleado.name.toLowerCase().includes(input)) ||
+    (empleado.etiqueta && empleado.etiqueta.toLowerCase().includes(input))
+  );
+
+  console.log('Resultados del filtro:', filteredEmpleado.value);
+};
+
+
 
 
 // actualizar empleado
@@ -176,10 +200,7 @@ function selectCard(index: number) {
               </div>
 
               <div class="header-right">
-
                 <input @input="filtrarEmpleados" type="text" id="searchInput" placeholder="Buscar Empleado" />
-
-
                 <div id="results" class="results"></div>
               </div>
             </div>
@@ -189,10 +210,7 @@ function selectCard(index: number) {
         <div class="departamento"><h1>TALENTO HUMANO</h1></div>
 
         <div class="container-er">
-
-          <div v-for="(item, index) in empleadosModuloTalentoHumano" :key="index" class="card1" :class="{ selected: item.selected }" @click="selectCard(index)" v-bind:item="item as Equipo">
-
-  
+          <div v-for="(item, index) in filteredEmpleado" :key="index" class="card1" :class="{ selected: item.selected }" @click="selectCard(index)" v-bind:item="item as Equipo">
 
             <div class="face face1">
               <img
@@ -218,10 +236,6 @@ function selectCard(index: number) {
               <b>RAM:</b> {{ item.ram }}<br />
               <b>ESTADO:</b> {{ item.estado || 'No state provided' }}<br />
               <b>OBSERVACIONES:</b> {{ item.observacion || 'No observations' }}
-
-              <!-- <div class="button-add">
-                <router-link to="/agregarEmpleado">Actualizar</router-link>
-              </div> -->
             </div>
           </div>
         </div>
@@ -246,7 +260,6 @@ function selectCard(index: number) {
       </div>
     </div>
   </div>
-<!-- </div> -->
 </template>
 
 <style>

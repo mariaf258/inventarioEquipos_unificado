@@ -19,13 +19,13 @@ const isDropdownVisible = ref(false)
 const toggleDropdown = () => {
   isDropdownVisible.value = !isDropdownVisible.value
   console.log("Dropdown visible:", isDropdownVisible.value);
-  
+
 }
 
 const crearRegistro = async (idModulo: number, idUsuario: number, name: string, shortName: string) => {
   try {
-    const color = generarColorAleatorio();
-    await addDoc(collection(db, 'Modulos'),  { idModulo, idUsuario, name, shortName, color });
+    const color = generarColorEstatico();
+    await addDoc(collection(db, 'Modulos'), { idModulo, idUsuario, name, shortName, color });
     sections.value.push({
       id: idModulo,
       name,
@@ -42,25 +42,41 @@ const crearRegistro = async (idModulo: number, idUsuario: number, name: string, 
 
 
 let ModuloInventario = ref<Modulos[]>([]);
-const obtenerDatos = async () => {
-  const modulos:Modulos[] = await moduloServicio.obtenerModulos()
-  console.log(modulos);
 
-const DatosModuloInventario:Modulos[] = modulos.filter((modulos) => modulos.shortName)
-console.log(DatosModuloInventario);
-ModuloInventario.value = DatosModuloInventario;
-console.log({ModuloInventario});
+
+const obtenerDatos = async () => {
+  const modulos: Modulos[] = await moduloServicio.obtenerModulos()
+  console.log(modulos);
+  console.log(filteredSections.value.length);
+
+  
+
+  function generatePath(name: string): string {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s]/g, '') // Elimina caracteres especiales
+    .replace(/\s+/g, '');// Eliminar espacios entre nombres
+}
+
+
+modulos.forEach((modulo, index) => {
+    const path = generatePath(modulo.name);
+    const color = generarColorEstatico(modulo.shortName, 'pastel');
+    
+    filteredSections.value.push({
+      id: 16+ index,
+      name: modulo.name,
+      shortName: modulo.shortName,
+      iconClass: 'nuevo-icono',
+      path,
+      color,
+      ...modulo
+    })
+  })
 
 }
 
-onMounted(() => {
-  obtenerDatos()
-  // crearRegistro()
-  console.log(sections.value);
-  
-  filteredSections.value = sections.value;
-  console.log(filteredSections);
-})
 
 document.addEventListener('DOMContentLoaded', () => {
   const userIcon = document.getElementById('userIcon')
@@ -72,61 +88,99 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 
-let filteredSections = ref<any[]>([])
-console.log(filteredSections);
+onMounted(async () => {
+  
+  filteredSections.value.push(...sections.value);
+  console.log(filteredSections.value)
+  await obtenerDatos()
+  console.log(sections.value);
+
+  console.log(filteredSections);
+
+})
 
 
-const filtrarModulos = (value:any) => {
-  console.log('buscando la variable', value.target.value
+
+
+// ////////////
+
+
+let filteredSections = ref<any[]>([]);
+
+//console.log(filteredSections);
+
+
+const filtrarModulos = (event: Event) => {
+  const input = (event.target as HTMLInputElement).value.toLowerCase(); 
+  console.log('Buscando módulos con:', input);
+
+  if (!input) {
+    filteredSections.value = [
+      ...sections.value,
+      ...ModuloInventario.value.map((modulo) => ({
+        id: modulo.idModulo,
+        name: modulo.name,
+        shortName: modulo.shortName,
+        iconClass: 'nuevo-icono',
+        path: modulo.shortName.toLowerCase(),
+        color: modulo.color || generarColorEstatico(modulo.shortName),
+      }))
+    ];
+    return;
+  }
+
+  filteredSections.value = sections.value.filter(
+    (section) =>
+      section.name.toLowerCase().includes(input) ||
+      section.shortName.toLowerCase().includes(input)
   );
 
-  const respuestaInput = value.target.value.toLowerCase();
+  console.log('Resultados del filtro:', filteredSections.value);
+};
 
 
-      const respuestaSections = sections.value.filter(section =>
-      section.name.toLowerCase().includes(respuestaInput) || section.shortName.toLowerCase().includes(respuestaInput)
-      );
+// ////////////
 
-      const respuestaModuloInventario = ModuloInventario.value.filter(modulo =>
-      modulo.name.toLowerCase().includes(respuestaInput) || modulo.shortName.toLowerCase().includes(respuestaInput)
-      );
 
-      filteredSections.value = [
-        ...respuestaSections,
-        ...respuestaModuloInventario.map(item => ({
-          id:item.idModulo,
-          name:item.name,
-          shortName:item.shortName,
-          iconClass: 'nuevo-icono', 
-          path: item.shortName.toLowerCase(),
-          color:generarColorAleatorio(),
-        }))
-      ]
-
-    
-
-}
 
 
 // Cerrar Sesion
 const logout = () => {
   console.log('Cerrando sesión...');
-  
+
   localStorage.removeItem('savedUsername')
   localStorage.removeItem('savedPassword')
   localStorage.removeItem('rememberCredentials')
   router.replace('/inventarioEquipos_login')
 
-cerrarSesion();
+  cerrarSesion();
   router.replace('/inventarioEquipos_login');
 }
 
 
 // color de shortName
+const generarColorEstatico = (input: string, tipo: 'pastel' | 'vivo' = 'pastel'): string => {
+  let hash = 0;
+  for (let i = 0; i < input.length; i++) {
+    hash = input.charCodeAt(i) + ((hash << 5) - hash);
+  }
 
-const generarColorAleatorio = (): string => {
-  const letras = '0123456789ABCDEF';
-  return `#${Array.from({ length: 6 }, () => letras[Math.floor(Math.random() * 16)]).join('')}`;
+  let r = (hash >> 16) & 0xff;
+  let g = (hash >> 8) & 0xff;
+  let b = hash & 0xff;
+
+  if (tipo === 'pastel') {
+    r = Math.floor((r + 255) / 2);
+    g = Math.floor((g + 255) / 2);
+    b = Math.floor((b + 255) / 2);
+  } else if (tipo === 'vivo') {
+    r = Math.min(255, r + 50);
+    g = Math.min(255, g + 50);
+    b = Math.min(255, b + 50);
+  }
+
+  const color = `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
+  return color;
 };
 
 
@@ -138,7 +192,7 @@ const generarColorAleatorio = (): string => {
     <div class="sidebar">
       <ul>
         <li class="nav2">
-          <router-link  to="/crearModulo">Crear Departamento</router-link>
+          <router-link to="/crearModulo">Crear Departamento</router-link>
         </li>
         <hr class="separador-1" />
       </ul>
@@ -152,21 +206,12 @@ const generarColorAleatorio = (): string => {
       <div class="main-content">
         <div class="header-right">
           <nav class="navbar bg-body-tertiary fixed-top">
-            <img
-              src="../../public/img/user.png"
-              alt="user"
-              @click="toggleDropdown"
-              class="userIcon"
-            />
+            <img src="../../public/img/user.png" alt="user" @click="toggleDropdown" class="userIcon" />
             <div class="offcanvas-body">
               <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                 <ul v-show="isDropdownVisible" class="dropdown-menu">
-                  <img
-                    src="../../public/img/user-white.png"
-                    alt="user"
-                    @click="toggleDropdown"
-                    class="userIcon-white"
-                  />
+                  <img src="../../public/img/user-white.png" alt="user" @click="toggleDropdown"
+                    class="userIcon-white" />
                   <a class="dropdown-item" @click="logout">Cerrar Sesión</a>
                 </ul>
               </ul>
@@ -185,38 +230,35 @@ const generarColorAleatorio = (): string => {
               </div>
 
               <div class="header-right">
-                <input @input="filtrarModulos"  type="text" id="searchInput" placeholder="Buscar" />
+                <input @input="filtrarModulos" type="text" id="searchInput" placeholder="Buscar" />
                 <div id="results" class="results">
                   <ul>
-                
+
                   </ul>
                 </div>
               </div>
             </div>
           </header>
         </div>
-
+        <!-- <pre>este es el array  {{ filteredSections }}</pre> -->
         <div class="card-grid">
           <div class="card" v-for="section in filteredSections" :key="section.id">
             <router-link :to="`/${section.path.toLowerCase()}`">
-              <div :class="`card-icon ${section.iconClass}`" :style="{ backgroundColor: section.color }">{{ section.shortName.toUpperCase() }}</div>
+              <div :class="`card-icon ${section.iconClass}`" :style="{ backgroundColor: section.color }">{{
+                section.shortName.toUpperCase() }}</div>
               <p><b>{{ section.name.toUpperCase() }}</b></p>
             </router-link>
           </div>
-          <div class="card" v-for="modulo in ModuloInventario" :key="modulo.idModulo">
+          <!-- <div class="card" v-for="modulo in ModuloInventario" :key="modulo.idModulo">
             <router-link :to="`/${modulo.shortName.toLowerCase()}`">
               <div class="card-icon" :style="{ backgroundColor:  generarColorAleatorio()}">{{ modulo.shortName.toUpperCase() }}</div>
               <p><b>{{ modulo.name.toUpperCase() }}</b></p>
             </router-link>
-          </div>
-
+          </div> -->
         </div>
-          
-
       </div>
     </div>
   </div>
-
 </template>
 
 

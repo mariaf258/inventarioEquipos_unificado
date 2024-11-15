@@ -32,23 +32,23 @@ const eliminarEmpleado =async(etiqueta : string)=>{
 }
 
 
-const actualizarEmpleado =async(etiqueta: string, empleadoActualizado: UsuariosDefault)=>{
-    if (empleado.value.etiqueta) {
-            await empleadoServicio.actualizadoEmpleado(
-            empleado.value.etiqueta,
-            empleado.value
-            );
-        } else {
-            await empleadoServicio.crearEmpleado(empleado.value);
-        }
-        await obtenerEmpleados(); // Actualizar lista
-        empleado.value = {}; // Limpiar formulario
-    };
+// const actualizarEmpleado =async(etiqueta: string, empleadoActualizado: UsuariosDefault)=>{
+//     if (empleado.value.etiqueta) {
+//             await empleadoServicio.actualizadoEmpleado(
+//             empleado.value.etiqueta,
+//             empleado.value
+//             );
+//         } else {
+//             await empleadoServicio.crearEmpleado(empleado.value);
+//         }
+//         await obtenerEmpleados(); // Actualizar lista
+//         empleado.value = {}; // Limpiar formulario
+//     };
 
 
-const empleadoSeleccionado = computed(() =>
-    empleadosModuloTalentoHumano.value.find((empleado) => empleado.selected)
-);
+// const empleadoSeleccionado = computed(() =>
+//     empleadosModuloTalentoHumano.value.find((empleado) => empleado.selected)
+// );
 
 
 </script>

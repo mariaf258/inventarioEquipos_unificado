@@ -8,8 +8,10 @@ import { cerrarSesion } from '../router/index'
 import { useRouter } from 'vue-router'
 
 const empleadoServicio = new EmpleadoServicio()
-
 const isDropdownVisible = ref(false)
+const mensajeVisible = ref(false);
+const deleteMode = ref(false);
+
 const router = useRouter();
 
 const toggleDropdown = () => {
@@ -36,8 +38,11 @@ const obtenerDatos = async () => {
 
 
 onMounted(() => {
-  obtenerDatos()
-})
+  obtenerDatos().then(() => {
+    filteredEmpleado.value = [...empleadosModuloSst.value];
+  });
+});
+
 
 
   const userIcon = document.getElementById('userIcon')
@@ -46,6 +51,8 @@ onMounted(() => {
   userIcon?.addEventListener('click', () => {
     userDropdown?.classList.toggle('show')
   })
+
+
 
 // Cerrar Sesion
 const logout = () => {
@@ -59,6 +66,28 @@ const logout = () => {
 cerrarSesion();
   router.replace('/inventarioEquipos_login');
 }
+
+
+
+// Buscador
+let filteredEmpleado = ref<any[]>([]);
+
+const filtrarEmpleados = (event: Event) => {
+  const input = (event.target as HTMLInputElement).value.toLowerCase();
+  console.log('Buscando empleados con:', input);
+
+  if (!input) {
+    filteredEmpleado.value = [...empleadosModuloSst.value];
+    return;
+  }
+
+  filteredEmpleado.value = empleadosModuloSst.value.filter((empleado) =>
+    (empleado.name && empleado.name.toLowerCase().includes(input)) ||
+    (empleado.etiqueta && empleado.etiqueta.toLowerCase().includes(input))
+  );
+
+  console.log('Resultados del filtro:', filteredEmpleado.value);
+};
 
 
 </script>
@@ -116,10 +145,8 @@ cerrarSesion();
               </div>
 
               <div class="header-right">
-                <input type="text" id="searchInput" placeholder="Buscar" />
-                <!-- <button @click="searchElement" class="btn btn-primary addBtn">
-                  <img src="../../public/img/search.png" alt="search" />
-                </button> -->
+                <input @input="filtrarEmpleados" type="text" id="searchInput" placeholder="Buscar Empleado" />
+                <div id="results" class="results"></div>
               </div>
             </div>
           </header>
@@ -128,7 +155,8 @@ cerrarSesion();
         <div class="departamento"><h1>SEGURIDAD Y SALUD EN EL TRABAJO</h1></div>
 
         <div class="container-er">
-          <div v-for="(item, index) in empleadosModuloSst" :key="index" class="card1" v-bind:item="item as Equipo">
+          <div v-for="(item, index) in filteredEmpleado" :key="index" class="card1" :class="{ selected: item.selected }" @click="selectCard(index)" v-bind:item="item as Equipo">
+            
             <div class="face face1">
               <img
                 src="../../public/img/user-solid.png"
@@ -158,9 +186,12 @@ cerrarSesion();
         </div>
 
         <div class="button-add">
-
           <router-link to="/agregarEmpleado" class="btn btn-primary">Agregar</router-link>
-          <button @click="enableDeleteMode" class="btn btn-success">Actualizar</button>
+          <router-link to="/actualizarEmpleado" @click="actualizadoEmpleado" class="btn btn-success">Actualizar</router-link>
+          <div v-show="mensajeVisible" class="tooltip">
+            Selecciona una tarjeta para actualizar.
+          </div>
+
           <button @click="enableDeleteMode" class="btn btn-danger">Eliminar</button>
           <button v-if="deleteMode" @click="deleteSelectedCards">Confirmar eliminación</button>
 

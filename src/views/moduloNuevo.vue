@@ -5,43 +5,47 @@ import UsuariosDefault from '@/utils/interfaces/interfaceUsuarios';
 import {EmpleadoServicio} from '@/services/empleados/EmpleadoServicio';
 import { ref, onMounted } from 'vue'
 import type { Equipo } from '@/utils/interfaces/InterfaceEquipos';
+import { cerrarSesion } from '../router/index'
+import { useRouter } from 'vue-router'
 
 const empleadoServicio = new EmpleadoServicio()
 const isDropdownVisible = ref(false)
+const mensajeVisible = ref(false);
+const deleteMode = ref(false);
 
+const router = useRouter();
 
 const toggleDropdown = () => {
   isDropdownVisible.value = !isDropdownVisible.value
 }
 
-let empleadosModuloTalentoHumano = ref<Equipo[]>([]);
+let empleadosModuloInventario = ref<Equipo[]>([]);
 const obtenerDatos = async () => {
   const empleados:Equipo[] = await empleadoServicio.obtenerEmpleados()
   console.log(empleados);
-  // EquipoDefault.value = empleados;
-  // filteredEquipoDefault.value = empleados;
 
-const empleadosTalentoHumano:Equipo[] = empleados.filter(empleado => /^MLA-TH-\d+$/
+
+
+const empleadosModulo:Equipo[] = empleados.filter(empleado => /^MLA-+{$shortName}-\\d+$/
   .test(empleado.etiqueta))
   .sort((a, b) => { 
       const numA = parseInt(a.etiqueta.split('-')[2], 10);
       const numB = parseInt(b.etiqueta.split('-')[2], 10);
       return numA - numB;
     });
-console.log(empleadosTalentoHumano);
-empleadosModuloTalentoHumano.value = empleadosTalentoHumano;
-console.log({empleadosModuloTalentoHumano});
+console.log(empleadosModulo);
+empleadosModuloInventario.value = empleadosModulo;
+console.log({empleadosModuloInventario});
 
 }
 
 
-
 onMounted(() => {
-  obtenerDatos()
-  // filteredEquipoDefault.value = EquipoDefault.value;
-  // console.log(filteredEquipoDefault);
-  
-})
+  obtenerDatos().then(() => {
+    filteredEmpleado.value = [...empleadosModuloInventario.value];
+  });
+});
+
 
   const userIcon = document.getElementById('userIcon')
   const userDropdown = document.getElementById('userDropdown')
@@ -50,6 +54,97 @@ onMounted(() => {
     userDropdown?.classList.toggle('show')
   })
 
+
+
+
+
+// Cerrar Sesion
+const logout = () => {
+  console.log('Cerrando sesión...');
+  
+  localStorage.removeItem('savedUsername')
+  localStorage.removeItem('savedPassword')
+  localStorage.removeItem('rememberCredentials')
+  router.replace('/inventarioEquipos_login')
+
+cerrarSesion();
+  router.replace('/inventarioEquipos_login');
+}
+
+
+// Buscador
+let filteredEmpleado = ref<any[]>([]);
+
+const filtrarEmpleados = (event: Event) => {
+  const input = (event.target as HTMLInputElement).value.toLowerCase();
+  console.log('Buscando empleados con:', input);
+
+  if (!input) {
+    filteredEmpleado.value = [...empleadosModuloInventario.value];
+    return;
+  }
+
+  filteredEmpleado.value = empleadosModuloInventario.value.filter((empleado) =>
+    (empleado.name && empleado.name.toLowerCase().includes(input)) ||
+    (empleado.etiqueta && empleado.etiqueta.toLowerCase().includes(input))
+  );
+
+  console.log('Resultados del filtro:', filteredEmpleado.value);
+};
+
+
+
+
+
+// actualizar empleado
+function selectCard(index: number) {
+  empleadosModuloInventario.value.forEach((empleado, idx) => {
+        empleado.selected = idx === index; 
+    });
+    }
+
+    async function actualizadoEmpleado() {
+    const empleadoSeleccionado = empleadosModuloInventario.value.find((empleado) => empleado.selected);
+    
+    if (empleadoSeleccionado) {
+        try {
+        const response = await EmpleadoServicio.actualizarEmpleado(
+            empleadoSeleccionado.etiqueta,
+            empleadoSeleccionado
+        );
+        console.log("Actualización exitosa:", response);
+        } catch (error) {
+        console.error("Error al actualizar:", error);
+        }
+    } else {
+        alert("Por favor, selecciona una tarjeta para actualizar.");
+    }
+}
+
+// eliminar empleado
+// function selectCard(index: number) {
+//     empleadosModuloTalentoHumano.value.forEach((empleado, idx) => {
+//         empleado.selected = idx === index; 
+//     });
+//     }
+
+//     async function actualizadoEmpleado() {
+//     const empleadoSeleccionado = empleadosModuloTalentoHumano.value.find((empleado) => empleado.selected);
+    
+//     if (empleadoSeleccionado) {
+//         try {
+//         const response = await EmpleadoServicio.actualizadoEmpleado(
+//             empleadoSeleccionado.etiqueta,
+//             empleadoSeleccionado
+//         );
+//         console.log("Actualización exitosa:", response);
+//         } catch (error) {
+//         console.error("Error al actualizar:", error);
+//         }
+//     } else {
+//         alert("Por favor, selecciona una tarjeta para actualizar.");
+//     }
+// }
 
 
 </script>
@@ -88,7 +183,7 @@ onMounted(() => {
                     @click="toggleDropdown"
                     class="userIcon-white"
                   />
-                  <a class="dropdown-item" href="#">Cerrar Sesión</a>
+                  <a class="dropdown-item" @click="logout">Cerrar Sesión</a>
                 </ul>
               </ul>
             </div>
@@ -113,10 +208,14 @@ onMounted(() => {
           </header>
         </div>
 
-        <div class="departamento"><h1>TALENTO HUMANO</h1></div>
+        <div class="departamento"><h1>{{$modulo.name}}</h1></div>
 
         <div class="container-er">
-          <div v-for="(item, index) in empleadosModuloTalentoHumano" :key="index" class="card1" v-bind:item="item as Equipo">
+
+          <div v-for="(item, index) in filteredEmpleado" :key="index" class="card1" :class="{ selected: item.selected }" @click="selectCard(index)" v-bind:item="item as Equipo">
+
+  
+
             <div class="face face1">
               <img
                 src="../../public/img/user-solid.png"
@@ -150,11 +249,26 @@ onMounted(() => {
         </div>
 
         <div class="button-add">
-          <router-link to="/agregarEmpleado">Agregar</router-link>
+          <router-link to="/agregarEmpleado" class="btn btn-primary">Agregar</router-link>
+          <router-link to="/actualizarEmpleado" @click="actualizadoEmpleado" class="btn btn-success">Actualizar</router-link>
+          <div v-show="mensajeVisible" class="tooltip">
+            Selecciona una tarjeta para actualizar.
+          </div>
+
+          <button @click="enableDeleteMode" class="btn btn-danger">Eliminar</button>
+          <button v-if="deleteMode" @click="deleteSelectedCards">Confirmar eliminación</button>
+
+            <div v-for="empleado in empleados" :key="empleado.id" 
+                :class="{ selected: empleado.selected }" 
+                @click="toggleCardSelection(empleado)">
+                <h3>{{ empleado.title }}</h3>
+            </div>
+
         </div>
       </div>
     </div>
   </div>
+<!-- </div> -->
 </template>
 
 <style>
