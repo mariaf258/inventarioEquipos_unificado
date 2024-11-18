@@ -9,7 +9,7 @@
     justify-content: center;
 }
 
-.card-Update {
+.card-delete {
     border: 1px solid #ccc;
     padding: 1rem;
     cursor: pointer;
@@ -19,16 +19,16 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.card-Update:hover {
+.card-delete:hover {
     background-color: #f0f0f0;
 }
 
-.card-Update h4 {
+.card-delete h4 {
     font-weight: bold;
 }
 
 
-.form4 .buttons-update {
+.formulario .buttons-delete {
     grid-template-columns: 1fr 1fr; 
     gap: 10px;
     margin-top: 20px; 
@@ -37,7 +37,7 @@
     display: inline-grid;
 }
 
-.form4 .buttons-update button {
+.formulario .buttons-delete button {
     height: 40px;
     color: white;
     border-radius: 3px;
@@ -115,18 +115,18 @@ html {
     margin-bottom: 10px;
 }
 
-section, form  {
+.section-delete, form  {
     align-items: center;
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* Tres columnas iguales */
+    /* grid-template-columns: 1fr 1fr 1fr; /*Tres columnas iguales*/ 
     gap: 20px;
 }
 
 .formulario {
     align-items: center;
     width: 100%;
-    grid-template-columns: 1fr 1fr 1fr; /* Tres columnas iguales */
+    /* grid-template-columns: 1fr 1fr 1fr; /*Tres columnas iguales*/ 
     gap: 20px;
 }
 

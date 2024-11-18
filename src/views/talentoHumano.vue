@@ -40,7 +40,6 @@ console.log({empleadosModuloTalentoHumano});
 }
 
 
-
 onMounted(() => {
   obtenerDatos().then(() => {
     filteredEmpleado.value = [...empleadosModuloTalentoHumano.value];
@@ -96,31 +95,6 @@ const filtrarEmpleados = (event: Event) => {
 
 
 // actualizar empleado
-function selectCard(index: number) {
-    empleadosModuloTalentoHumano.value.forEach((empleado, idx) => {
-        empleado.selected = idx === index; 
-    });
-    }
-
-    async function actualizadoEmpleado() {
-    const empleadoSeleccionado = empleadosModuloTalentoHumano.value.find((empleado) => empleado.selected);
-    
-    if (empleadoSeleccionado) {
-        try {
-        const response = await EmpleadoServicio.actualizadoEmpleado(
-            empleadoSeleccionado.etiqueta,
-            empleadoSeleccionado
-        );
-        console.log("Actualización exitosa:", response);
-        } catch (error) {
-        console.error("Error al actualizar:", error);
-        }
-    } else {
-        alert("Por favor, selecciona una tarjeta para actualizar.");
-    }
-}
-
-// eliminar empleado
 // function selectCard(index: number) {
 //     empleadosModuloTalentoHumano.value.forEach((empleado, idx) => {
 //         empleado.selected = idx === index; 
@@ -145,6 +119,23 @@ function selectCard(index: number) {
 //     }
 // }
 
+
+
+// eliminar empleado
+// const eliminarCard = async (etiqueta: string) => {
+//     const confirmacion = confirm('¿Estás seguro de que deseas eliminar esta card?');
+//     if (!confirmacion) return;
+
+//     const respuestaEliminar = await empleadoServicio.eliminarEmpleado(etiqueta);
+//     if (respuestaEliminar) {
+//         const index = cards.value.findIndex((card) => card.etiqueta === etiqueta);
+//         if (index !== -1) {
+//             cards.value.splice(index, 1); 
+//         }
+//     } else {
+//         alert('Error al eliminar el empleado.');
+//     }
+// };
 
 </script>
 
@@ -242,12 +233,12 @@ function selectCard(index: number) {
 
         <div class="button-add">
           <router-link to="/agregarEmpleado" class="btn btn-primary">Agregar</router-link>
-          <router-link to="/actualizarEmpleado" @click="actualizadoEmpleado" class="btn btn-success">Actualizar</router-link>
+          <router-link to="/actualizarEmpleado" @click="selectCard" class="btn btn-success">Actualizar</router-link>
           <div v-show="mensajeVisible" class="tooltip">
             Selecciona una tarjeta para actualizar.
           </div>
 
-          <button @click="enableDeleteMode" class="btn btn-danger">Eliminar</button>
+          <router-link to="/eliminarEmpleado" @click="eliminarCard" class="btn btn-danger">Eliminar</router-link>
           <button v-if="deleteMode" @click="deleteSelectedCards">Confirmar eliminación</button>
 
             <div v-for="empleado in empleados" :key="empleado.id" 

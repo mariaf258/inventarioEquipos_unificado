@@ -22,6 +22,7 @@ import moduloNuevo from '../views/moduloNuevo.vue'
 
 import AgregarEmpleado from '../views/AgregarEmpleado.vue'
 import actualizarEmpleado from '../views/actualizarEmpleado.vue'
+import eliminarEmpleado from '../views/eliminarEmpleado.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -125,6 +126,11 @@ const router = createRouter({
       path:'/actualizarEmpleado',
       name: 'actualizarEmpleado',
       component: actualizarEmpleado
+    },
+    {
+      path:'/eliminarEmpleado',
+      name: 'eliminarEmpleado',
+      component: eliminarEmpleado
     },
     {
       path:'/moduloNuevo',

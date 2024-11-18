@@ -103,7 +103,7 @@ section, form  {
   font-size: 16px;
   padding: 0 10px;
   color: #595959;
-  pointer-events: none;
+  /* pointer-events: none; */
   transition: 0.15s all ease;
 }
 

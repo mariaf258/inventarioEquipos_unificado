@@ -32,26 +32,17 @@ const eliminarEmpleado =async(etiqueta : string)=>{
 }
 
 
-// const actualizarEmpleado =async()=>{
-//   if (empleado.value.etiqueta) {
-//         await empleadoServicio.actualizadoEmpleado(
-//           empleado.value.etiqueta,
-//           empleado.value
-//         );
-//       } else {
-//         await empleadoServicio.crearEmpleado(empleado.value);
-//       }
-//       await obtenerEmpleados(); // Actualizar lista
-//       empleado.value = {}; // Limpiar formulario
-//     };
-
-
 
 </script>
 
 
 <template>
   <div id="app4">
+
+        <div class="button-btn">
+          <a><router-link to="/talentoHumano" class="btn btn-primary">Volver</router-link></a>
+        </div>  
+
       <div class="form4 justify-content-center">
         
         <div class="login">
@@ -62,7 +53,6 @@ const eliminarEmpleado =async(etiqueta : string)=>{
 
           <h2>C.I. MINAS LA AURORA S.A.S.</h2>
           <br />
-          <h3>DATOS</h3>
 
           
           <section class="section-empleado">
@@ -141,7 +131,6 @@ const eliminarEmpleado =async(etiqueta : string)=>{
                 </div>
 
               </div>
-            
             
           </section>
         </div>
