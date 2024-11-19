@@ -1,31 +1,58 @@
 
 /* Estilos adicionales */
 
-.card-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 25px;
-    justify-content: center;
+.form-select-container {
+    max-width: 300px;
+    margin: 20px auto;
+    position: relative;
 }
 
-.card-delete {
-    border: 1px solid #ccc;
-    padding: 1rem;
+.form-select {
+    width: 50%;
+    height: 45px;
+    padding: 10px 15px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #333;
+    border: 2px solid #432a88; 
+    border-radius: 8px; 
+    background-color: #f9f9f9;
+    appearance: none; 
+    -webkit-appearance: none;
+    -moz-appearance: none;
     cursor: pointer;
-    transition: background-color 0.3s;
-    border-radius: 5px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card-delete:hover {
-    background-color: #f0f0f0;
+
+.form-select::after {
+    content: '▼';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 14px;
+    color: #333;
 }
 
-.card-delete h4 {
-    font-weight: bold;
+.form-select:hover {
+    border-color: #432a88; 
+    box-shadow: 0 0 5px rgb(67, 42, 136, 0.5); 
 }
+
+.form-select:focus {
+    outline: none;
+    border-color: #432a88; 
+    box-shadow: 0 0 8px rgb(67, 42, 136, 0.75);  
+}
+
+.form-select option {
+    font-size: 14px;
+    padding: 5px;
+    color: #333;
+}
+
 
 
 .formulario .buttons-delete {
@@ -110,7 +137,7 @@ html {
 
 .login h6 {
     text-align: center;
-    font-size: 16px;
+    font-size: 14px;
     color: black;
     margin-bottom: 10px;
 }

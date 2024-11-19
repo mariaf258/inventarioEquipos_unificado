@@ -8,6 +8,8 @@ const empleadoServicio = new EmpleadoServicio();
 const cards = ref<EquipoDefault[]>([]);
 const selectedCard = ref<EquipoDefault | null>(null);
 
+
+
 const filtroMLA = /^MLA-TH-\d+$/;
 
 const filteredCards = computed(() => {
@@ -30,12 +32,13 @@ const obtenerEmpleados = async () => {
 
 // Abre formulario con datos de una card
 const openUpdateForm = (card: EquipoDefault) => {
-    selectedCard.value = { ...card };
+    console.log(card);
+    
 };
 
 // Actualizar 
 const eliminarCard = async (etiqueta: string) => {
-    const confirmacion = confirm('¿Estás seguro de que deseas eliminar esta card?');
+    const confirmacion = confirm('¿Estás seguro de que deseas eliminar esta empleado?');
     if (!confirmacion) return;
 
     const respuestaEliminar = await empleadoServicio.eliminarEmpleado(etiqueta);
@@ -52,6 +55,8 @@ const eliminarCard = async (etiqueta: string) => {
 const cancelUpdate = () => {
     selectedCard.value = null;
 };
+
+
 </script>
 
 <template>
@@ -63,34 +68,39 @@ const cancelUpdate = () => {
 
         <div class="form4 justify-content-center">
         <div class="login">
-            <h1>ACTUALIZAR EMPLEADO</h1>
+            <h1>ELIMINAR EMPLEADO</h1>
             <hr />
             <h2>C.I. MINAS LA AURORA S.A.S.</h2>
             <br />
-            <h6>SELECCIONAR EMPLEADO</h6>
+            <!-- <h6>SELECCIONAR EMPLEADO</h6> -->
             
 
-            <div class="card-list">
-            <div
+            <select class="form-select" 
+            v-model="selectedCard"
+            aria-label="Default select example">
+                <option disabled value="">Seleccione empleado</option>
+                <option
                 class="card-delete"
                 v-for="card in filteredCards"
                 :key="card.etiqueta"
+                :value="card"
                 @click="openUpdateForm(card)"
             >
-                <h4>{{ card.name }}</h4>
+                <h4>{{ card.name }} - </h4>
                 <p>{{ card.descripcion }}</p>
-            </div>
-            </div>
+            </option>
+            </select>
+
 
             <section v-if="selectedCard" class="section-delete">
-            <div class="formulario">
+                <div class="formulario">
                 
-                
-                <div class="buttons-delete">
-                    <button class="btn btn-danger" type="submit" @click="eliminarCard">Eliminar Cambios</button>
-                    <button class="btn btn-primary" type="button" @click="cancelUpdate">Cancelar</button>
+                    <div class="buttons-delete">
+                        <button class="btn btn-danger" type="submit" @click="eliminarCard">Eliminar Cambios</button>
+                        <button class="btn btn-primary" type="button" @click="cancelUpdate">Cancelar</button>
+                    </div>
+
                 </div>
-            </div>
             </section>
         </div>
         </div>
@@ -104,3 +114,44 @@ const cancelUpdate = () => {
 <style>
 @import '/src/assets/eliminarEmpleado.css';
 </style>
+
+<!-- 
+<div class="card-list">
+    <div
+        class="card-Update"
+        v-for="card in filteredCards"
+        :key="card.etiqueta"
+        @click="openUpdateForm(card)"
+    >
+        <h4>{{ card.name }}</h4>
+        <p>{{ card.descripcion }}</p>
+    </div>
+</div> -->
+
+<!-- <select class="form-select" aria-label="Default select example">
+    <option selected>Seleccione empleado</option>
+    <option
+    class="card-delete"
+    v-for="card in filteredCards"
+    :key="card.etiqueta"
+    @click="openUpdateForm(card)"
+>
+    <h4>{{ card.name }} - </h4>
+    <p>{{ card.descripcion }}</p>
+</option>
+</select> -->
+
+<!-- <select class="form-select" 
+v-model="selectedCard"
+aria-label="Default select example">
+    <option disabled value="">Seleccione empleado</option>
+    <option
+    class="card-delete"
+    v-for="card in filteredCards"
+    :key="card.etiqueta"
+    @click="openUpdateForm(card)"
+    >
+        <h4>{{ card.name }} - </h4>
+        <p>{{ card.descripcion }}</p>
+    </option>
+</select> -->

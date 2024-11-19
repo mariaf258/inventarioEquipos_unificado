@@ -36,16 +36,17 @@ export class EmpleadoServicio {
         }
     }
 
-    async actualizadoEmpleado(etiqueta: string, empleadoActualizado: Usuarios){
+    async actualizadoEmpleado(etiqueta: string, empleadoActualizado: Usuarios) {
         try {
-            const response = await updateDoc(collection(db, 'Usuarios', etiqueta), { ...empleadoActualizado })
-            
-            console.log({response});
+            await updateDoc(doc(collection(db, 'Usuarios'), etiqueta), { ...empleadoActualizado });
+            console.log('Documento actualizado correctamente');
+            return true; 
         } catch (error) {
-            console.log({error});
+            console.log('Error al actualizar el documento:', error);
+            return false; 
         }
-
     }
+    
 
     async eliminarEmpleado(etiqueta : string ){
         try {

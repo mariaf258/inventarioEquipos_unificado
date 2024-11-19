@@ -35,25 +35,47 @@ const openUpdateForm = (card: EquipoDefault) => {
 
 // Actualizar 
 const actualizarCard = async () => {
-    if (!selectedCard.value) return;
 
-    const respuestaActualizar = await empleadoServicio.actualizadoEmpleado(
-        selectedCard.value.etiqueta,
-        selectedCard.value
-        
-    );
-
-    console.log(selectedCard);
-
-    if (respuestaActualizar) {
-        const index = cards.value.findIndex((card) => card.etiqueta === selectedCard.value!.etiqueta);
-        if (index !== -1) {
-        cards.value[index] = { ...selectedCard.value };
-        }
-        selectedCard.value = null;
+    if (!selectedCard.value || !selectedCard.value.etiqueta) {
+        console.error('No se puede actualizar: selectedCard está vacío o sin etiqueta.');
+        return;
     }
-    console.log(respuestaActualizar);
+
+    console.log('Datos enviados a actualizadoEmpleado:', {
+        etiqueta: selectedCard.value.etiqueta,
+        data: selectedCard.value
+    });
+
+    try {
+        const respuestaActualizar = await empleadoServicio.actualizadoEmpleado(
+            selectedCard.value.etiqueta,
+            selectedCard.value
+        );
+
+        console.log('respuestaActualizar: ', respuestaActualizar );
+        
+
+        if (respuestaActualizar) {
+            const index = cards.value.findIndex(
+                (card) => card.etiqueta === selectedCard.value!.etiqueta
+            );
+
+            if (index !== -1) {
+                cards.value[index] = { ...selectedCard.value };
+                console.log('Card actualizada correctamente:', cards.value[index]);
+            } else {
+                console.log('No se encontró la tarjeta para actualizar.');
+            }
+
+            selectedCard.value = null;
+        } else {
+            console.log('Error al actualizar en el servicio.');
+        }
+    } catch (error) {
+        console.log('Error durante la actualización:', error);
+    }
 };
+
 
 const cancelUpdate = () => {
     selectedCard.value = null;
@@ -73,23 +95,27 @@ const cancelUpdate = () => {
             <hr />
             <h2>C.I. MINAS LA AURORA S.A.S.</h2>
             <br />
-            <h6>SELECCIONAR EMPLEADO</h6>
+            <!-- <h6>SELECCIONAR EMPLEADO</h6> -->
             
-            <div class="card-list">
-            <div
-                class="card-Update"
+            <select class="form-select" 
+            v-model="selectedCard"
+            aria-label="Default select example">
+                <option disabled value="">Seleccione empleado</option>
+                <option
+                class="card-delete"
                 v-for="card in filteredCards"
                 :key="card.etiqueta"
+                :value="card"
                 @click="openUpdateForm(card)"
             >
-                <h4>{{ card.name }}</h4>
+                <h4>{{ card.name }} - </h4>
                 <p>{{ card.descripcion }}</p>
-            </div>
-            </div>
+            </option>
+            </select>
 
             <section v-if="selectedCard" class="section-empleado">
             <div class="formulario">
-                <form class="form-empleado" @submit.prevent="actualizarCard">
+                <form class="form-empleado" @submit.prevent="actualizarCard()">
 
                     <div class="form-group">
                         <input type="name" v-model="selectedCard.name" placeholder="" />

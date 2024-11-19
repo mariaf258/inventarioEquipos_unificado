@@ -15,7 +15,9 @@ const datosUsuario = new UsuariosDefault();
 const crearEmpleado =async()=>{
   if (!alertaCamposEmpleado(datos)) {
     return;
-  }
+  }  else {
+        alert('Se agrego empleado exitosamente.');
+    }
   const respuestaCrear = await empleadoServicio.crearEmpleado(datos)
 }
 
