@@ -147,4 +147,3 @@ const eliminarEmpleado =async(etiqueta : string)=>{
 <style>
 @import '/src/assets/agregarEmpleado.css'
 </style> 
-

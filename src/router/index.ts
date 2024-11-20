@@ -20,9 +20,9 @@ import juridico from '../views/juridico.vue'
 import audioVisual from '../views/audioVisual.vue'
 import moduloNuevo from '../views/moduloNuevo.vue'
 
-import AgregarEmpleado from '../views/AgregarEmpleado.vue'
-import actualizarEmpleado from '../views/actualizarEmpleado.vue'
-import eliminarEmpleado from '../views/eliminarEmpleado.vue'
+import AgregarEmpleado from '../components/AgregarEmpleado.vue'
+import actualizarEmpleado from '../components/actualizarEmpleado.vue'
+import eliminarEmpleado from '../components/eliminarEmpleado.vue'
 
 const router = createRouter({
   history: createWebHistory(),

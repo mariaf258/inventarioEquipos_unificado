@@ -2,6 +2,8 @@
 import EquipoDefault from '@/utils/interfaces/InterfaceEquipos';
 import { EmpleadoServicio } from '@/services/empleados/EmpleadoServicio';
 import { ref, onMounted, computed } from 'vue';
+import { useRouter } from "vue-router";
+
 
 const empleadoServicio = new EmpleadoServicio();
 
@@ -36,25 +38,40 @@ const openUpdateForm = (card: EquipoDefault) => {
     
 };
 
-// Actualizar 
-const eliminarCard = async (etiqueta: string) => {
-    const confirmacion = confirm('¿Estás seguro de que deseas eliminar esta empleado?');
+// Eliminar 
+const eliminarCard = async (etiqueta: string | undefined) => {
+    if (!etiqueta) {
+        alert('No se puede eliminar: etiqueta no válida.');
+        return;
+    }
+
+    const confirmacion = confirm('¿Estás seguro de que deseas eliminar este empleado?');
     if (!confirmacion) return;
 
+    console.log('Etiqueta a eliminar:', etiqueta); 
     const respuestaEliminar = await empleadoServicio.eliminarEmpleado(etiqueta);
-    if (respuestaEliminar) {
+
+    if (!respuestaEliminar) {
         const index = cards.value.findIndex((card) => card.etiqueta === etiqueta);
         if (index !== -1) {
-            cards.value.splice(index, 1); 
+            cards.value.splice(index, 1);
         }
+        alert('Empleado eliminado correctamente.');
     } else {
         alert('Error al eliminar el empleado.');
     }
 };
 
+
 const cancelUpdate = () => {
     selectedCard.value = null;
 };
+
+//boton volver
+
+// const volver = () => {
+//     router.back(); 
+// };
 
 
 </script>
@@ -64,6 +81,8 @@ const cancelUpdate = () => {
 
         <div class="button-btn">
             <a><router-link to="/talentoHumano" class="btn btn-primary">Volver</router-link></a>
+            <!-- <a class="btn btn-primary" @click.prevent="volver">Volver</a> -->
+
         </div>  
 
         <div class="form4 justify-content-center">
@@ -96,7 +115,15 @@ const cancelUpdate = () => {
                 <div class="formulario">
                 
                     <div class="buttons-delete">
-                        <button class="btn btn-danger" type="submit" @click="eliminarCard">Eliminar Cambios</button>
+                        <button 
+                        class="btn btn-danger" 
+                        type="submit" 
+                        :disabled="!selectedCard"
+                        @click="eliminarCard(selectedCard?.id)"
+                    >
+                        Eliminar Cambios
+                    </button>
+
                         <button class="btn btn-primary" type="button" @click="cancelUpdate">Cancelar</button>
                     </div>
 
@@ -114,44 +141,3 @@ const cancelUpdate = () => {
 <style>
 @import '/src/assets/eliminarEmpleado.css';
 </style>
-
-<!-- 
-<div class="card-list">
-    <div
-        class="card-Update"
-        v-for="card in filteredCards"
-        :key="card.etiqueta"
-        @click="openUpdateForm(card)"
-    >
-        <h4>{{ card.name }}</h4>
-        <p>{{ card.descripcion }}</p>
-    </div>
-</div> -->
-
-<!-- <select class="form-select" aria-label="Default select example">
-    <option selected>Seleccione empleado</option>
-    <option
-    class="card-delete"
-    v-for="card in filteredCards"
-    :key="card.etiqueta"
-    @click="openUpdateForm(card)"
->
-    <h4>{{ card.name }} - </h4>
-    <p>{{ card.descripcion }}</p>
-</option>
-</select> -->
-
-<!-- <select class="form-select" 
-v-model="selectedCard"
-aria-label="Default select example">
-    <option disabled value="">Seleccione empleado</option>
-    <option
-    class="card-delete"
-    v-for="card in filteredCards"
-    :key="card.etiqueta"
-    @click="openUpdateForm(card)"
-    >
-        <h4>{{ card.name }} - </h4>
-        <p>{{ card.descripcion }}</p>
-    </option>
-</select> -->

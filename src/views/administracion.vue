@@ -7,18 +7,15 @@ import type { Equipo } from '@/utils/interfaces/InterfaceEquipos';
 import {EmpleadoServicio} from '@/services/empleados/EmpleadoServicio'
 import { cerrarSesion } from '../router/index'
 import { useRouter } from 'vue-router'
+import LogoutButton from '../components/logoutButton.vue'
+
 
 const empleadoServicio = new EmpleadoServicio()
-const isDropdownVisible = ref(false)
 const mensajeVisible = ref(false);
 const deleteMode = ref(false);
 
 const router = useRouter();
 
-
-const toggleDropdown = () => {
-  isDropdownVisible.value = !isDropdownVisible.value
-}
 
 let empleadosModuloAdministracion =ref<Equipo[]>([]);
 const obtenerDatos = async () => {
@@ -52,20 +49,6 @@ onMounted(() => {
   userIcon?.addEventListener('click', () => {
     userDropdown?.classList.toggle('show')
   })
-
-  // Cerrar Sesion
-const logout = () => {
-  console.log('Cerrando sesión...');
-  
-  localStorage.removeItem('savedUsername')
-  localStorage.removeItem('savedPassword')
-  localStorage.removeItem('rememberCredentials')
-  router.replace('/inventarioEquipos_login')
-
-cerrarSesion();
-  router.replace('/inventarioEquipos_login');
-}
-
 
 
 // Buscador
@@ -109,26 +92,7 @@ const filtrarEmpleados = (event: Event) => {
       <div class="main-content">
         <div class="header-right">
           <nav class="navbar bg-body-tertiary fixed-top">
-            <img
-              src="../../public/img/user.png"
-              alt="user"
-              @click="toggleDropdown"
-              class="userIcon"
-            />
-            <div class="offcanvas-body">
-              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                <ul v-show="isDropdownVisible" class="dropdown-menu">
-                  <img
-                    src="../../public/img/user-white.png"
-                    alt="user"
-                    @click="toggleDropdown"
-                    class="userIcon-white"
-                  />
-                  
-                  <a class="dropdown-item" @click="logout">Cerrar Sesión</a>
-                </ul>
-              </ul>
-            </div>
+            <LogoutButton />
           </nav>
 
           <hr class="separador" />

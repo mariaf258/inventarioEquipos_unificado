@@ -7,6 +7,8 @@ import { cerrarSesion } from '../router/index'
 import type { Modulos } from '@/utils/interfaces/InterfaceModulos';
 import { ModuloServicio } from '@/services/modulos/ModuloServicio';
 import { sections } from '@/utils/sesionesDepartamentos.js'
+import LogoutButton from '../components/logoutButton.vue'
+
 
 
 
@@ -15,12 +17,6 @@ const db = getFirestore(app)
 const router = useRouter();
 
 
-const isDropdownVisible = ref(false)
-const toggleDropdown = () => {
-  isDropdownVisible.value = !isDropdownVisible.value
-  console.log("Dropdown visible:", isDropdownVisible.value);
-
-}
 
 const crearRegistro = async (idModulo: number, idUsuario: number, name: string, shortName: string) => {
   try {
@@ -144,18 +140,6 @@ const filtrarModulos = (event: Event) => {
 
 
 
-// Cerrar Sesion
-const logout = () => {
-  console.log('Cerrando sesión...');
-
-  localStorage.removeItem('savedUsername')
-  localStorage.removeItem('savedPassword')
-  localStorage.removeItem('rememberCredentials')
-  router.replace('/inventarioEquipos_login')
-
-  cerrarSesion();
-  router.replace('/inventarioEquipos_login');
-}
 
 
 // color de shortName
@@ -206,16 +190,7 @@ const generarColorEstatico = (input: string, tipo: 'pastel' | 'vivo' = 'pastel')
       <div class="main-content">
         <div class="header-right">
           <nav class="navbar bg-body-tertiary fixed-top">
-            <img src="../../public/img/user.png" alt="user" @click="toggleDropdown" class="userIcon" />
-            <div class="offcanvas-body">
-              <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                <ul v-show="isDropdownVisible" class="dropdown-menu">
-                  <img src="../../public/img/user-white.png" alt="user" @click="toggleDropdown"
-                    class="userIcon-white" />
-                  <a class="dropdown-item" @click="logout">Cerrar Sesión</a>
-                </ul>
-              </ul>
-            </div>
+            <LogoutButton />
           </nav>
 
           <hr class="separador" />
@@ -249,15 +224,15 @@ const generarColorEstatico = (input: string, tipo: 'pastel' | 'vivo' = 'pastel')
               <p><b>{{ section.name.toUpperCase() }}</b></p>
             </router-link>
           </div>
-          <!-- <div class="card" v-for="modulo in ModuloInventario" :key="modulo.idModulo">
-            <router-link :to="`/${modulo.shortName.toLowerCase()}`">
-              <div class="card-icon" :style="{ backgroundColor:  generarColorAleatorio()}">{{ modulo.shortName.toUpperCase() }}</div>
-              <p><b>{{ modulo.name.toUpperCase() }}</b></p>
-            </router-link>
-          </div> -->
+  
         </div>
+        <div class="button-add">
+          
+          <router-link to="/eliminarEmpleado" @click="eliminarCard" class="btn btn-danger">Eliminar</router-link>
+
       </div>
     </div>
+  </div>
   </div>
 </template>
 

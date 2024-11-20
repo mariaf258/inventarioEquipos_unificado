@@ -1,4 +1,5 @@
 export interface Equipo {
+    id?:string
     name?: string
     post?: string
     etiqueta?: string
@@ -14,6 +15,7 @@ export interface Equipo {
 }
 
 export default class EquipoDefault implements Equipo {
+    id?:"";
     name?: "";
     post?: "";
     etiqueta?: "";
