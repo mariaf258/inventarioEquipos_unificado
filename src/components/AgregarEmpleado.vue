@@ -17,7 +17,7 @@ const crearEmpleado =async()=>{
     return;
   }  else {
         alert('Se agrego empleado exitosamente.');
-    }
+    } 
   const respuestaCrear = await empleadoServicio.crearEmpleado(datos)
 }
 
@@ -25,12 +25,12 @@ const obtenerEmpleados =async()=>{
   const respuestaObtener = await empleadoServicio.obtenerEmpleados()
 }
 
-const actualizadoEmpleado =async(etiqueta: string, empleadoActualizado: UsuariosDefault)=>{
-  const respuestaActualizar = await empleadoServicio.actualizadoEmpleado(etiqueta, empleadoActualizado)
+const actualizadoEmpleado =async(id: string, empleadoActualizado: UsuariosDefault)=>{
+  const respuestaActualizar = await empleadoServicio.actualizadoEmpleado(id, empleadoActualizado)
 }
 
-const eliminarEmpleado =async(etiqueta : string)=>{
-  const respuestaEliminar = await empleadoServicio.eliminarEmpleado(etiqueta)
+const eliminarEmpleado =async(id : string)=>{
+  const respuestaEliminar = await empleadoServicio.eliminarEmpleado(id)
 }
 
 

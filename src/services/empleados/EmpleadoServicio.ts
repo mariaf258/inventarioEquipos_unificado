@@ -24,59 +24,26 @@ export class EmpleadoServicio {
     }
 
 
-    // async crearEmpleado(empleado : Equipo){
-    //     try {
-    //         const response =   await addDoc(collection(db, 'Equipos'), {...empleado})
-    //         const empleados = await this.obtenerEmpleados();
-    //         const dataEmpleados = empleados.docs.map((registro) => ( {
-    //             id : registro.id,   
-    //             ...registro.data()
-    //         }))
-
-    //         console.log({response});
-    //         console.log({dataEmpleados})
-    //         return response ;            
-    //     } catch (error) {
-    //         console.log({error});
-            
-    //     }
-    // }
 
     async crearEmpleado(empleado: Equipo) {
         try {
-            // if (!empleado || Object.keys(empleado).length === 0) {
-            //     throw new Error('El objeto empleado está vacío o mal definido.');
-            // }
-    
-            const response = await addDoc(collection(db, 'Equipos'), { ...empleado });
-            console.log('Empleado creado correctamente:', response.id);
+            if (!empleado || Object.keys(empleado).length === 0) {
+                throw new Error('Los datos del empleado son inválidos.');
+            }
 
-            const empleados = await this.obtenerEmpleados();
-            const dataEmpleados = empleados.docs.map((registro) => ({
-                id: registro.id,
-                ...registro.data(),
-            }));
+            const { id, ...datosSinId } = empleado;
+            const response = await addDoc(collection(db, 'Equipos'), datosSinId);
+            console.log('Empleado creado:', response.id);
     
-            console.log('Lista actualizada de empleados:', dataEmpleados);
-            return response; 
+
+            await this.obtenerEmpleados();
+            return response;
         } catch (error) {
             console.error('Error al crear empleado:', error);
-            throw error; 
         }
     }
     
-
-    // async actualizadoEmpleado(id: string, nuevosDatos: object, empleadoActualizado: Usuarios) : Promise<boolean> {
-    //     try {
-            
-    //         await updateDoc(doc(collection(db, 'Equipos'), id), { ...empleadoActualizado });
-    //         console.log('Empleado actualizado correctamente', id);
-    //         return true; 
-    //     } catch (error) {
-    //         console.log('Error al actualizar el empleado:', error);
-    //         return false; 
-    //     }
-    // }
+    
 
     async actualizadoEmpleado(id: string, nuevosDatos: object): Promise<boolean> {
         try {

@@ -20,13 +20,17 @@ const obtenerDatos = async () => {
   const empleados:Equipo[] = await empleadoServicio.obtenerEmpleados()
   console.log(empleados);
   
-  const empleadosSst: Equipo[] = empleados.filter(empleado => /^MLA-SS-\d+$/
-  .test(empleado.etiqueta))
+  const empleadosSst: Equipo[] = empleados.filter((empleado) => /^mla-sst-\d+$/i
+  .test(empleado.etiqueta.toLowerCase()))
   .sort((a, b) => { 
       const numA = parseInt(a.etiqueta.split('-')[2], 10);
       const numB = parseInt(b.etiqueta.split('-')[2], 10);
       return numA - numB;
-    });
+    })
+.map((empleado) => ({
+      ...empleado,
+      etiqueta: empleado.etiqueta.toUpperCase(),
+    }));
   console.log(empleadosSst);
   empleadosModuloSst.value = empleadosSst;
   console.log({empleadosModuloSst})
@@ -119,7 +123,8 @@ const filtrarEmpleados = (event: Event) => {
         <div class="departamento"><h1>SEGURIDAD Y SALUD EN EL TRABAJO</h1></div>
 
         <div class="container-er">
-          <div v-for="(item, index) in filteredEmpleado" :key="index" class="card1" :class="{ selected: item.selected }" @click="selectCard(index)" v-bind:item="item as Equipo">
+          <div v-for="(item, index) in filteredEmpleado" :key="index" class="card1" 
+          :class="{ selected: item.selected }" @click="selectCard(index)" v-bind:item="item as Equipo">
             
             <div class="face face1">
               <img

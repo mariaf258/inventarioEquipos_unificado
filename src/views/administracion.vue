@@ -22,13 +22,17 @@ const obtenerDatos = async () => {
   const empleados:Equipo[] = await empleadoServicio.obtenerEmpleados()
   console.log(empleados);
   
-  const empleadosAdministracion: Equipo[] = empleados.filter(empleado => /^MLA-AD-\d+$/
-  .test(empleado.etiqueta))
+  const empleadosAdministracion: Equipo[] = empleados.filter((empleado) => /^mla-ad-\d+$/i
+  .test(empleado.etiqueta.toLowerCase()))
   .sort((a, b) => { 
       const numA = parseInt(a.etiqueta.split('-')[2], 10);
       const numB = parseInt(b.etiqueta.split('-')[2], 10);
       return numA - numB;
-    });    
+    })
+.map((empleado) => ({
+      ...empleado,
+      etiqueta: empleado.etiqueta.toUpperCase(),
+    }));
   console.log(empleadosAdministracion);
   empleadosModuloAdministracion.value = empleadosAdministracion;
   console.log({empleadosModuloAdministracion})

@@ -24,13 +24,18 @@ const obtenerDatos = async () => {
 
 
 
-const empleadosTalentoHumano:Equipo[] = empleados.filter(empleado => /^MLA-TH-\d+$/
-  .test(empleado.etiqueta))
+const empleadosTalentoHumano:Equipo[] = empleados.filter((empleado) => /^mla-th-\d+$/i
+  .test(empleado.etiqueta.toLowerCase()))
   .sort((a, b) => { 
       const numA = parseInt(a.etiqueta.split('-')[2], 10);
       const numB = parseInt(b.etiqueta.split('-')[2], 10);
       return numA - numB;
-    });
+    })
+.map((empleado) => ({
+      ...empleado,
+      etiqueta: empleado.etiqueta.toUpperCase(),
+    }));
+
 console.log(empleadosTalentoHumano);
 empleadosModuloTalentoHumano.value = empleadosTalentoHumano;
 console.log({empleadosModuloTalentoHumano});

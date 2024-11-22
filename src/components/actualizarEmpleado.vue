@@ -8,10 +8,15 @@ const empleadoServicio = new EmpleadoServicio();
 const cards = ref<EquipoDefault[]>([]);
 const selectedCard = ref<EquipoDefault | null>(null);
 
-const filtroMLA = /^MLA-TH-\d+$/;
+const filtroMLA =/^mla-th-\d+$/i;
 
 const filteredCards = computed(() => {
-    return cards.value.filter((card) => filtroMLA.test(card.etiqueta));
+    return cards.value.filter((card) => filtroMLA.test(card.etiqueta))
+    .sort((a, b) => { 
+        const numA = parseInt(a.etiqueta.split('-')[2], 10);
+        const numB = parseInt(b.etiqueta.split('-')[2], 10);
+        return numA - numB;
+    });
 });
 
 
@@ -34,49 +39,6 @@ const openUpdateForm = (card: EquipoDefault) => {
 };
 
 // Actualizar 
-// const actualizarCard = async () => {
-
-//     if (!selectedCard.value || !selectedCard.value.id) {
-//         console.error('No se puede actualizar: selectedCard está vacío o sin etiqueta.');
-//         return;
-//     }
-
-//     console.log('Datos enviados a actualizadoEmpleado:', {
-//         id: selectedCard.value.id,
-//         data: selectedCard.value
-//     });
-
-//     try {
-//         const respuestaActualizar = await empleadoServicio.actualizadoEmpleado(
-//             selectedCard.value.id,
-//             { ...selectedCard.value } 
-//         );
-
-
-//         console.log('respuestaActualizar: ', respuestaActualizar );
-        
-
-//         if (respuestaActualizar) {
-//             const index = cards.value.findIndex(
-//                 (card) => card.id === selectedCard.value!.id
-//             );
-
-//             if (index !== -1) {
-//                 cards.value[index] = { ...selectedCard.value };
-//                 alert('Empleado actualizado correctamente', cards.value[index]);
-//             } else {
-//                 alert('No se encontró la tarjeta para actualizar.');
-//             }
-
-//             selectedCard.value = null;
-//         } else {
-//             console.log('Error al actualizar en el servicio.');
-//         }
-//     } catch (error) {
-//         console.log('Error durante la actualización:', error);
-//     }
-// };
-
 const actualizarCard = async () => {
     if (!selectedCard.value || !selectedCard.value.id) {
         console.error('No se puede actualizar: selectedCard está vacío o sin ID.');

@@ -5,12 +5,12 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBAJz4O7QKgTlQrEvO_XgSMYqAoq4kgyYk",
-  authDomain: "inventario-equipos-e0a4e.firebaseapp.com",
-  projectId: "inventario-equipos-e0a4e",
-  storageBucket: "inventario-equipos-e0a4e.firebasestorage.app",
-  messagingSenderId: "376146822151",
-  appId: "1:376146822151:web:2eba25a20b1ae4ac6b56a2"
+  apiKey: "AIzaSyBD8fQYBgpboKr0e8rlvrnE9v1frHzvj1k",
+  authDomain: "inventario-equipos-61a16.firebaseapp.com",
+  projectId: "inventario-equipos-61a16",
+  storageBucket: "inventario-equipos-61a16.firebasestorage.app",
+  messagingSenderId: "69342939340",
+  appId: "1:69342939340:web:627e3cbba681f949cb1a69"
 };
 
 // Initialize Firebase

@@ -12,10 +12,15 @@ const selectedCard = ref<EquipoDefault | null>(null);
 
 
 
-const filtroMLA = /^MLA-TH-\d+$/;
+const filtroMLA = /^mla-th-\d+$/i;
 
 const filteredCards = computed(() => {
-    return cards.value.filter((card) => filtroMLA.test(card.etiqueta));
+    return cards.value.filter((card) => filtroMLA.test(card.etiqueta))
+    .sort((a, b) => { 
+        const numA = parseInt(a.etiqueta.split('-')[2], 10);
+        const numB = parseInt(b.etiqueta.split('-')[2], 10);
+        return numA - numB;
+    });
 });
 
 
