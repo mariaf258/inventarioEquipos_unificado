@@ -1,6 +1,6 @@
 import Modulo from '@/utils/interfaces/InterfaceModulos';
 import app from '@/utils/firebase'
-import { getFirestore, getDocs, addDoc, updateDoc, deleteDoc, collection } from 'firebase/firestore'
+import { getFirestore, getDocs, addDoc, updateDoc, deleteDoc, collection, doc } from 'firebase/firestore';
 const db = getFirestore(app)
 
 export class ModuloServicio {
@@ -8,8 +8,11 @@ export class ModuloServicio {
     async obtenerModulos () : Promise<Modulo[]>{
         try {
             const response = await getDocs(collection(db, 'Modulos'))
-            const dataModulos = response.docs.map((registro) => registro.data())
-        
+            const dataModulos = response.docs.map((registro) =>( {
+                id : registro.id,   
+                ...registro.data()
+            }))
+            
             console.log({response});
             console.log({dataModulos})
             return dataModulos ;
@@ -18,40 +21,59 @@ export class ModuloServicio {
         }
     }
     
-    async crearModulo(departamento : Modulo){
+    async crearModulo(modulo : Modulo){
         try {
-            const response =   await addDoc(collection(db, 'Modulos'), {...departamento})
-            const departamentos = await this.obtenerModulos();
-            const dataModulos = departamentos.docs.map((registro) => registro.data())
+            if (!modulo || Object.keys(modulo).length === 0) {
+                throw new Error('Los datos del modulo son inválidos.');
+            }
 
-            console.log({response});
-            console.log({dataModulos})
-            return response ;            
+            const { id, ...datosSinId } = modulo;
+            const response = await addDoc(collection(db, 'Modulos'), datosSinId);
+            console.log('Modulo creado:', response.id);
+    
+
+            await this.obtenerModulos();
+            return response;
         } catch (error) {
-            console.log({error});
+            console.error('Error al crear el modulo:', error);
         }
     }
 
-    async actualizadoModulo(shortName: string, moduloActualizado: Modulo){
+    async actualizadoModulo(id: string, nuevosDatos: object): Promise<boolean> {
         try {
-            const response = await updateDoc(collection(db, 'Modulos', shortName), { ...moduloActualizado })
-
-            console.log({response});
+            if (!id || Object.keys(nuevosDatos).length === 0) {
+                throw new Error('ID inválido o datos vacíos.');
+            }
+    
+            const docRef = doc(collection(db, 'Modulos'), id);
+            await updateDoc(docRef, nuevosDatos);
+            console.log('Modulo actualizado correctamente en Firebase:', id);
+            return true;
         } catch (error) {
-            console.log({ error });
+            console.error('Error al actualizar el modulo:', error);
+            return false;
         }
-
     }
 
-    async eliminarModulo(shortName : string ){
+    async eliminarModulo(id: string): Promise<boolean> {
         try {
-            const response = await deleteDoc(collection(db, 'Modulos', shortName))
+            console.log('Intentando eliminar el modulo con id:', id);
 
-            console.log({response});
+            const docRef = doc(db, 'Modulos', id); 
+            console.log('Referencia al documento:', docRef.path);
+            // await deleteDoc(docRef);
+            const respuesta = await deleteDoc(docRef);
+            console.log(respuesta);
+            console.log("respuesta get");
+            console.log(await this.obtenerModulos());
+                        
+            
+            console.log('Modulo eliminado con éxito.');
+            return true;
         } catch (error) {
-            console.log({ error });
+            console.error('Error al eliminar el modulo:', error);
+            return false;
         }
-
     }
 
 }

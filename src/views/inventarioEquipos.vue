@@ -228,7 +228,7 @@ const generarColorEstatico = (input: string, tipo: 'pastel' | 'vivo' = 'pastel')
         </div>
         <div class="button-add">
           
-          <router-link to="/eliminarEmpleado" @click="eliminarCard" class="btn btn-danger">Eliminar</router-link>
+          <router-link to="/eliminarModulo" @click="eliminarCard" class="btn btn-danger">Eliminar</router-link>
 
       </div>
     </div>

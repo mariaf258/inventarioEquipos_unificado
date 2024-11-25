@@ -61,7 +61,6 @@ onMounted(() => {
 
 
 
-
 // Cerrar Sesion
 const logout = () => {
   console.log('Cerrando sesión...');
@@ -124,31 +123,6 @@ function selectCard(index: number) {
         alert("Por favor, selecciona una tarjeta para actualizar.");
     }
 }
-
-// eliminar empleado
-// function selectCard(index: number) {
-//     empleadosModuloTalentoHumano.value.forEach((empleado, idx) => {
-//         empleado.selected = idx === index; 
-//     });
-//     }
-
-//     async function actualizadoEmpleado() {
-//     const empleadoSeleccionado = empleadosModuloTalentoHumano.value.find((empleado) => empleado.selected);
-    
-//     if (empleadoSeleccionado) {
-//         try {
-//         const response = await EmpleadoServicio.actualizadoEmpleado(
-//             empleadoSeleccionado.etiqueta,
-//             empleadoSeleccionado
-//         );
-//         console.log("Actualización exitosa:", response);
-//         } catch (error) {
-//         console.error("Error al actualizar:", error);
-//         }
-//     } else {
-//         alert("Por favor, selecciona una tarjeta para actualizar.");
-//     }
-// }
 
 
 </script>

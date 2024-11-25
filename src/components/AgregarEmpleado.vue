@@ -4,6 +4,9 @@ import UsuariosDefault from '@/utils/interfaces/interfaceUsuarios';
 import {EmpleadoServicio} from '@/services/empleados/EmpleadoServicio';
 import {alertaCamposEmpleado} from '@/utils/alertaCampos';
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router  = useRouter()
 
 
 const empleadoServicio = new EmpleadoServicio();
@@ -42,7 +45,9 @@ const eliminarEmpleado =async(id : string)=>{
   <div id="app4">
 
         <div class="button-btn">
-          <a><router-link to="/talentoHumano" class="btn btn-primary">Volver</router-link></a>
+          <!-- <a><router-link to="/talentoHumano" class="btn btn-primary">Volver</router-link></a> -->
+          <a class="btn btn-primary" @click="router.go(-1)">Volver</a>
+
         </div>  
 
       <div class="form4 justify-content-center">

@@ -1,38 +1,38 @@
 <script setup lang="ts">
-import EquipoDefault from '@/utils/interfaces/InterfaceEquipos';
-import { EmpleadoServicio } from '@/services/empleados/EmpleadoServicio';
+import ModuloDefault from '@/utils/interfaces/InterfaceEquipos';
+import { ModuloServicio } from '@/services/modulos/ModuloServicio';
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router  = useRouter()
 
 
-const empleadoServicio = new EmpleadoServicio();
+const moduloServicio = new ModuloServicio();
 
-const cards = ref<EquipoDefault[]>([]);
-const selectedCard = ref<EquipoDefault | null>(null);
+const cards = ref<ModuloDefault[]>([]);
+const selectedCard = ref<ModuloDefault | null>(null);
 
 
 
-const filtroMLA = /^mla-th-\d+$/i;
+// const filtroMLA = /^mla-th-\d+$/i;
 
 const filteredCards = computed(() => {
-    return cards.value.filter((card) => filtroMLA.test(card.etiqueta))
+    return cards.value.filter((card) => card.shortName)
     .sort((a, b) => { 
-        const numA = parseInt(a.etiqueta.split('-')[2], 10);
-        const numB = parseInt(b.etiqueta.split('-')[2], 10);
+        const numA = parseInt(a.shortName.split('-')[2], 10);
+        const numB = parseInt(b.shortName.split('-')[2], 10);
         return numA - numB;
     });
 });
 
 
 onMounted(async () => {
-    await obtenerEmpleados();
+    await obtenerModulos();
 });
 
 
-const obtenerEmpleados = async () => {
-    const respuestaObtener = await empleadoServicio.obtenerEmpleados();
+const obtenerModulos = async () => {
+    const respuestaObtener = await moduloServicio.obtenerModulos();
     if (respuestaObtener) {
         cards.value = respuestaObtener;
         console.log(cards.value);
@@ -40,7 +40,7 @@ const obtenerEmpleados = async () => {
 };
 
 // Abre formulario con datos de una card
-const openUpdateForm = (card: EquipoDefault) => {
+const openUpdateForm = (card: ModuloDefault) => {
     console.log(card);
     
 };
@@ -52,20 +52,20 @@ const eliminarCard = async (etiqueta: string | undefined) => {
         return;
     }
 
-    const confirmacion = confirm('¿Estás seguro de que deseas eliminar este empleado?');
+    const confirmacion = confirm('¿Estás seguro de que deseas eliminar este modulo?');
     if (!confirmacion) return;
 
     console.log('Etiqueta a eliminar:', etiqueta); 
-    const respuestaEliminar = await empleadoServicio.eliminarEmpleado(etiqueta);
+    const respuestaEliminar = await moduloServicio.eliminarModulo(etiqueta);
 
     if (!respuestaEliminar) {
         const index = cards.value.findIndex((card) => card.etiqueta === etiqueta);
         if (index !== -1) {
             cards.value.splice(index, 1);
         }
-        alert('Error al eliminar el empleado.');
+        alert('Error al eliminar el modulo.');
     } else {
-        alert('Empleado eliminado correctamente.');
+        alert('Modulo eliminado correctamente.');
     }
 };
 
@@ -98,7 +98,7 @@ const cancelUpdate = () => {
             <select class="form-select" 
             v-model="selectedCard"
             aria-label="Default select example">
-                <option disabled value="">Seleccione empleado</option>
+                <option disabled value="">Seleccione Modulo</option>
                 <option
                 class="card-delete"
                 v-for="card in filteredCards"
@@ -107,7 +107,7 @@ const cancelUpdate = () => {
                 @click="openUpdateForm(card)"
             >
                 <h4>{{ card.name }} - </h4>
-                <p>{{ card.descripcion }}</p>
+                <p>{{ card.shortName }}</p>
             </option>
             </select>
 

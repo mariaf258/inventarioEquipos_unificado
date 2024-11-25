@@ -153,19 +153,13 @@ const filtrarEmpleados = (event: Event) => {
 
         <div class="button-add">
           <router-link to="/agregarEmpleado" class="btn btn-primary">Agregar</router-link>
-          <router-link to="/actualizarEmpleado" @click="actualizadoEmpleado" class="btn btn-success">Actualizar</router-link>
+          <router-link to="/actualizarEmpleado" @click="selectCard" class="btn btn-success">Actualizar</router-link>
           <div v-show="mensajeVisible" class="tooltip">
             Selecciona una tarjeta para actualizar.
           </div>
 
-          <button @click="enableDeleteMode" class="btn btn-danger">Eliminar</button>
-          <button v-if="deleteMode" @click="deleteSelectedCards">Confirmar eliminación</button>
+          <router-link to="/eliminarEmpleado" @click="eliminarCard" class="btn btn-danger">Eliminar</router-link>
 
-            <div v-for="empleado in empleados" :key="empleado.id" 
-                :class="{ selected: empleado.selected }" 
-                @click="toggleCardSelection(empleado)">
-                <h3>{{ empleado.title }}</h3>
-            </div>
 
         </div>
       </div>

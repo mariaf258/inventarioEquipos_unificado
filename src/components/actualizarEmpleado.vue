@@ -2,6 +2,9 @@
 import EquipoDefault from '@/utils/interfaces/InterfaceEquipos';
 import { EmpleadoServicio } from '@/services/empleados/EmpleadoServicio';
 import { ref, onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router  = useRouter()
 
 const empleadoServicio = new EmpleadoServicio();
 
@@ -79,12 +82,17 @@ const actualizarCard = async () => {
 const cancelUpdate = () => {
     selectedCard.value = null;
 };
+
+
+
 </script>
 
 <template>
     <div id="app4">
         <div class="button-btn">
-            <a><router-link to="/talentoHumano" class="btn btn-primary">Volver</router-link></a>
+            <!-- <a><router-link to="/talentoHumano" class="btn btn-primary">Volver</router-link></a> -->
+            <!-- <a class="btn btn-primary" @click.prevent="volver()">Volver</a>  -->
+            <a class="btn btn-primary" @click="router.go(-1)">Volver</a>
         </div>  
     
         <div class="form4 justify-content-center">

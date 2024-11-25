@@ -65,7 +65,7 @@ export class EmpleadoServicio {
 
     async eliminarEmpleado(id: string): Promise<boolean> {
         try {
-            console.log('Intentando eliminar empleado con etiqueta:', id);
+            console.log('Intentando eliminar empleado con id:', id);
 
             const docRef = doc(db, 'Equipos', id); 
             console.log('Referencia al documento:', docRef.path);
@@ -75,8 +75,6 @@ export class EmpleadoServicio {
             console.log("respuesta get");
             console.log(await this.obtenerEmpleados());
                         
-
-
             
             console.log('Empleado eliminado con éxito.');
             return true;

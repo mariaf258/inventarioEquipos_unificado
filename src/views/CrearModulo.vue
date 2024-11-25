@@ -2,6 +2,10 @@
 import { ref, onMounted } from 'vue'
 import { ModuloServicio } from '@/services/modulos/ModuloServicio'
 import type { Modulos } from '@/utils/interfaces/InterfaceModulos'
+import { useRouter } from 'vue-router';
+
+const router  = useRouter()
+
 
 const moduloServicio = new ModuloServicio()
 const name = ref<string>('')
@@ -15,8 +19,8 @@ const crearModulo = async () => {
   shortName.value = ''
 }
 
-onMounted(() => {
-  obtenerModulos()
+onMounted(async() => {
+  await obtenerModulos()
 })
 
 const obtenerModulos = async () => {
@@ -24,6 +28,27 @@ const obtenerModulos = async () => {
   console.log(modulos)
 }
 
+// Función para agregar rutas dinámicas
+const agregarRutasDinamicas = () => {
+    modulos.value.forEach((modulo) => {
+      
+        const rutaExistente = router.options.routes.find(
+            (route) => route.name?.toLowerCase() === modulo.name.toLowerCase()
+        );
+
+        if (!rutaExistente) {
+          
+            const nuevaRuta = {
+                path: `/${modulo.name.toLowerCase().replace(/\s+/g, '')}`,
+                name: modulo.name,
+                component: () =>
+                    import(`@/views/${modulo.name.replace(/\s+/g, '')}.vue`) 
+            };
+            router.addRoute(nuevaRuta); 
+            console.log('Ruta agregada dinámicamente:', nuevaRuta);
+        }
+    });
+};
 
 </script>
 

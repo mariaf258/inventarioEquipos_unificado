@@ -23,6 +23,7 @@ import moduloNuevo from '../views/moduloNuevo.vue'
 import AgregarEmpleado from '../components/AgregarEmpleado.vue'
 import actualizarEmpleado from '../components/actualizarEmpleado.vue'
 import eliminarEmpleado from '../components/eliminarEmpleado.vue'
+import eliminarModulo from '../components/eliminarModulo.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -44,7 +45,7 @@ const router = createRouter({
     },
     {
       path: '/talentoHumano',
-      name: 'talentoHumano',
+      name: 'talento Humano',
       component: talentoHumano
     },
     {
@@ -54,7 +55,7 @@ const router = createRouter({
     },
     {
       path: '/sst',
-      name: 'sst',
+      name: 'seguridad y salud en el trabajo',
       component: sst
     },
     {
@@ -64,27 +65,27 @@ const router = createRouter({
     },
     {
       path: '/contabilidad',
-      name: 'contabilidad',
+      name: 'departamento de contabilidad',
       component: contabilidad
     },
     {
       path: '/sistemas',
-      name: 'sistemas',
+      name: 'direccion de sistemas',
       component: sistemas
     },
     {
       path: '/compras',
-      name: 'compras',
+      name: 'direccion de compras',
       component: compras
     },
     {
       path: '/direccionTecnica',
-      name: 'direccionTecnica',
+      name: 'direccion Tecnica',
       component: direccionTecnica
     },
     {
       path: '/gestionCalidad',
-      name: 'gestionCalidad',
+      name: 'gestion de Calidad',
       component: gestionCalidad
     },
     {
@@ -99,12 +100,12 @@ const router = createRouter({
     },
     {
       path: '/ambiental',
-      name: 'ambiental',
+      name: 'direccion ambiental',
       component: ambiental
     },
     {
       path: '/archivo',
-      name: 'archivo',
+      name: 'direccion de archivo',
       component: archivo
     },
     {
@@ -114,7 +115,7 @@ const router = createRouter({
     },
     {
       path: '/audioVisual',
-      name: 'audioVisual',
+      name: 'audio Visual',
       component: audioVisual
     },
     {
@@ -131,6 +132,11 @@ const router = createRouter({
       path:'/eliminarEmpleado',
       name: 'eliminarEmpleado',
       component: eliminarEmpleado
+    },
+    {
+      path:'/eliminarModulo',
+      name: 'eliminarModulo',
+      component: eliminarModulo
     },
     {
       path:'/moduloNuevo',
