@@ -7,8 +7,7 @@ import type { Equipo } from '@/utils/interfaces/InterfaceEquipos';
 import {EmpleadoServicio} from '@/services/empleados/EmpleadoServicio'
 import { cerrarSesion } from '../router/index'
 import { useRouter } from 'vue-router'
-import LogoutButton from '../components/logoutButton.vue'
-
+import LogoutButton from '@/components/LogoutButton.vue'
 
 const empleadoServicio = new EmpleadoServicio()
 const mensajeVisible = ref(false);
@@ -75,6 +74,12 @@ const filtrarEmpleados = (event: Event) => {
 };
 
 
+
+const guardarModulo =()=>{
+  localStorage.setItem('modulo',  "av")
+}
+
+
 </script>
 
 <template>
@@ -121,7 +126,8 @@ const filtrarEmpleados = (event: Event) => {
         <div class="departamento"><h1>AUDIO VISUAL</h1></div>
 
         <div class="container-er">
-          <div v-for="(item, index) in filteredEmpleado" :key="index" class="card1" :class="{ selected: item.selected }" @click="selectCard(index)" v-bind:item="item as Equipo">
+          <div v-for="(item, index) in filteredEmpleado" :key="index" class="card1" 
+          :class="{ selected: item.selected }" @click="selectCard(index)" v-bind:item="item as Equipo">
             <div class="face face1">
               <img
                 src="../../public/img/user-solid.png"
@@ -152,19 +158,13 @@ const filtrarEmpleados = (event: Event) => {
 
         <div class="button-add">
           <router-link to="/agregarEmpleado" class="btn btn-primary">Agregar</router-link>
-          <router-link to="/actualizarEmpleado" @click="actualizadoEmpleado" class="btn btn-success">Actualizar</router-link>
+          <router-link to="/actualizarEmpleado" @click="guardarModulo" class="btn btn-success">Actualizar</router-link>
           <div v-show="mensajeVisible" class="tooltip">
             Selecciona una tarjeta para actualizar.
           </div>
 
-          <button @click="enableDeleteMode" class="btn btn-danger">Eliminar</button>
-          <button v-if="deleteMode" @click="deleteSelectedCards">Confirmar eliminación</button>
+          <router-link to="/eliminarEmpleado" @click="eliminarCard" class="btn btn-danger">Eliminar</router-link>
 
-            <div v-for="empleado in empleados" :key="empleado.id" 
-                :class="{ selected: empleado.selected }" 
-                @click="toggleCardSelection(empleado)">
-                <h3>{{ empleado.title }}</h3>
-            </div>
 
         </div>
       </div>

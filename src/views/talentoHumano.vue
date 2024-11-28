@@ -1,28 +1,19 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
-import EquipoDefault from '@/utils/interfaces/InterfaceEquipos';
-import UsuariosDefault from '@/utils/interfaces/interfaceUsuarios';
 import {EmpleadoServicio} from '@/services/empleados/EmpleadoServicio';
 import { ref, onMounted } from 'vue'
 import type { Equipo } from '@/utils/interfaces/InterfaceEquipos';
-import { cerrarSesion } from '../router/index'
 import { useRouter } from 'vue-router'
-import LogoutButton from '../components/logoutButton.vue'
+import LogoutButton from '@/components/LogoutButton.vue'
 
 
 const empleadoServicio = new EmpleadoServicio()
 const mensajeVisible = ref(false);
-const deleteMode = ref(false);
-
-const router = useRouter();
 
 
 let empleadosModuloTalentoHumano = ref<Equipo[]>([]);
 const obtenerDatos = async () => {
   const empleados:Equipo[] = await empleadoServicio.obtenerEmpleados()
   console.log(empleados);
-
-
 
 const empleadosTalentoHumano:Equipo[] = empleados.filter((empleado) => /^mla-th-\d+$/i
   .test(empleado.etiqueta.toLowerCase()))
@@ -42,7 +33,6 @@ console.log({empleadosModuloTalentoHumano});
 
 }
 
-
 onMounted(() => {
   obtenerDatos().then(() => {
     filteredEmpleado.value = [...empleadosModuloTalentoHumano.value];
@@ -56,7 +46,6 @@ onMounted(() => {
   userIcon?.addEventListener('click', () => {
     userDropdown?.classList.toggle('show')
   })
-
 
 
 
@@ -81,6 +70,10 @@ const filtrarEmpleados = (event: Event) => {
   console.log('Resultados del filtro:', filteredEmpleado.value);
 };
 
+
+const guardarModulo =()=>{
+  localStorage.setItem('modulo',  "th")
+}
 
 
 </script>
@@ -129,7 +122,7 @@ const filtrarEmpleados = (event: Event) => {
         <div class="departamento"><h1>TALENTO HUMANO</h1></div>
 
         <div class="container-er">
-          <div v-for="(item, index) in filteredEmpleado" :key="index" class="card1" :class="{ selected: item.selected }" @click="selectCard(index)" v-bind:item="item as Equipo">
+          <div v-for="(item, index) in filteredEmpleado" :key="index" class="card1" :class="{ selected: item.selected }"  v-bind:item="item as Equipo">
 
             <div class="face face1">
               <img
@@ -161,18 +154,13 @@ const filtrarEmpleados = (event: Event) => {
 
         <div class="button-add">
           <router-link to="/agregarEmpleado" class="btn btn-primary">Agregar</router-link>
-          <router-link to="/actualizarEmpleado" @click="selectCard" class="btn btn-success">Actualizar</router-link>
+          <router-link to="/actualizarEmpleado" @click="guardarModulo" class="btn btn-success">Actualizar</router-link>
           <div v-show="mensajeVisible" class="tooltip">
             Selecciona una tarjeta para actualizar.
           </div>
 
-          <router-link to="/eliminarEmpleado" @click="eliminarCard" class="btn btn-danger">Eliminar</router-link>
+          <router-link to="/eliminarEmpleado" @click="guardarModulo" class="btn btn-danger">Eliminar</router-link>
 
-            <!-- <div v-for="empleado in empleados" :key="empleado.id" 
-                :class="{ selected: empleado.selected }" 
-                @click="toggleCardSelection(empleado)">
-                <h3>{{ empleado.title }}</h3>
-            </div> -->
 
         </div>
       </div>

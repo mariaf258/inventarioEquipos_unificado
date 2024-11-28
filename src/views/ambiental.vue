@@ -7,7 +7,7 @@ import type { Equipo } from '@/utils/interfaces/InterfaceEquipos';
 import {EmpleadoServicio} from '@/services/empleados/EmpleadoServicio'
 import { cerrarSesion } from '../router/index'
 import { useRouter } from 'vue-router'
-import LogoutButton from '../components/logoutButton.vue'
+import LogoutButton from '@/components/LogoutButton.vue'
 
 
 const empleadoServicio = new EmpleadoServicio()
@@ -74,6 +74,12 @@ const filtrarEmpleados = (event: Event) => {
 
   console.log('Resultados del filtro:', filteredEmpleado.value);
 };
+
+
+const guardarModulo =()=>{
+  localStorage.setItem('modulo',  "am")
+}
+
 
 </script>
 
@@ -153,19 +159,13 @@ const filtrarEmpleados = (event: Event) => {
 
         <div class="button-add">
           <router-link to="/agregarEmpleado" class="btn btn-primary">Agregar</router-link>
-          <router-link to="/actualizarEmpleado" @click="actualizadoEmpleado" class="btn btn-success">Actualizar</router-link>
+          <router-link to="/actualizarEmpleado" @click="guardarModulo" class="btn btn-success">Actualizar</router-link>
           <div v-show="mensajeVisible" class="tooltip">
             Selecciona una tarjeta para actualizar.
           </div>
 
-          <button @click="enableDeleteMode" class="btn btn-danger">Eliminar</button>
-          <button v-if="deleteMode" @click="deleteSelectedCards">Confirmar eliminación</button>
+          <router-link to="/eliminarEmpleado" @click="eliminarCard" class="btn btn-danger">Eliminar</router-link>
 
-            <div v-for="empleado in empleados" :key="empleado.id" 
-                :class="{ selected: empleado.selected }" 
-                @click="toggleCardSelection(empleado)">
-                <h3>{{ empleado.title }}</h3>
-            </div>
 
         </div>
       </div>

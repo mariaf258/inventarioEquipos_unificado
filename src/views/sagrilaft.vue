@@ -6,7 +6,7 @@ import { ref, onMounted } from 'vue'
 import type { Equipo } from '@/utils/interfaces/InterfaceEquipos';
 import { cerrarSesion } from '../router/index'
 import { useRouter } from 'vue-router'
-import LogoutButton from '../components/logoutButton.vue'
+import LogoutButton from '@/components/LogoutButton.vue'
 
 
 const empleadoServicio = new EmpleadoServicio()
@@ -16,12 +16,13 @@ const deleteMode = ref(false);
 const router = useRouter();
 
 
-let empleadosModuloSagrilaf =ref<Equipo[]>([]);
+let empleadosModuloSagrilaft =ref<Equipo[]>([]);
 const obtenerDatos = async () => {
   const empleados:Equipo[] = await empleadoServicio.obtenerEmpleados()
   console.log(empleados);
   
-  const empleadosSagrilaf: Equipo[] = empleados.filter((empleado) => /^mla-sag-\d+$/i
+
+  const empleadosSagrilaft: Equipo[] = empleados.filter((empleado) => /^mla-sag-\d+$/i
   .test(empleado.etiqueta.toLowerCase()))
   .sort((a, b) => { 
       const numA = parseInt(a.etiqueta.split('-')[2], 10);
@@ -32,9 +33,9 @@ const obtenerDatos = async () => {
       ...empleado,
       etiqueta: empleado.etiqueta.toUpperCase(),
     }));
-  console.log(empleadosSagrilaf);
-  empleadosModuloSagrilaf.value = empleadosSagrilaf;
-  console.log({empleadosModuloSagrilaf})
+  console.log(empleadosSagrilaft);
+  empleadosModuloSagrilaft.value = empleadosSagrilaft;
+  console.log({empleadosModuloSagrilaft})
   
 }
 
@@ -42,16 +43,10 @@ const obtenerDatos = async () => {
 
 onMounted(() => {
   obtenerDatos().then(() => {
-    filteredEmpleado.value = [...empleadosModuloSagrilaf.value];
+    filteredEmpleado.value = [...empleadosModuloSagrilaft.value];
   });
 });
 
-
-const actualizarDatos =async(id: string, empleadoActualizado: UsuariosDefault)=>{
-  const respuestaActualizar = await empleadoServicio.actualizadoEmpleado(id, empleadoActualizado)
-  console.log(respuestaActualizar);
-  
-}
 
   const userIcon = document.getElementById('userIcon')
   const userDropdown = document.getElementById('userDropdown')
@@ -59,11 +54,6 @@ const actualizarDatos =async(id: string, empleadoActualizado: UsuariosDefault)=>
   userIcon?.addEventListener('click', () => {
     userDropdown?.classList.toggle('show')
   })
-
-onMounted(() => {
-  obtenerDatos()
-
-})
 
 
 // Buscador
@@ -74,11 +64,11 @@ const filtrarEmpleados = (event: Event) => {
   console.log('Buscando empleados con:', input);
 
   if (!input) {
-    filteredEmpleado.value = [...empleadosModuloSagrilaf.value];
+    filteredEmpleado.value = [...empleadosModuloSagrilaft.value];
     return;
   }
 
-  filteredEmpleado.value = empleadosModuloSagrilaf.value.filter((empleado) =>
+  filteredEmpleado.value = empleadosModuloSagrilaft.value.filter((empleado) =>
     (empleado.name && empleado.name.toLowerCase().includes(input)) ||
     (empleado.etiqueta && empleado.etiqueta.toLowerCase().includes(input))
   );
@@ -86,6 +76,10 @@ const filtrarEmpleados = (event: Event) => {
   console.log('Resultados del filtro:', filteredEmpleado.value);
 };
 
+
+const guardarModulo =()=>{
+  localStorage.setItem('modulo', "sag")
+}
 
 
 
@@ -132,10 +126,11 @@ const filtrarEmpleados = (event: Event) => {
           </header>
         </div>
 
-        <div class="departamento"><h1>SAGRILAF</h1></div>
+        <div class="departamento"><h1>SAGRILAFT</h1></div>
 
         <div class="container-er">
-          <div v-for="(item, index) in filteredEmpleado" :key="index" class="card1" :class="{ selected: item.selected }" @click="selectCard(index)" v-bind:item="item as Equipo">
+          <div v-for="(item, index) in filteredEmpleado" :key="index" class="card1" 
+          :class="{ selected: item.selected }" @click="selectCard(index)" v-bind:item="item as Equipo">
             
             <div class="face face1">
               <img
@@ -167,19 +162,13 @@ const filtrarEmpleados = (event: Event) => {
 
         <div class="button-add">
           <router-link to="/agregarEmpleado" class="btn btn-primary">Agregar</router-link>
-          <router-link to="/actualizarEmpleado" @click="actualizadoEmpleado" class="btn btn-success">Actualizar</router-link>
+          <router-link to="/actualizarEmpleado" @click="guardarModulo" class="btn btn-success">Actualizar</router-link>
           <div v-show="mensajeVisible" class="tooltip">
             Selecciona una tarjeta para actualizar.
           </div>
 
-          <button @click="enableDeleteMode" class="btn btn-danger">Eliminar</button>
-          <button v-if="deleteMode" @click="deleteSelectedCards">Confirmar eliminación</button>
+          <router-link to="/eliminarEmpleado" @click="eliminarCard" class="btn btn-danger">Eliminar</router-link>
 
-            <div v-for="empleado in empleados" :key="empleado.id" 
-                :class="{ selected: empleado.selected }" 
-                @click="toggleCardSelection(empleado)">
-                <h3>{{ empleado.title }}</h3>
-            </div>
 
         </div>
       </div>

@@ -7,7 +7,7 @@ import { cerrarSesion } from '../router/index'
 import type { Modulos } from '@/utils/interfaces/InterfaceModulos';
 import { ModuloServicio } from '@/services/modulos/ModuloServicio';
 import { sections } from '@/utils/sesionesDepartamentos.js'
-import LogoutButton from '../components/logoutButton.vue'
+import LogoutButton from '@/components/LogoutButton.vue'
 
 
 

@@ -6,12 +6,17 @@ import { useRouter } from 'vue-router';
 
 const router  = useRouter()
 
-
 const moduloServicio = new ModuloServicio()
 const name = ref<string>('')
 const shortName = ref<string>('')
+  const modulos = ref<Modulos[]>([])
 
 const crearModulo = async () => {
+  if (!name.value || !shortName.value) {
+    alert('Por favor, completa todos los campos.');
+    return;
+  }
+  
   const nuevoModulo: Modulos = { name: name.value, shortName: shortName.value }
   await moduloServicio.crearModulo(nuevoModulo)
   console.log('Nuevo módulo creado:', nuevoModulo)
@@ -19,8 +24,10 @@ const crearModulo = async () => {
   shortName.value = ''
 }
 
+
 onMounted(async() => {
   await obtenerModulos()
+  agregarRutasDinamicas()
 })
 
 const obtenerModulos = async () => {

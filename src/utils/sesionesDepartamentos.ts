@@ -12,7 +12,7 @@ interface datosDepartamentos {
 
 export const sections = ref<datosDepartamentos[]>([
     { id: 1, name: 'talento humano', shortName: 'th', iconClass: 'th', path: 'talentoHumano', color: '#ff6f61' },
-    { id: 2, name: 'sagrilaf', shortName: 'sag', iconClass: 'sag', path: 'sagrilaf', color: '#6a5acd' },
+    { id: 2, name: 'sagrilaf', shortName: 'sag', iconClass: 'sag', path: 'sagrilaft', color: '#6a5acd' },
     { id: 3, name: 'seguridad y salud en el trabajo', shortName: 'sst', iconClass: 'sst', path: 'sst', color: '#48d1cc' },
     { id: 4, name: 'gerencia', shortName: 'ge', iconClass: 'ge', path: 'gerencia', color: '#2e8b57' },
     { id: 5, name: 'departamento de contabilidad', shortName: 'ct', iconClass: 'ct', path: 'contabilidad', color: '#ffd700' },

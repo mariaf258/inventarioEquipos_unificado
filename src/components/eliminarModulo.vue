@@ -14,13 +14,14 @@ const selectedCard = ref<ModuloDefault | null>(null);
 
 
 
-// const filtroMLA = /^mla-th-\d+$/i;
+const filtroMLA = /^mla-th-\d+$/i;
+
 
 const filteredCards = computed(() => {
-    return cards.value.filter((card) => card.shortName)
+    return cards.value.filter((card) => filtroMLA.test(card.etiqueta))
     .sort((a, b) => { 
-        const numA = parseInt(a.shortName.split('-')[2], 10);
-        const numB = parseInt(b.shortName.split('-')[2], 10);
+        const numA = parseInt(a.etiqueta.split('-')[2], 10);
+        const numB = parseInt(b.etiqueta.split('-')[2], 10);
         return numA - numB;
     });
 });
@@ -80,8 +81,7 @@ const cancelUpdate = () => {
     <div id="app4">
 
         <div class="button-btn">
-            <!-- <a><router-link to="/talentoHumano" class="btn btn-primary">Volver</router-link></a> -->
-            <!-- <a class="btn btn-primary" @click.prevent="volver">Volver</a>  -->
+            
             <a class="btn btn-primary" @click="router.go(-1)">Volver</a>
 
         </div>  

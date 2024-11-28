@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import InventarioEquipos from '@/views/inventarioEquipos.vue'
-import CrearModulo from '@/views/CrearModulo.vue'
+import CrearModulo from '@/components/CrearModulo.vue'
 import InventarioEquipos_login from '@/views/inventarioEquipos_login.vue'
 
 import talentoHumano from '../views/talentoHumano.vue'
-import sagrilaf from '@/views/sagrilaf.vue'
+import sagrilaft from '@/views/sagrilaft.vue'
 import sst from '../views/sst.vue'
 import gerencia from '../views/gerencia.vue'
 import contabilidad from '../views/contabilidad.vue'
@@ -49,9 +49,9 @@ const router = createRouter({
       component: talentoHumano
     },
     {
-      path: '/sagrilaf',
-      name: 'sagrilaf',
-      component: sagrilaf
+      path: '/sagrilaft',
+      name: 'sagrilaft',
+      component: sagrilaft
     },
     {
       path: '/sst',

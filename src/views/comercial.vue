@@ -1,20 +1,13 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
-import { ref, onMounted, defineComponent, Ref } from 'vue'
-import app from '../utils/firebase.js'
-import { getFirestore, getDocs, addDoc, collection } from 'firebase/firestore'
+import { ref, onMounted } from 'vue'
 import type { Equipo } from '@/utils/interfaces/InterfaceEquipos';
 import {EmpleadoServicio} from '@/services/empleados/EmpleadoServicio'
-import { cerrarSesion } from '../router/index'
-import { useRouter } from 'vue-router'
-import LogoutButton from '../components/logoutButton.vue'
+import LogoutButton from '@/components/LogoutButton.vue'
 
 
 const empleadoServicio = new EmpleadoServicio()
 const mensajeVisible = ref(false);
-const deleteMode = ref(false);
 
-const router = useRouter();
 
 let empleadosModuloComercial =ref<Equipo[]>([]);
 const obtenerDatos = async () => {
@@ -76,6 +69,13 @@ const filtrarEmpleados = (event: Event) => {
   console.log('Resultados del filtro:', filteredEmpleado.value);
 };
 
+
+
+const guardarModulo =()=>{
+  localStorage.setItem('modulo',  "cm")
+}
+
+
 </script>
 
 <template>
@@ -122,7 +122,8 @@ const filtrarEmpleados = (event: Event) => {
         <div class="departamento"><h1>COMERCIAL</h1></div>
 
         <div class="container-er">
-          <div v-for="(item, index) in filteredEmpleado" :key="index" class="card1" :class="{ selected: item.selected }" @click="selectCard(index)" v-bind:item="item as Equipo">
+          <div v-for="(item, index) in filteredEmpleado" :key="index" class="card1" 
+          :class="{ selected: item.selected }" @click="selectCard(index)" v-bind:item="item as Equipo">
             
             <div class="face face1">
               <img
@@ -154,19 +155,13 @@ const filtrarEmpleados = (event: Event) => {
 
         <div class="button-add">
           <router-link to="/agregarEmpleado" class="btn btn-primary">Agregar</router-link>
-          <router-link to="/actualizarEmpleado" @click="actualizadoEmpleado" class="btn btn-success">Actualizar</router-link>
+          <router-link to="/actualizarEmpleado" @click="guardarModulo" class="btn btn-success">Actualizar</router-link>
           <div v-show="mensajeVisible" class="tooltip">
             Selecciona una tarjeta para actualizar.
           </div>
 
-          <button @click="enableDeleteMode" class="btn btn-danger">Eliminar</button>
-          <button v-if="deleteMode" @click="deleteSelectedCards">Confirmar eliminación</button>
+          <router-link to="/eliminarEmpleado" @click="eliminarCard" class="btn btn-danger">Eliminar</router-link>
 
-            <div v-for="empleado in empleados" :key="empleado.id" 
-                :class="{ selected: empleado.selected }" 
-                @click="toggleCardSelection(empleado)">
-                <h3>{{ empleado.title }}</h3>
-            </div>
 
         </div>
       </div>

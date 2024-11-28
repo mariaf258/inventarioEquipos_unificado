@@ -12,23 +12,35 @@ const empleadoServicio = new EmpleadoServicio();
 const cards = ref<EquipoDefault[]>([]);
 const selectedCard = ref<EquipoDefault | null>(null);
 
+const filteredCards = () => {
+    const empleadosFiltrados =  empleadoServicio.filtrarEmpleadoPorModulo(cards.value)
+    cards.value = empleadosFiltrados;
+    
+    
+};
 
 
-const filtroMLA = /^mla-th-\d+$/i;
+onMounted(() => {
+    obtenerEmpleados();
 
-const filteredCards = computed(() => {
-    return cards.value.filter((card) => filtroMLA.test(card.etiqueta))
-    .sort((a, b) => { 
-        const numA = parseInt(a.etiqueta.split('-')[2], 10);
-        const numB = parseInt(b.etiqueta.split('-')[2], 10);
-        return numA - numB;
-    });
 });
 
 
-onMounted(async () => {
-    await obtenerEmpleados();
-});
+// const filtroMLA = /^mla-th-\d+$/i;
+
+// const filteredCards = computed(() => {
+//     return cards.value.filter((card) => filtroMLA.test(card.etiqueta))
+//     .sort((a, b) => { 
+//         const numA = parseInt(a.etiqueta.split('-')[2], 10);
+//         const numB = parseInt(b.etiqueta.split('-')[2], 10);
+//         return numA - numB;
+//     });
+// });
+
+
+// onMounted(async () => {
+//     await obtenerEmpleados();
+// });
 
 
 const obtenerEmpleados = async () => {
@@ -37,6 +49,7 @@ const obtenerEmpleados = async () => {
         cards.value = respuestaObtener;
         console.log(cards.value);
     }
+    filteredCards();
 };
 
 // Abre formulario con datos de una card
@@ -74,14 +87,13 @@ const cancelUpdate = () => {
     selectedCard.value = null;
 };
 
+
 </script>
 
 <template>
     <div id="app4">
 
         <div class="button-btn">
-            <!-- <a><router-link to="/talentoHumano" class="btn btn-primary">Volver</router-link></a> -->
-            <!-- <a class="btn btn-primary" @click.prevent="volver">Volver</a>  -->
             <a class="btn btn-primary" @click="router.go(-1)">Volver</a>
 
         </div>  
@@ -101,8 +113,9 @@ const cancelUpdate = () => {
                 <option disabled value="">Seleccione empleado</option>
                 <option
                 class="card-delete"
-                v-for="card in filteredCards"
-                :key="card.etiqueta"
+
+                v-for="card in cards"
+                :key="card.id"
                 :value="card"
                 @click="openUpdateForm(card)"
             >

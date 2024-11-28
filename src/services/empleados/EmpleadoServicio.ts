@@ -1,5 +1,6 @@
 import Equipo from '@/utils/interfaces/InterfaceEquipos';
 import Usuarios from '@/utils/interfaces/interfaceUsuarios';
+import EquipoDefault from '@/utils/interfaces/InterfaceEquipos';
 import app from '@/utils/firebase'
 // import { ref, onMounted } from 'vue'
 import { getFirestore, getDocs, addDoc, updateDoc, deleteDoc, collection, doc } from 'firebase/firestore';
@@ -10,19 +11,16 @@ export class EmpleadoServicio {
     async obtenerEmpleados () : Promise<Equipo[] >{
         try {
             const response = await getDocs(collection(db, 'Equipos'))
-            const dataEmpleados = response.docs.map((registro) =>( {
+            return  response.docs.map((registro) =>( {
                 id : registro.id,   
                 ...registro.data()
             }))
             
-            console.log({response});
-            console.log({dataEmpleados})
-            return dataEmpleados ;
+            //return dataEmpleados ;
         } catch (error) {
             return [];
         }
     }
-
 
 
     async crearEmpleado(empleado: Equipo) {
@@ -68,19 +66,26 @@ export class EmpleadoServicio {
             console.log('Intentando eliminar empleado con id:', id);
 
             const docRef = doc(db, 'Equipos', id); 
-            console.log('Referencia al documento:', docRef.path);
-            // await deleteDoc(docRef);
             const respuesta = await deleteDoc(docRef);
-            console.log(respuesta);
-            console.log("respuesta get");
-            console.log(await this.obtenerEmpleados());
-                        
-            
-            console.log('Empleado eliminado con éxito.');
+
             return true;
         } catch (error) {
             console.error('Error al eliminar el empleado:', error);
             return false;
         }
     }
+
+    filtrarEmpleadoPorModulo (cards: EquipoDefault[] ){
+        const cadenaRegex = localStorage.getItem("modulo")|| '' ;
+    
+        const empleadosPorModulo =   cards.filter((card) => card.etiqueta?.includes(cadenaRegex))
+        .sort((a, b) => { 
+            const numA = parseInt(a.etiqueta.split('-')[2], 10);
+            const numB = parseInt(b.etiqueta.split('-')[2], 10);
+            return numA - numB;
+        });
+
+        return empleadosPorModulo;
+    }
+
 }

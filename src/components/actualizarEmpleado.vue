@@ -1,30 +1,31 @@
 <script setup lang="ts">
 import EquipoDefault from '@/utils/interfaces/InterfaceEquipos';
 import { EmpleadoServicio } from '@/services/empleados/EmpleadoServicio';
+
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router  = useRouter()
+
 
 const empleadoServicio = new EmpleadoServicio();
 
 const cards = ref<EquipoDefault[]>([]);
 const selectedCard = ref<EquipoDefault | null>(null);
 
-const filtroMLA =/^mla-th-\d+$/i;
-
-const filteredCards = computed(() => {
-    return cards.value.filter((card) => filtroMLA.test(card.etiqueta))
-    .sort((a, b) => { 
-        const numA = parseInt(a.etiqueta.split('-')[2], 10);
-        const numB = parseInt(b.etiqueta.split('-')[2], 10);
-        return numA - numB;
-    });
-});
 
 
-onMounted(async () => {
-    await obtenerEmpleados();
+const filteredCards = () => {
+    const empleadosFiltrados =  empleadoServicio.filtrarEmpleadoPorModulo(cards.value)
+    cards.value = empleadosFiltrados;
+    
+    
+};
+
+
+onMounted(() => {
+    obtenerEmpleados();
+
 });
 
 
@@ -34,6 +35,7 @@ const obtenerEmpleados = async () => {
         cards.value = respuestaObtener;
         console.log(cards.value);
     }
+    filteredCards();
 };
 
 // Abre formulario con datos de una card
@@ -90,8 +92,6 @@ const cancelUpdate = () => {
 <template>
     <div id="app4">
         <div class="button-btn">
-            <!-- <a><router-link to="/talentoHumano" class="btn btn-primary">Volver</router-link></a> -->
-            <!-- <a class="btn btn-primary" @click.prevent="volver()">Volver</a>  -->
             <a class="btn btn-primary" @click="router.go(-1)">Volver</a>
         </div>  
     
@@ -107,7 +107,8 @@ const cancelUpdate = () => {
                 <option disabled value="">Seleccione empleado</option>
                 <option
                 class="card-delete"
-                v-for="card in filteredCards"
+                
+                v-for="card in cards"
                 :key="card.id"
                 :value="card"
                 @click="openUpdateForm(card)"
@@ -176,7 +177,6 @@ const cancelUpdate = () => {
                     </div>
     
                     <div class="buttons-update">
-                    <!-- Aquí eliminamos el @click y solo dejamos type="submit" -->
                     <button class="btn btn-success" type="submit">Guardar Cambios</button>
                     <button class="btn btn-primary" type="button" @click="cancelUpdate">Cancelar</button>
                     </div>
