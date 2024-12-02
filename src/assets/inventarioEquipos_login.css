@@ -232,7 +232,7 @@ html {
   justify-content: center;
   position: fixed;
 }
-
+/* 
 @media screen and (max-width: 1200px) {
   #app {
     height: 100%;
@@ -434,4 +434,4 @@ html {
   footer {
     margin-top: 10px;
   }
-}
+} */

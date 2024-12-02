@@ -38,24 +38,37 @@ const obtenerModulos = async () => {
 // Función para agregar rutas dinámicas
 const agregarRutasDinamicas = () => {
     modulos.value.forEach((modulo) => {
-      
         const rutaExistente = router.options.routes.find(
             (route) => route.name?.toLowerCase() === modulo.name.toLowerCase()
         );
 
         if (!rutaExistente) {
-          
+            // Procesar el nombre para generar el path
+            const processedPath = modulo.name
+                .toLowerCase()
+                .split(' ')
+                .filter((word) => word !== 'de') // Elimina "de"
+                .map((word, index) =>
+                    index === 0
+                        ? word // La primera palabra queda en minúscula
+                        : word.charAt(0).toUpperCase() + word.slice(1) // La segunda palabra y siguientes inician con mayúscula
+                )
+                .join('');
+
             const nuevaRuta = {
-                path: `/${modulo.name.toLowerCase().replace(/\s+/g, '')}`,
+                path: `/${processedPath}`, // Path procesado
                 name: modulo.name,
                 component: () =>
-                    import(`@/views/${modulo.name.replace(/\s+/g, '')}.vue`) 
+                    import(`@/views/${processedPath}.vue`) // Suponiendo que la vista sigue el mismo formato del path
             };
+
             router.addRoute(nuevaRuta); 
             console.log('Ruta agregada dinámicamente:', nuevaRuta);
         }
     });
 };
+
+
 
 </script>
 

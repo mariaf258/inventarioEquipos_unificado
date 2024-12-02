@@ -61,13 +61,11 @@ export class ModuloServicio {
 
             const docRef = doc(db, 'Modulos', id); 
             console.log('Referencia al documento:', docRef.path);
-            // await deleteDoc(docRef);
             const respuesta = await deleteDoc(docRef);
             console.log(respuesta);
             console.log("respuesta get");
             console.log(await this.obtenerModulos());
                         
-            
             console.log('Modulo eliminado con éxito.');
             return true;
         } catch (error) {

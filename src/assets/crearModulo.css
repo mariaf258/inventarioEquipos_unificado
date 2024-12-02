@@ -238,7 +238,7 @@ section{
   cursor: pointer;
   margin-top: 15px;
 }
-
+/* 
 @media screen and (max-width: 1200px) {
   #app {
     height: 100%;
@@ -440,4 +440,4 @@ section{
   footer {
     margin-top: 10px;
   }
-}
+} */

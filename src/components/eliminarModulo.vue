@@ -14,9 +14,6 @@ const selectedCard = ref<ModuloDefault | null>(null);
 
 
 
-const filtroMLA = /^mla-th-\d+$/i;
-
-
 const filteredCards = computed(() => {
     return cards.value.filter((card) => filtroMLA.test(card.etiqueta))
     .sort((a, b) => { 
@@ -88,7 +85,7 @@ const cancelUpdate = () => {
 
         <div class="form4 justify-content-center">
         <div class="login">
-            <h1>ELIMINAR EMPLEADO</h1>
+            <h1>ELIMINAR MODULO</h1>
             <hr />
             <h2>C.I. MINAS LA AURORA S.A.S.</h2>
             <br />
