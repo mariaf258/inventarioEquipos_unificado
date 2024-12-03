@@ -8,7 +8,6 @@ import type { Modulos } from '@/utils/interfaces/InterfaceModulos';
 import { ModuloServicio } from '@/services/modulos/ModuloServicio';
 import { sections } from '@/utils/sesionesDepartamentos.js'
 import LogoutButton from '@/components/LogoutButton.vue'
-import sidebar from '@/components/LogoutButton.vue'
 
 
 
@@ -164,7 +163,7 @@ const generarColorEstatico = (input: string, tipo: 'pastel' | 'vivo' = 'pastel')
 <template>
   <div id="app">
     <sidebar></sidebar>
-    <!-- <div class="sidebar">
+    <div class="sidebar">
       <ul>
         <li class="nav2">
           <router-link to="/crearModulo">Crear Departamento</router-link>
@@ -175,7 +174,7 @@ const generarColorEstatico = (input: string, tipo: 'pastel' | 'vivo' = 'pastel')
       <div class="logo">
         <img src="../../public/img/logo-mla.png" alt="Logo" class="logo-img" />
       </div>
-    </div> -->
+    </div>
 
     <div class="main-content-group">
       <div class="main-content">
@@ -216,6 +215,7 @@ const generarColorEstatico = (input: string, tipo: 'pastel' | 'vivo' = 'pastel')
             </router-link>
           </div>
   
+  
         </div>
         <div class="button-add">
           
@@ -225,6 +225,7 @@ const generarColorEstatico = (input: string, tipo: 'pastel' | 'vivo' = 'pastel')
     </div>
   </div>
   </div>
+  <!-- </div> -->
 </template>
 
 

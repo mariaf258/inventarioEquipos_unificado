@@ -441,3 +441,35 @@ section{
     margin-top: 10px;
   }
 } */
+
+
+@media screen and (max-width: 1024px) {
+  .sidebar {
+      width: 25%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .sidebar {
+      width: 30%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .sidebar {
+      width: 100px;
+      position: absolute; 
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .sidebar {
+      display: none; 
+  }
+}
+
+@media screen and (max-width: 230px) {
+  .sidebar {
+      display: none; 
+  }
+}

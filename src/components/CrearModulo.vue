@@ -18,7 +18,7 @@ const crearModulo = async () => {
   }
   
   const nuevoModulo: Modulos = { name: name.value, shortName: shortName.value }
-  await moduloServicio.crearModulo(nuevoModulo)
+  await moduloServicio.crearModulos(nuevoModulo)
   console.log('Nuevo módulo creado:', nuevoModulo)
   name.value = ''
   shortName.value = ''

@@ -8,7 +8,6 @@ import { useRouter } from 'vue-router';
 
 const router  = useRouter()
 
-
 const empleadoServicio = new EmpleadoServicio();
 
 const datos = new EquipoDefault();
@@ -90,55 +89,45 @@ const eliminarEmpleado =async(id : string)=>{
                 <div class="form-group">
                   <input type="marca" v-model="datos.marca" placeholder="" />
                   <label class="form-label">Marca del Equipo</label>
-                  
                 </div>
                 
                 <div class="form-group">
                   <input type="serie" v-model="datos.serie" placeholder="" />
                   <label class="form-label">Serie del Equipo</label>
-                
                 </div>
                 
                 <div class="form-group">
                   <input type="Nserial" v-model="datos.Nserial" placeholder="" />
                   <label class="form-label">Número serial del Equipo</label>
-                  
                 </div>
 
                 <div class="form-group">
                   <input type="disco" v-model="datos.disco" placeholder="" />
                   <label class="form-label">Disco del Equipo</label>
-                  
                 </div>
                 
                 <div class="form-group">
                   <input type="ram" v-model="datos.ram" placeholder="" />
                   <label class="form-label">Ram del Equipo</label>
-                  
                 </div>
                 
                 <div class="form-group">
                   <input type="estado" v-model="datos.estado" placeholder="" />
                   <label class="form-label">Estado del Equipo</label>
-                  
                 </div>
                 
                 <div class="form-group">
                   <input type="observacion" v-model="datos.observacion" placeholder="" />
                   <label class="form-label">Observacion del Equipo</label>
-                  
                 </div>
-            
-              </form>
+            </form>
 
                 <div class="buttons">
 
                   <button class="btn btn-primary" type="submit" @click="crearEmpleado"> Agregar Empleado </button>
 
                 </div>
-
               </div>
-            
           </section>
         </div>
       </div>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import ModuloDefault from '@/utils/interfaces/InterfaceEquipos';
-import { ModuloServicio } from '@/services/modulos/ModuloServicio';
+import ModuloDefault from '@/utils/interfaces/InterfaceModulos';
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { ModuloServicio } from '@/services/modulos/ModuloServicio';
 
 const router  = useRouter()
 
@@ -12,29 +12,28 @@ const moduloServicio = new ModuloServicio();
 const cards = ref<ModuloDefault[]>([]);
 const selectedCard = ref<ModuloDefault | null>(null);
 
+const filteredCards = () => {
+    const modulosFiltrados =  moduloServicio.obtenerModulos(cards.value)
+    cards.value = modulosFiltrados;
+    
+    
+};
 
 
-const filteredCards = computed(() => {
-    return cards.value.filter((card) => filtroMLA.test(card.etiqueta))
-    .sort((a, b) => { 
-        const numA = parseInt(a.etiqueta.split('-')[2], 10);
-        const numB = parseInt(b.etiqueta.split('-')[2], 10);
-        return numA - numB;
-    });
+onMounted(() => {
+    obtenerModulos();
+
 });
 
-
-onMounted(async () => {
-    await obtenerModulos();
-});
 
 
 const obtenerModulos = async () => {
-    const respuestaObtener = await moduloServicio.obtenerModulos();
+    const respuestaObtener = await ModuloServicio.obtenerModulos();
     if (respuestaObtener) {
         cards.value = respuestaObtener;
         console.log(cards.value);
     }
+    filteredCards();
 };
 
 // Abre formulario con datos de una card
@@ -54,7 +53,7 @@ const eliminarCard = async (etiqueta: string | undefined) => {
     if (!confirmacion) return;
 
     console.log('Etiqueta a eliminar:', etiqueta); 
-    const respuestaEliminar = await moduloServicio.eliminarModulo(etiqueta);
+    const respuestaEliminar = await ModuloServicio.eliminarModulos(etiqueta);
 
     if (!respuestaEliminar) {
         const index = cards.value.findIndex((card) => card.etiqueta === etiqueta);
@@ -72,13 +71,13 @@ const cancelUpdate = () => {
     selectedCard.value = null;
 };
 
+
 </script>
 
 <template>
     <div id="app4">
 
         <div class="button-btn">
-            
             <a class="btn btn-primary" @click="router.go(-1)">Volver</a>
 
         </div>  
@@ -89,22 +88,23 @@ const cancelUpdate = () => {
             <hr />
             <h2>C.I. MINAS LA AURORA S.A.S.</h2>
             <br />
-            <!-- <h6>SELECCIONAR EMPLEADO</h6> -->
+            <!-- <h6>SELECCIONAR MODULO</h6> -->
             
 
             <select class="form-select" 
             v-model="selectedCard"
             aria-label="Default select example">
-                <option disabled value="">Seleccione Modulo</option>
+                <option disabled value="">Seleccione modulo</option>
                 <option
                 class="card-delete"
-                v-for="card in filteredCards"
-                :key="card.etiqueta"
+
+                v-for="card in cards"
+                :key="card.id"
                 :value="card"
                 @click="openUpdateForm(card)"
             >
                 <h4>{{ card.name }} - </h4>
-                <p>{{ card.shortName }}</p>
+                <p>{{ card.descripcion }}</p>
             </option>
             </select>
 
@@ -129,7 +129,6 @@ const cancelUpdate = () => {
             </section>
         </div>
         </div>
-
         <footer class="footer4 d-flex w-100 justify-content-center">
         <img src="../../public/img/logo-mla.png" alt="Logo MLA" />
         </footer>
@@ -137,5 +136,5 @@ const cancelUpdate = () => {
 </template>
 
 <style>
-@import '/src/assets/eliminarEmpleado.css';
+@import '/src/assets/eliminarModulo.css';
 </style>

@@ -84,17 +84,18 @@ html {
   box-sizing: border-box;
 }
 
-/* .separador {
+.separador {
   margin-top: 20px;
   margin-bottom: 20px;
   margin: 20px auto; 
-  width: 80%; 
+  width: 100%; 
   height: 1px;
   position: absolute;
   z-index: 0;
   top: 50px;
   left: 0;
-} */
+}
+
 /* 
 .separador-1 {
   margin-top: 20px;
@@ -137,7 +138,7 @@ header h2 {
 .header-right {
   align-items: center;
   gap: 10px;
-}
+} 
 
 #searchInput {
   width: 350px;
@@ -466,7 +467,9 @@ header h2 {
   transform: translateY(0);
 }
 
-/* @media screen and (max-width: 1300px) {
+
+
+@media screen and (max-width: 1300px) {
   .header-container {
     justify-content: space-between;
     flex-direction: column;
@@ -479,13 +482,13 @@ header h2 {
     width: 100%;
     gap: 10px;
   }
-
+/* 
   .sidebar {
     width: 150px;
     height: auto;
     padding: 10px;
     text-align: center;
-  }
+  } */
 
   .content {
     justify-content: flex-start;
@@ -501,10 +504,11 @@ header h2 {
     width: 1000px;
   }
 
-  .separador-1 {
+  /* .separador-1 {
     width: 100%;
-  }
+  } */
 }
+
 @media screen and (max-width: 1200px) {
   .header-container {
     flex-direction: column;
@@ -518,13 +522,13 @@ header h2 {
     gap: 10px;
     margin-bottom: 20px;
   }
-
+/* 
   .sidebar {
     width: 150px;
     height: auto;
     padding: 10px;
     text-align: center;
-  }
+  } */
 
   .content {
     justify-content: flex-start;
@@ -540,9 +544,9 @@ header h2 {
     width: 1300px;
   }
 
-  .separador-1 {
+  /* .separador-1 {
     width: 100%;
-  }
+  } */
 }
 
 @media screen and (max-width: 1050px) {
@@ -563,13 +567,13 @@ header h2 {
     width: 100%;
     gap: 10px;
   }
-
+/* 
   .sidebar {
     width: 150px;
     height: auto;
     padding: 10px;
     text-align: center;
-  }
+  } */
 
   .content {
     justify-content: flex-start;
@@ -588,10 +592,10 @@ header h2 {
   .separador {
     width: 1100px;
   }
-
+/* 
   .separador-1 {
     width: 100%;
-  }
+  } */
 }
 
 @media screen and (max-width: 1030px) {
@@ -605,11 +609,11 @@ header h2 {
     padding: 10px;
     width: 630px;
   }
-
+/* 
   .sidebar {
     display: flex;
     flex: 1;
-  }
+  } */
 
   .content {
     padding: 10px;
@@ -654,10 +658,10 @@ header h2 {
   .separador {
     width: 990px;
   }
-
+/* 
   .separador-1 {
     width: 100%;
-  }
+  } */
 }
 
 @media screen and (max-width: 640px) {
@@ -694,9 +698,9 @@ header h2 {
     width: 990px;
   }
 
-  .separador-1 {
+  /* .separador-1 {
     width: 100%;
-  }
+  } */
 }
 
 @media screen and (max-width: 480px) {
@@ -718,10 +722,10 @@ header h2 {
   .button-add a {
     width: 100%;
   }
-
+/* 
   .logo img {
     width: 50px;
-  }
+  } */
 
   .header-right button {
     padding: 8px 15px;
@@ -754,9 +758,9 @@ header h2 {
     width: 700px;
   }
 
-  .separador-1 {
+  /* .separador-1 {
     width: 100%;
-  }
+  } */
 
   .addBtn {
     height: 29px;
@@ -775,18 +779,18 @@ header h2 {
     width: 420px;
   }
 
-  .sidebar {
+  /* .sidebar {
     display: none;
-  }
+  } */
 
   .header-right input {
     width: 100%;
   }
-
+/* 
   .logo img {
     text-align: center;
     width: 50px;
-  }
+  } */
 
   .content {
     padding: 10px;
@@ -821,9 +825,9 @@ header h2 {
     height: 29px;
   }
 
-  .separador-1 {
+  /* .separador-1 {
     width: 100%;
-  }
+  } */
 }
 
 @media screen and (max-width: 319px) {
@@ -838,7 +842,7 @@ header h2 {
     width: 420px;
   }
 
-  .sidebar {
+  /* .sidebar {
     display: flex;
     flex: 1;
     width: 150px;
@@ -848,7 +852,7 @@ header h2 {
   .logo img {
     text-align: center;
     width: 50px;
-  }
+  } */
 
   .content {
     padding: 10px;
@@ -886,10 +890,10 @@ header h2 {
   .addBtn {
     height: 29px;
   }
-
+/* 
   .separador-1 {
     width: 100%;
-  }
+  } */
 }
 
 @media screen and (max-width: 230px) {
@@ -904,7 +908,7 @@ header h2 {
     width: 420px;
   }
 
-  .sidebar {
+  /* .sidebar {
     display: flex;
     flex: 1;
     width: 100px;
@@ -914,7 +918,7 @@ header h2 {
   .logo img {
     text-align: center;
     width: 50px;
-  }
+  } */
 
   .content {
     padding: 10px;
@@ -947,9 +951,9 @@ header h2 {
     height: 29px;
   }
 
-  .separador-1 {
+  /* .separador-1 {
     width: 100%;
-  }
-} */
+  } */
+} 
 
 

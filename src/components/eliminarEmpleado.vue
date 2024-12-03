@@ -129,7 +129,6 @@ const cancelUpdate = () => {
             </section>
         </div>
         </div>
-
         <footer class="footer4 d-flex w-100 justify-content-center">
         <img src="../../public/img/logo-mla.png" alt="Logo MLA" />
         </footer>
